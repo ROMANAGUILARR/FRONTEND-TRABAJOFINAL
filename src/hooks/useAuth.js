@@ -46,6 +46,36 @@ export function AuthProvider({ children }) {
 
   // Función de login
   const login = useCallback(async (nombreUsuario, contrasena) => {
+    // Modo demo: entra sin backend
+    if (nombreUsuario === 'demo' && contrasena === 'demo') {
+      const demoRol = 'CIUDADANO';
+      const demoPermisos = { canRegister: true, canTrack: true, canAccessEducation: true, isAdmin: false };
+      localStorage.setItem('token', 'demo-token');
+      localStorage.setItem('nombreUsuario', 'Usuario Demo');
+      localStorage.setItem('puntos', '0');
+      localStorage.setItem('rol', demoRol);
+      localStorage.setItem('permissions', JSON.stringify(demoPermisos));
+      setIsAuthenticated(true);
+      setUser({ nombreUsuario: 'Usuario Demo', puntos: 0, rol: demoRol });
+      setPermissions(demoPermisos);
+      return { success: true, rol: demoRol };
+    }
+
+    // Modo demo admin
+    if (nombreUsuario === 'admin' && contrasena === 'admin') {
+      const demoRol = 'ADMIN';
+      const demoPermisos = { canRegister: false, canTrack: false, canAccessEducation: false, isAdmin: true };
+      localStorage.setItem('token', 'demo-token-admin');
+      localStorage.setItem('nombreUsuario', 'Admin Demo');
+      localStorage.setItem('puntos', '0');
+      localStorage.setItem('rol', demoRol);
+      localStorage.setItem('permissions', JSON.stringify(demoPermisos));
+      setIsAuthenticated(true);
+      setUser({ nombreUsuario: 'Admin Demo', puntos: 0, rol: demoRol });
+      setPermissions(demoPermisos);
+      return { success: true, rol: demoRol };
+    }
+
     try {
       const respuesta = await fetch(`${API_BASE}/usuario/autenticar`, {
         method: 'POST',
