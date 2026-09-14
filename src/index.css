@@ -1,5 +1,23 @@
+@import "tailwindcss";
+
 /* Importar fuente Inter de Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Mapeo de colores del proyecto a Tailwind */
+@theme {
+  --color-eco-primary: #2E7D32;
+  --color-eco-primary-dark: #1b5e20;
+  --color-eco-text: #111111;
+  --color-eco-text-secondary: #37474F;
+  --color-eco-bg: #F5F4EF;
+  --color-eco-bg-white: #FFFFFF;
+  --color-eco-border: #BDBDBD;
+  --color-eco-danger: #FF746C;
+  --color-eco-warning: #FF8F0F;
+  --color-eco-success: #2E7D32;
+  --color-eco-gray: #37474F;
+  --color-eco-gray-dark: #263238;
+}
 
 *,
 *::before,
