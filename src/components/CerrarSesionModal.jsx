@@ -1,29 +1,23 @@
-import './CerrarSesionModal.css'
+import Modal from './ui/Modal'
+import Button from './ui/Button'
+
 export default function CerrarSesionModal({ onConfirm, onCancel }) {
   return (
-    <div className="cerrar-modal-overlay" role="presentation" onClick={onCancel}>
-      <div
-        className="cerrar-modal"
-        role="dialog"
-        aria-labelledby="cerrar-modal-title"
-        aria-modal="true"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 id="cerrar-modal-title" className="cerrar-modal__title">
-          Confirmación de cierre de sesión
-        </h2>
-        <p className="cerrar-modal__message">
-          ¿Estás seguro de hacer esto?
+    <Modal isOpen={true} onClose={onCancel} title="Confirmacion de cierre de sesion" size="sm">
+      <div className="text-center">
+        <div className="text-5xl mb-4">🚪</div>
+        <p className="text-sm text-eco-text-secondary mb-6">
+          ¿Estas seguro de que deseas cerrar sesion?
         </p>
-        <div className="cerrar-modal__actions">
-          <button type="button" className="cerrar-modal__btn cerrar-modal__btn--yes" onClick={onConfirm}>
-            Sí
-          </button>
-          <button type="button" className="cerrar-modal__btn cerrar-modal__btn--no" onClick={onCancel}>
-            No
-          </button>
+        <div className="flex gap-3 justify-center">
+          <Button variant="danger" size="md" onClick={onConfirm}>
+            Si, cerrar sesion
+          </Button>
+          <Button variant="secondary" size="md" onClick={onCancel}>
+            Cancelar
+          </Button>
         </div>
       </div>
-    </div>
+    </Modal>
   )
 }
