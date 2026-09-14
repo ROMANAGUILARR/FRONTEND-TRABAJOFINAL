@@ -10,7 +10,6 @@ import './RecompensasCiudadano.css'
 import BarraProgreso from './BarraProgreso'
 import HelpModal from './HelpModal'
 import Card from './ui/Card'
-import Button from './ui/Button'
 
 const IMAGENES_INSIGNIAS = {
   1: primerInsignia, 2: segundaInsignia, 3: tercerInsignia,
@@ -79,10 +78,10 @@ export default function RecompensasCiudadano() {
         >
           ¿Cómo funciona?
         </button>
-        <div className="flex gap-1.5">
-          <Button variant="secondary" size="sm" onClick={() => setTamañoLetra(t => Math.max(0.8, t - 0.1))}>A-</Button>
-          <Button variant="secondary" size="sm" onClick={() => setTamañoLetra(1)}>A</Button>
-          <Button variant="secondary" size="sm" onClick={() => setTamañoLetra(t => Math.min(1.7, t + 0.1))}>A+</Button>
+        <div className="registrar__font-controls">
+          <button type="button" onClick={() => setTamañoLetra(t => Math.max(0.8, t - 0.1))}>🗛-</button>
+          <button type="button" onClick={() => setTamañoLetra(1)}>A</button>
+          <button type="button" onClick={() => setTamañoLetra(t => Math.min(1.7, t + 0.1))}>🗚+</button>
         </div>
       </div>
 
