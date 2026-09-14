@@ -85,6 +85,13 @@
   --color-bg-white: #1f2937;
   --color-sidebar-active: rgba(46, 125, 50, 0.2);
 
+  /* Tailwind theme colors - dark mode */
+  --color-eco-text: #e5e7eb;
+  --color-eco-text-secondary: #9ca3af;
+  --color-eco-bg: #111827;
+  --color-eco-bg-white: #1f2937;
+  --color-eco-border: #374151;
+
   --color-btn-primary: #2E7D32;
   --color-btn-primary-hover: #1b5e20;
 

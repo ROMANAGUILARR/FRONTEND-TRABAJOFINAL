@@ -2,8 +2,8 @@ const variants = {
   default: 'bg-eco-bg-white border-eco-border',
   unlocked: 'bg-eco-bg-white border-eco-primary border-2',
   locked: 'bg-eco-bg-white border-eco-border opacity-80',
-  success: 'bg-green-50 border-eco-success border-2',
-  danger: 'bg-red-50 border-eco-danger border-2',
+  success: 'bg-green-50 dark:bg-green-900/30 border-eco-success border-2',
+  danger: 'bg-red-50 dark:bg-red-900/30 border-eco-danger border-2',
 }
 
 export default function Card({

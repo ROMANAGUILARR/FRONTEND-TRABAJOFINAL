@@ -13,13 +13,13 @@ export default function SuccessModal({ onClose, puntosGanados = 0, nuevasInsigni
         </p>
 
         {puntosGanados > 0 && (
-          <div className="bg-green-50 border border-eco-success text-eco-success rounded-md p-3 mb-4">
+          <div className="bg-green-50 dark:bg-green-900/30 border border-eco-success text-eco-success rounded-md p-3 mb-4">
             🎉 ¡Has ganado <strong>{puntosGanados}</strong> puntos!
           </div>
         )}
 
         {nuevasInsignias.length > 0 && (
-          <div className="bg-yellow-50 border border-eco-warning rounded-md p-4 mb-4 text-left">
+          <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-eco-warning rounded-md p-4 mb-4 text-left">
             <p className="font-bold text-eco-text mb-2">🏅 ¡Nueva(s) insignia(s) desbloqueada(s)!</p>
             <ul className="list-none p-0 space-y-1.5">
               {nuevasInsignias.map((insignia, index) => (
