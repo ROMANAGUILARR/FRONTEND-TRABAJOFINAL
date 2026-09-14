@@ -69,9 +69,13 @@ export default function RecompensasCiudadano() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3 mb-2">
         <h2 className="text-2xl font-bold text-eco-text m-0">Area de Recompensas</h2>
-        <Button variant="ghost" size="sm" onClick={() => setShowHelpModal(true)}>
-          Como funciona?
-        </Button>
+        <button
+          type="button"
+          className="bg-transparent border border-current rounded-[20px] px-3.5 py-1 text-[calc(0.95rem*var(--font-scale,1))] cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
+          onClick={() => setShowHelpModal(true)}
+        >
+          ¿Cómo funciona?
+        </button>
         <div className="flex gap-1.5">
           <Button variant="secondary" size="sm" onClick={() => setTamañoLetra(t => Math.max(0.8, t - 0.1))}>A-</Button>
           <Button variant="secondary" size="sm" onClick={() => setTamañoLetra(1)}>A</Button>
