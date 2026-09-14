@@ -9,70 +9,30 @@ import quintaInsignia from '../assets/QUINTA INSIGNIA.png'
 import './RecompensasCiudadano.css'
 import BarraProgreso from './BarraProgreso'
 import HelpModal from './HelpModal'
+import Card from './ui/Card'
+import Button from './ui/Button'
 
 const IMAGENES_INSIGNIAS = {
-  1: primerInsignia,
-  2: segundaInsignia,
-  3: tercerInsignia,
-  4: cuartaInsignia,
-  5: quintaInsignia
+  1: primerInsignia, 2: segundaInsignia, 3: tercerInsignia,
+  4: cuartaInsignia, 5: quintaInsignia
 }
 
 const MOCK_INSIGNIAS = [
-  {
-    idInsignia: 1,
-    nombre: 'Primer reporte',
-    descripcion: '¡Felicidades! Has registrado tu primera incidencia y comenzado a transformar tu comunidad.',
-    requisitoIncidencias: 1,
-    recompensa: 'Bono de S/20 en tu billetera digital para canjear en mercados locales.',
-    desbloqueada: false,
-    fechaDesbloqueo: null
-  },
-  {
-    idInsignia: 2,
-    nombre: 'Reportero activo',
-    descripcion: 'Has registrado 5 incidencias. Tu compromiso con el medio ambiente es notable.',
-    requisitoIncidencias: 5,
-    recompensa: 'Bono de S/50 en tu billetera digital + recarga de 10 GB móviles.',
-    desbloqueada: false,
-    fechaDesbloqueo: null
-  },
-  {
-    idInsignia: 3,
-    nombre: 'Guardián del barrio',
-    descripcion: 'Has registrado 10 incidencias. Eres un referente de cuidado ambiental en tu zona.',
-    requisitoIncidencias: 10,
-    recompensa: 'Vale de S/100 en canasta familiar + reconocimiento público en redes sociales.',
-    desbloqueada: false,
-    fechaDesbloqueo: null
-  },
-  {
-    idInsignia: 4,
-    nombre: 'EcoHéroe',
-    descripcion: 'Has registrado 15 incidencias. Tu dedicación es inspiradora para toda la comunidad.',
-    requisitoIncidencias: 15,
-    recompensa: 'Vale de S/200 en canasta familiar + kit de productos ecológicos para el hogar.',
-    desbloqueada: false,
-    fechaDesbloqueo: null
-  },
-  {
-    idInsignia: 5,
-    nombre: 'Embajador EcoSólido',
-    descripcion: 'Has registrado 20 incidencias. Eres un embajador del cambio ambiental.',
-    requisitoIncidencias: 20,
-    recompensa: 'Vale de S/500 en canasta familiar + kit EcoSólido + certificado de Embajador Ambiental.',
-    desbloqueada: false,
-    fechaDesbloqueo: null
-  }
+  { idInsignia: 1, nombre: 'Primer reporte', descripcion: 'Has registrado tu primera incidencia y comenzado a transformar tu comunidad.', requisitoIncidencias: 1, recompensa: 'Bono de S/20 en tu billetera digital.', desbloqueada: false },
+  { idInsignia: 2, nombre: 'Reportero activo', descripcion: 'Has registrado 5 incidencias. Tu compromiso es notable.', requisitoIncidencias: 5, recompensa: 'Bono de S/50 + recarga de 10 GB moviles.', desbloqueada: false },
+  { idInsignia: 3, nombre: 'Guardian del barrio', descripcion: 'Has registrado 10 incidencias. Eres un referente ambiental.', requisitoIncidencias: 10, recompensa: 'Vale de S/100 en canasta familiar.', desbloqueada: false },
+  { idInsignia: 4, nombre: 'EcoHeroe', descripcion: 'Has registrado 15 incidencias. Tu dedicacion es inspiradora.', requisitoIncidencias: 15, recompensa: 'Vale de S/200 + kit ecologico.', desbloqueada: false },
+  { idInsignia: 5, nombre: 'Embajador EcoSolido', descripcion: 'Has registrado 20 incidencias. Eres un embajador del cambio.', requisitoIncidencias: 20, recompensa: 'Vale de S/500 + kit + certificado.', desbloqueada: false },
 ]
+
 export default function RecompensasCiudadano() {
   const [insignias, setInsignias] = useState([])
   const [cargando, setCargando] = useState(true)
-  const [error, setError] = useState('')
-  const [tamañoLetra,setTamañoLetra]=useState(1);
-  const [showHelpModal,setShowHelpModal]=useState(false);
+  const [tamañoLetra, setTamañoLetra] = useState(1)
+  const [showHelpModal, setShowHelpModal] = useState(false)
   const [puntos, setPuntos] = useState(() => parseInt(localStorage.getItem('puntos') || '0', 10))
   const { updatePuntos } = useAuth()
+
   useEffect(() => {
     async function cargarPuntos() {
       try {
@@ -80,18 +40,19 @@ export default function RecompensasCiudadano() {
         setPuntos(reales)
         updatePuntos(reales)
       } catch (err) {
-        console.warn('No se pudieron refrescar los puntos desde el backend:', err.message)
+        console.warn('No se pudieron refrescar los puntos:', err.message)
       }
     }
     cargarPuntos()
   }, [updatePuntos])
+
   useEffect(() => {
     async function cargarInsignias() {
       try {
         const data = await obtenerInsigniasUsuario()
         setInsignias(data)
       } catch (err) {
-        console.warn('No se pudieron cargar las insignias, usando datos locales:', err.message)
+        console.warn('Usando datos locales:', err.message)
         setInsignias(MOCK_INSIGNIAS)
       } finally {
         setCargando(false)
@@ -102,100 +63,94 @@ export default function RecompensasCiudadano() {
 
   const desbloqueadas = insignias.filter(i => i.desbloqueada)
   const pendientes = insignias.filter(i => !i.desbloqueada)
+
   return (
-    <main className="recompensas" style={{ '--font-scale': tamañoLetra }}>
-      <div className="recompensas__header">
-        <h2 className="recompensas__title">Área de Recompensas</h2>
-         <button
-          type="button"
-          className="registrar__help2-btn"
-          onClick={() => setShowHelpModal(true)}
-        >
-          ¿Cómo funciona?
-        </button>
-        <div className="registrar__font-controls">
-          <button type="button"  onClick={() => setTamañoLetra(t => Math.max(0.8, t - 0.1))}>🗛-</button>
-          <button type="button"  onClick={() => setTamañoLetra(1)}>A</button>
-          <button type="button"  onClick={() => setTamañoLetra(t => Math.min(1.7, t + 0.1))}>🗚+</button>
+    <main className="recompensas p-6 max-md:p-4" style={{ '--font-scale': tamañoLetra }}>
+      {/* Header */}
+      <div className="flex items-center justify-between flex-wrap gap-3 mb-2">
+        <h2 className="text-2xl font-bold text-eco-text m-0">Area de Recompensas</h2>
+        <Button variant="ghost" size="sm" onClick={() => setShowHelpModal(true)}>
+          Como funciona?
+        </Button>
+        <div className="flex gap-1.5">
+          <Button variant="secondary" size="sm" onClick={() => setTamañoLetra(t => Math.max(0.8, t - 0.1))}>A-</Button>
+          <Button variant="secondary" size="sm" onClick={() => setTamañoLetra(1)}>A</Button>
+          <Button variant="secondary" size="sm" onClick={() => setTamañoLetra(t => Math.min(1.7, t + 0.1))}>A+</Button>
         </div>
       </div>
-      <p className="recompensas__subtitle">
-          Esta es el área en la cuál vas a poder ver tus insignias y los premios que mereces por obtener cada 1.
-      </p>
-      {cargando && <p className="recompensas__estado">Cargando insignias...</p>}
-      {error && <p className="recompensas__estado recompensas__estado--error">{error}</p>}
 
-      {!cargando && !error && (
+      <p className="text-sm text-eco-text-secondary mb-6">
+        Aqui podras ver tus insignias y los premios que mereces por obtener cada una.
+      </p>
+
+      {cargando && <p className="text-eco-text-secondary text-center py-8">Cargando insignias...</p>}
+
+      {!cargando && (
         <>
-          <section className="recompensas__seccion">
-              <h3 className="recompensas__seccion-title">
-                Mis puntos
-              </h3>
-              <p className="recompensas_seccion_texto">
-                Aquí vas a poder cuanto puntos tienes y cuánto es tu progreso para obtener la siguiente insignia
-              </p>
-              <BarraProgreso 
-              puntos={puntos}
-              />
-            <h3 className="recompensas__seccion-title">
+          {/* Progreso */}
+          <section className="mb-8">
+            <h3 className="text-lg font-bold text-eco-text mb-1">Mis puntos</h3>
+            <p className="text-sm text-eco-text-secondary mb-3">Tu progreso para obtener la siguiente insignia</p>
+            <BarraProgreso puntos={puntos} />
+          </section>
+
+          {/* Desbloqueadas */}
+          <section className="mb-8">
+            <h3 className="text-lg font-bold text-eco-text mb-4">
               🏅 Insignias desbloqueadas ({desbloqueadas.length})
             </h3>
             {desbloqueadas.length === 0 ? (
-              <p className="recompensas__vacio">
-                Aún no has desbloqueado insignias. Registra incidencias para comenzar a ganar.
-              </p>
+              <div className="bg-eco-bg-white rounded-lg border border-eco-border p-6 text-center">
+                <p className="text-eco-text-secondary">Aun no has desbloqueado insignias. Registra incidencias para comenzar a ganar.</p>
+              </div>
             ) : (
-              <div className="recompensas__grid">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {desbloqueadas.map(insignia => (
-                  <article key={insignia.idInsignia} className="recompensa-card recompensa-card--desbloqueada">
-                    <h4 className="recompensa-card__nombre">{insignia.nombre}</h4>
-                    <img
-                      src={IMAGENES_INSIGNIAS[insignia.idInsignia]}
-                      alt={insignia.nombre}
-                      className="recompensa-card__imagen"
-                    />
-                    <p className="recompensa-card__descripcion">{insignia.descripcion}</p>
-                    <div className="recompensa-card__recompensa">
-                      <span className="recompensa-card__recompensa-label">Recompensa</span>
-                      <span className="recompensa-card__recompensa-texto">{insignia.recompensa}</span>
+                  <Card key={insignia.idInsignia} variant="unlocked" className="text-center">
+                    <h4 className="text-base font-bold text-eco-text mb-2">{insignia.nombre}</h4>
+                    <img src={IMAGENES_INSIGNIAS[insignia.idInsignia]} alt={insignia.nombre} className="w-24 h-24 mx-auto mb-3" />
+                    <p className="text-sm text-eco-text-secondary mb-3">{insignia.descripcion}</p>
+                    <div className="bg-green-50 rounded-md p-2.5">
+                      <span className="text-xs font-bold text-eco-success block">Recompensa</span>
+                      <span className="text-sm text-eco-text">{insignia.recompensa}</span>
                     </div>
-                  </article>
+                  </Card>
                 ))}
               </div>
             )}
           </section>
 
-          <section className="recompensas__seccion">
-            <h3 className="recompensas__seccion-title">
+          {/* Pendientes */}
+          <section className="mb-8">
+            <h3 className="text-lg font-bold text-eco-text mb-4">
               🔒 Insignias pendientes ({pendientes.length})
             </h3>
             {pendientes.length === 0 ? (
-              <p className="recompensas__vacio">¡Felicidades! Has desbloqueado todas las insignias disponibles.</p>
+              <div className="bg-green-50 rounded-lg border border-eco-success p-6 text-center">
+                <p className="text-eco-success font-semibold">Felicidades! Has desbloqueado todas las insignias.</p>
+              </div>
             ) : (
-              <div className="recompensas__grid">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {pendientes.map(insignia => (
-                  <article key={insignia.idInsignia} className="recompensa-card recompensa-card--bloqueada">
-                    <h4 className="recompensa-card__nombre">{insignia.nombre}</h4>
-                    <img
-                      src={IMAGENES_INSIGNIAS[insignia.idInsignia]}
-                      alt={insignia.nombre}
-                      className="recompensa-card__imagen recompensa-card__imagen--bloqueada"
-                    />
-                    <p className="recompensa-card__requisito">
-                      Registra <strong>{insignia.requisitoIncidencias}</strong> incidencias para desbloquear esta insignia.
+                  <Card key={insignia.idInsignia} variant="locked" className="text-center">
+                    <h4 className="text-base font-bold text-eco-text mb-2">{insignia.nombre}</h4>
+                    <img src={IMAGENES_INSIGNIAS[insignia.idInsignia]} alt={insignia.nombre} className="w-24 h-24 mx-auto mb-3 grayscale opacity-60" />
+                    <p className="text-sm text-eco-text-secondary mb-2">
+                      Registra <strong className="text-eco-primary">{insignia.requisitoIncidencias}</strong> incidencias para desbloquear.
                     </p>
-                    <div className="recompensa-card__recompensa">
-                      <span className="recompensa-card__recompensa-label">Recompensa</span>
-                      <span className="recompensa-card__recompensa-texto">{insignia.recompensa}</span>
+                    <div className="bg-gray-50 rounded-md p-2.5">
+                      <span className="text-xs font-bold text-eco-text-secondary block">Recompensa</span>
+                      <span className="text-sm text-eco-text">{insignia.recompensa}</span>
                     </div>
-                  </article>
+                  </Card>
                 ))}
               </div>
             )}
           </section>
         </>
       )}
-      {showHelpModal && <HelpModal onClose={() => setShowHelpModal(false)} fontScale={tamañoLetra} />}
+
+      {showHelpModal && <HelpModal onClose={() => setShowHelpModal(false)} />}
     </main>
   )
 }

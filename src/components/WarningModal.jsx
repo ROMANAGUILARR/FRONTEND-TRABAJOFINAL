@@ -1,36 +1,23 @@
-import './WarningModal.css'
+import Modal from './ui/Modal'
+import Button from './ui/Button'
 
 export default function WarningModal({ onClose, message, title, hidePrefix }) {
   return (
-    <div className="warning-modal-overlay" role="presentation" onClick={onClose}>
-      <div
-        className="warning-modal"
-        role="dialog"
-        aria-labelledby="warning-modal-title"
-        aria-modal="true"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 id="warning-modal-title" className="warning-modal__title">
-          {title || 'Advertencia ⚠'}
-        </h2>
-        <p className="warning-modal__message">
+    <Modal isOpen={true} onClose={onClose} title={title || 'Advertencia'} size="sm">
+      <div className="text-center">
+        <div className="text-5xl mb-4">⚠️</div>
+
+        <p className="text-sm text-eco-text-secondary leading-relaxed mb-4">
           {!hidePrefix && (
-            <>
-              Su incidencia no se ha podido registrar.<br />
-            </>
+            <>Su incidencia no se ha podido registrar.<br /></>
           )}
           {message || 'No ha colocado foto alguna.'}
         </p>
-        <div className="warning-modal__actions">
-          <button
-            type="button"
-            className="warning-modal__btn"
-            onClick={onClose}
-          >
-            Aceptar
-          </button>
-        </div>
+
+        <Button variant="primary" fullWidth onClick={onClose}>
+          Aceptar
+        </Button>
       </div>
-    </div>
+    </Modal>
   )
 }

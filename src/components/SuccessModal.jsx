@@ -1,55 +1,46 @@
-import { IconCerrar } from './icons'
-import './SuccessModal.css'
+import Modal from './ui/Modal'
+import Button from './ui/Button'
 
 export default function SuccessModal({ onClose, puntosGanados = 0, nuevasInsignias = [] }) {
   return (
-    <div className="modal-overlay" role="presentation" onClick={onClose}>
-      <div
-        className="modal"
-        role="dialog"
-        aria-labelledby="modal-title"
-        aria-modal="true"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          type="button"
-          className="modal__close"
-          onClick={onClose}
-          aria-label="Cerrar"
-        >
-          <IconCerrar />
-        </button>
-        <h2 id="modal-title" className="modal__title">
-          Felicidades
-        </h2>
-        <p className="modal__message">
+    <Modal isOpen={true} onClose={onClose} title="Felicidades" size="sm">
+      <div className="text-center">
+        <div className="text-5xl mb-4">✅</div>
+
+        <p className="text-sm text-eco-text-secondary leading-relaxed mb-4">
           Su incidencia ha sido registrada exitosamente y ha sido establecida como
           Pendiente en el panel de 'Seguimiento de Incidencias'.
         </p>
+
         {puntosGanados > 0 && (
-          <p className="modal__points">
+          <div className="bg-green-50 border border-eco-success text-eco-success rounded-md p-3 mb-4">
             🎉 ¡Has ganado <strong>{puntosGanados}</strong> puntos!
-          </p>
+          </div>
         )}
+
         {nuevasInsignias.length > 0 && (
-          <div className="modal__badges">
-            <p className="modal__badges-title">🏅 ¡Nueva(s) insignia(s) desbloqueada(s)!</p>
-            <ul className="modal__badges-list">
+          <div className="bg-yellow-50 border border-eco-warning rounded-md p-4 mb-4 text-left">
+            <p className="font-bold text-eco-text mb-2">🏅 ¡Nueva(s) insignia(s) desbloqueada(s)!</p>
+            <ul className="list-none p-0 space-y-1.5">
               {nuevasInsignias.map((insignia, index) => (
-                <li key={index} className="modal__badge-item">
+                <li key={index} className="text-sm text-eco-text">
                   <strong>{typeof insignia === 'string' ? insignia : insignia.nombre}</strong>
                   {(typeof insignia !== 'string' && insignia.recompensa) && (
-                    <span className="modal__badge-recompensa"> — 🎁 {insignia.recompensa}</span>
+                    <span className="text-eco-text-secondary"> — 🎁 {insignia.recompensa}</span>
                   )}
                 </li>
               ))}
             </ul>
-            <p className="modal__badges-hint">
-              Ya puedes visualizarla(s) y canjear los beneficios asociados en "Recompensas al Ciudadano".
+            <p className="text-xs text-eco-text-secondary mt-2">
+              Ya puedes visualizarla(s) y canjear los beneficios en "Recompensas al Ciudadano".
             </p>
           </div>
         )}
+
+        <Button variant="success" fullWidth onClick={onClose}>
+          Aceptar
+        </Button>
       </div>
-    </div>
+    </Modal>
   )
 }
