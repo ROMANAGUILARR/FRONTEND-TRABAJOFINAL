@@ -10,7 +10,6 @@ import './RecompensasCiudadano.css'
 import BarraProgreso from './BarraProgreso'
 import HelpModal from './HelpModal'
 import Card from './ui/Card'
-import Button from './ui/Button'
 
 const IMAGENES_INSIGNIAS = {
   1: primerInsignia, 2: segundaInsignia, 3: tercerInsignia,
@@ -24,6 +23,8 @@ const MOCK_INSIGNIAS = [
   { idInsignia: 4, nombre: 'EcoHeroe', descripcion: 'Has registrado 15 incidencias. Tu dedicacion es inspiradora.', requisitoIncidencias: 15, recompensa: 'Vale de S/200 + kit ecologico.', desbloqueada: false },
   { idInsignia: 5, nombre: 'Embajador EcoSolido', descripcion: 'Has registrado 20 incidencias. Eres un embajador del cambio.', requisitoIncidencias: 20, recompensa: 'Vale de S/500 + kit + certificado.', desbloqueada: false },
 ]
+
+const fs = (base) => `calc(${base}rem * var(--font-scale, 1))`
 
 export default function RecompensasCiudadano() {
   const [insignias, setInsignias] = useState([])
@@ -68,18 +69,23 @@ export default function RecompensasCiudadano() {
     <main className="recompensas p-6 max-md:p-4" style={{ '--font-scale': tamañoLetra }}>
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3 mb-2">
-        <h2 className="text-2xl font-bold text-eco-text m-0">Area de Recompensas</h2>
-        <Button variant="ghost" size="sm" onClick={() => setShowHelpModal(true)}>
-          Como funciona?
-        </Button>
-        <div className="flex gap-1.5">
-          <Button variant="secondary" size="sm" onClick={() => setTamañoLetra(t => Math.max(0.8, t - 0.1))}>A-</Button>
-          <Button variant="secondary" size="sm" onClick={() => setTamañoLetra(1)}>A</Button>
-          <Button variant="secondary" size="sm" onClick={() => setTamañoLetra(t => Math.min(1.7, t + 0.1))}>A+</Button>
+        <h2 className="font-bold text-eco-text m-0" style={{ fontSize: fs(1.5) }}>Area de Recompensas</h2>
+        <button
+          type="button"
+          className="bg-transparent border border-current rounded-[20px] px-3.5 py-1 cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
+          style={{ fontSize: fs(0.95) }}
+          onClick={() => setShowHelpModal(true)}
+        >
+          ¿Cómo funciona?
+        </button>
+        <div className="registrar__font-controls">
+          <button type="button" onClick={() => setTamañoLetra(t => Math.max(0.8, t - 0.1))}>🗛-</button>
+          <button type="button" onClick={() => setTamañoLetra(1)}>A</button>
+          <button type="button" onClick={() => setTamañoLetra(t => Math.min(1.7, t + 0.1))}>🗚+</button>
         </div>
       </div>
 
-      <p className="text-sm text-eco-text-secondary mb-6">
+      <p className="text-eco-text-secondary mb-6" style={{ fontSize: fs(1) }}>
         Aqui podras ver tus insignias y los premios que mereces por obtener cada una.
       </p>
 
@@ -89,30 +95,30 @@ export default function RecompensasCiudadano() {
         <>
           {/* Progreso */}
           <section className="mb-8">
-            <h3 className="text-lg font-bold text-eco-text mb-1">Mis puntos</h3>
-            <p className="text-sm text-eco-text-secondary mb-3">Tu progreso para obtener la siguiente insignia</p>
+            <h3 className="font-bold text-eco-text mb-1" style={{ fontSize: fs(1.15) }}>Mis puntos</h3>
+            <p className="text-eco-text-secondary mb-3" style={{ fontSize: fs(0.85) }}>Tu progreso para obtener la siguiente insignia</p>
             <BarraProgreso puntos={puntos} />
           </section>
 
           {/* Desbloqueadas */}
           <section className="mb-8">
-            <h3 className="text-lg font-bold text-eco-text mb-4">
+            <h3 className="font-bold text-eco-text mb-4" style={{ fontSize: fs(1.15) }}>
               🏅 Insignias desbloqueadas ({desbloqueadas.length})
             </h3>
             {desbloqueadas.length === 0 ? (
-              <div className="bg-eco-bg-white rounded-lg border border-eco-border p-6 text-center">
-                <p className="text-eco-text-secondary">Aun no has desbloqueado insignias. Registra incidencias para comenzar a ganar.</p>
+              <div className="bg-eco-bg-white rounded-lg border border-eco-border p-6 text-center shadow-sm">
+                <p className="text-eco-text-secondary" style={{ fontSize: fs(1.1) }}>Aun no has desbloqueado insignias. Registra incidencias para comenzar a ganar.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {desbloqueadas.map(insignia => (
                   <Card key={insignia.idInsignia} variant="unlocked" className="text-center">
-                    <h4 className="text-base font-bold text-eco-text mb-2">{insignia.nombre}</h4>
+                    <h4 className="font-bold text-eco-text mb-2" style={{ fontSize: fs(1.15) }}>{insignia.nombre}</h4>
                     <img src={IMAGENES_INSIGNIAS[insignia.idInsignia]} alt={insignia.nombre} className="w-24 h-24 mx-auto mb-3" />
-                    <p className="text-sm text-eco-text-secondary mb-3">{insignia.descripcion}</p>
-                    <div className="bg-green-50 dark:bg-green-900/30 rounded-md p-2.5">
-                      <span className="text-xs font-bold text-eco-success block">Recompensa</span>
-                      <span className="text-sm text-eco-text">{insignia.recompensa}</span>
+                    <p className="text-eco-text-secondary mb-3" style={{ fontSize: fs(0.9) }}>{insignia.descripcion}</p>
+                    <div className="bg-eco-primary/10 dark:bg-green-900/30 border border-eco-primary/30 rounded-lg p-3">
+                      <span className="font-bold text-eco-primary block mb-1" style={{ fontSize: fs(0.85) }}>Recompensa</span>
+                      <span className="text-eco-text font-semibold block" style={{ fontSize: fs(0.9) }}>{insignia.recompensa}</span>
                     </div>
                   </Card>
                 ))}
@@ -122,25 +128,25 @@ export default function RecompensasCiudadano() {
 
           {/* Pendientes */}
           <section className="mb-8">
-            <h3 className="text-lg font-bold text-eco-text mb-4">
+            <h3 className="font-bold text-eco-text mb-4" style={{ fontSize: fs(1.15) }}>
               🔒 Insignias pendientes ({pendientes.length})
             </h3>
             {pendientes.length === 0 ? (
-              <div className="bg-green-50 dark:bg-green-900/30 rounded-lg border border-eco-success p-6 text-center">
-                <p className="text-eco-success font-semibold">Felicidades! Has desbloqueado todas las insignias.</p>
+              <div className="bg-eco-primary/10 dark:bg-green-900/30 rounded-lg border border-eco-success p-6 text-center">
+                <p className="text-eco-success font-bold text-lg">Felicidades! Has desbloqueado todas las insignias.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {pendientes.map(insignia => (
                   <Card key={insignia.idInsignia} variant="locked" className="text-center">
-                    <h4 className="text-base font-bold text-eco-text mb-2">{insignia.nombre}</h4>
+                    <h4 className="font-bold text-eco-text mb-2" style={{ fontSize: fs(1.15) }}>{insignia.nombre}</h4>
                     <img src={IMAGENES_INSIGNIAS[insignia.idInsignia]} alt={insignia.nombre} className="w-24 h-24 mx-auto mb-3 grayscale opacity-60" />
-                    <p className="text-sm text-eco-text-secondary mb-2">
+                    <p className="text-eco-text-secondary mb-2" style={{ fontSize: fs(0.85) }}>
                       Registra <strong className="text-eco-primary">{insignia.requisitoIncidencias}</strong> incidencias para desbloquear.
                     </p>
-                    <div className="bg-gray-50 dark:bg-gray-800 rounded-md p-2.5">
-                      <span className="text-xs font-bold text-eco-text-secondary block">Recompensa</span>
-                      <span className="text-sm text-eco-text">{insignia.recompensa}</span>
+                    <div className="bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg p-3">
+                      <span className="font-bold text-eco-text block mb-1" style={{ fontSize: fs(0.85) }}>Recompensa</span>
+                      <span className="text-eco-text font-semibold block" style={{ fontSize: fs(0.9) }}>{insignia.recompensa}</span>
                     </div>
                   </Card>
                 ))}
