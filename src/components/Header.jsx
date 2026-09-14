@@ -12,7 +12,6 @@ const obtenerTemaInicial = () => {
     if (temaGuardado) {
       return temaGuardado === 'dark';
     }
-    // Si no hay tema guardado, detecta si el sistema operativo del usuario ya usa modo oscuro
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
 };
 export default function Header({ onMenuClick,onLogout }) {
@@ -25,7 +24,6 @@ export default function Header({ onMenuClick,onLogout }) {
   const nombreUsuario = user?.nombreUsuario || localStorage.getItem("nombreUsuario")
   const [puntos, setPuntos] = useState(user?.puntos ?? 0)
   const location = useLocation()
-  // Sincronizar con el contexto cuando los puntos cambian (ej. tras registrar una incidencia)
   useEffect(() => {
     if (user?.puntos !== undefined && user?.puntos !== null) {
       setPuntos(user.puntos)
@@ -41,7 +39,6 @@ export default function Header({ onMenuClick,onLogout }) {
         localStorage.setItem('theme', 'light')
     }
   }, [temaOscuro])
-  // Refrescar los puntos desde el backend al montar y al cambiar de página
   useEffect(() => {
     async function cargarPuntos() {
         try {
@@ -69,43 +66,56 @@ export default function Header({ onMenuClick,onLogout }) {
   }
 
   return (
-    <header className="header">
+    <header className="header flex items-center justify-between px-7 py-4 bg-eco-primary shadow-md sticky top-0 z-[100] gap-4 max-md:px-5 max-md:py-3.5 max-sm:px-4 max-sm:py-3">
+
+      {/* Menu hamburguesa (solo movil) */}
       <button
         type="button"
-        className="header__menu-btn"
+        className="hidden items-center justify-center p-2 border-none bg-transparent text-white cursor-pointer opacity-90 transition-all duration-200 rounded-sm flex-shrink-0 hover:opacity-100 hover:scale-105 active:scale-95 max-sm:flex max-md:flex"
         onClick={onMenuClick}
-        aria-label="Abrir menú"
-        title="Menú"
+        aria-label="Abrir menu"
+        title="Menu"
       >
         <IconMenu />
       </button>
-      <div className="header__logo-container">
-        <img src={logo} alt="Logo" className="header__logo-img" />
-        <h1 className="header__logo">EcoSólido</h1>
+
+      {/* Logo */}
+      <div className="header__logo-container flex items-center gap-2.5">
+        <img src={logo} alt="Logo" className="header__logo-img w-20 h-20 object-contain rounded-sm max-md:w-16 max-md:h-16 max-sm:w-14 max-sm:h-14" />
+        <h1 className="header__logo m-0 text-xl font-bold text-white tracking-tight whitespace-nowrap max-md:text-base max-sm:text-sm">
+          EcoSolido
+        </h1>
       </div>
-      <div className="header__actions">
+
+      {/* Acciones */}
+      <div className="header__actions flex items-center gap-4 flex-shrink-0 max-md:gap-3 max-sm:gap-2">
         <button
           type="button"
-          className="header__icon-btn"
+          className="flex items-center justify-center p-2 border-none bg-transparent text-white cursor-pointer opacity-90 transition-all duration-200 rounded-sm hover:opacity-100 hover:scale-105 active:scale-95 max-sm:p-1.5"
           onClick={toggleTema}
           aria-label={temaOscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
           title={temaOscuro ? 'Modo claro' : 'Modo oscuro'}
         >
           {temaOscuro ? <IconSol /> : <IconLuna />}
         </button>
-        <button type="button" className="header__icon-btn" aria-label="Perfil de usuario">
+
+        <button type="button" className="flex items-center justify-center p-2 border-none bg-transparent text-white cursor-pointer opacity-90 transition-all duration-200 rounded-sm hover:opacity-100 hover:scale-105 active:scale-95 max-sm:p-1.5" aria-label="Perfil de usuario">
           <IconUsuario />
-          <span className="header__username">{nombreUsuario}</span>
-          <span className="header__points">⭐ {puntos} pts</span>
+          <span className="header__username ml-2.5 max-sm:hidden">{nombreUsuario}</span>
+          <span className="header__points ml-2 text-xs font-semibold text-yellow-400 bg-black/20 px-2 py-0.5 rounded-xl max-sm:text-[10px]">
+            {puntos} pts
+          </span>
         </button>
+
         <button
           type="button"
-          className="header__icon-btn"
-          aria-label="Cerrar sesión"
+          className="flex items-center justify-center p-2 border-none bg-transparent text-white cursor-pointer opacity-90 transition-all duration-200 rounded-sm hover:opacity-100 hover:scale-105 active:scale-95 max-sm:p-1.5"
+          aria-label="Cerrar sesion"
           onClick={handleCerrarSesion}
         >
           <IconSalir />
         </button>
+
         {showCerrarSModal && (
           <CerrarSesionModal
             onConfirm={handleConfirmarCierre}
