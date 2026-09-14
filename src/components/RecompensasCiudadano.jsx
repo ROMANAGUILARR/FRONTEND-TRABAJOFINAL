@@ -116,9 +116,9 @@ export default function RecompensasCiudadano() {
                     <h4 className="font-bold text-eco-text mb-2" style={{ fontSize: fs(1.15) }}>{insignia.nombre}</h4>
                     <img src={IMAGENES_INSIGNIAS[insignia.idInsignia]} alt={insignia.nombre} className="w-24 h-24 mx-auto mb-3" />
                     <p className="text-eco-text-secondary mb-3" style={{ fontSize: fs(0.9) }}>{insignia.descripcion}</p>
-                    <div className="bg-green-100 dark:bg-green-900/30 rounded-md p-3">
-                      <span className="font-bold text-eco-primary block" style={{ fontSize: fs(0.8) }}>Recompensa</span>
-                      <span className="text-eco-text font-medium" style={{ fontSize: fs(0.85) }}>{insignia.recompensa}</span>
+                    <div className="bg-eco-primary/10 dark:bg-green-900/30 border border-eco-primary/30 rounded-lg p-3">
+                      <span className="font-bold text-eco-primary block mb-1" style={{ fontSize: fs(0.85) }}>Recompensa</span>
+                      <span className="text-eco-text font-semibold block" style={{ fontSize: fs(0.9) }}>{insignia.recompensa}</span>
                     </div>
                   </Card>
                 ))}
@@ -132,8 +132,8 @@ export default function RecompensasCiudadano() {
               🔒 Insignias pendientes ({pendientes.length})
             </h3>
             {pendientes.length === 0 ? (
-              <div className="bg-green-100 dark:bg-green-900/30 rounded-lg border border-eco-success p-6 text-center">
-                <p className="text-eco-success font-semibold text-lg">Felicidades! Has desbloqueado todas las insignias.</p>
+              <div className="bg-eco-primary/10 dark:bg-green-900/30 rounded-lg border border-eco-success p-6 text-center">
+                <p className="text-eco-success font-bold text-lg">Felicidades! Has desbloqueado todas las insignias.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -144,9 +144,9 @@ export default function RecompensasCiudadano() {
                     <p className="text-eco-text-secondary mb-2" style={{ fontSize: fs(0.85) }}>
                       Registra <strong className="text-eco-primary">{insignia.requisitoIncidencias}</strong> incidencias para desbloquear.
                     </p>
-                    <div className="bg-gray-100 dark:bg-gray-800 rounded-md p-3">
-                      <span className="font-bold text-eco-text-secondary block" style={{ fontSize: fs(0.8) }}>Recompensa</span>
-                      <span className="text-eco-text font-medium" style={{ fontSize: fs(0.85) }}>{insignia.recompensa}</span>
+                    <div className="bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg p-3">
+                      <span className="font-bold text-eco-text block mb-1" style={{ fontSize: fs(0.85) }}>Recompensa</span>
+                      <span className="text-eco-text font-semibold block" style={{ fontSize: fs(0.9) }}>{insignia.recompensa}</span>
                     </div>
                   </Card>
                 ))}
