@@ -1,5 +1,23 @@
+@import "tailwindcss";
+
 /* Importar fuente Inter de Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Mapeo de colores del proyecto a Tailwind */
+@theme {
+  --color-eco-primary: #2E7D32;
+  --color-eco-primary-dark: #1b5e20;
+  --color-eco-text: #111111;
+  --color-eco-text-secondary: #37474F;
+  --color-eco-bg: #F5F4EF;
+  --color-eco-bg-white: #FFFFFF;
+  --color-eco-border: #BDBDBD;
+  --color-eco-danger: #FF746C;
+  --color-eco-warning: #FF8F0F;
+  --color-eco-success: #2E7D32;
+  --color-eco-gray: #37474F;
+  --color-eco-gray-dark: #263238;
+}
 
 *,
 *::before,
@@ -66,6 +84,13 @@
   --color-bg: #111827;
   --color-bg-white: #1f2937;
   --color-sidebar-active: rgba(46, 125, 50, 0.2);
+
+  /* Tailwind theme colors - dark mode */
+  --color-eco-text: #e5e7eb;
+  --color-eco-text-secondary: #9ca3af;
+  --color-eco-bg: #111827;
+  --color-eco-bg-white: #1f2937;
+  --color-eco-border: #374151;
 
   --color-btn-primary: #2E7D32;
   --color-btn-primary-hover: #1b5e20;
