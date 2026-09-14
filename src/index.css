@@ -1,8 +1,5 @@
 @import "tailwindcss";
 
-/* Importar fuente Inter de Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
 /* Mapeo de colores del proyecto a Tailwind */
 @theme {
   --color-eco-primary: #2E7D32;
