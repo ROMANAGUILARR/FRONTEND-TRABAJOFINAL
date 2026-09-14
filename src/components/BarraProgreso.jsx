@@ -20,7 +20,7 @@ export default function BarraProgreso({ puntos }) {
             </div>
 
             {/* Barra */}
-            <div className="w-full h-[30px] bg-gray-200 rounded-full overflow-hidden">
+            <div className="w-full h-[30px] bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                 <div
                     className="h-full bg-gradient-to-r from-green-400 to-green-800 rounded-full transition-[width] duration-[400ms] ease-in-out"
                     style={{ width: `${progreso}%` }}
@@ -28,7 +28,7 @@ export default function BarraProgreso({ puntos }) {
             </div>
 
             {/* Meta */}
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-gray-500 dark:text-gray-400">
                 {puntosNum === 0 ? (
                     <p className="text-base bg-eco-danger text-white p-2.5 rounded-md">
                         Aun no has realizado contribuciones. Registra tu primera incidencia!

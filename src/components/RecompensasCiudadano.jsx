@@ -110,7 +110,7 @@ export default function RecompensasCiudadano() {
                     <h4 className="text-base font-bold text-eco-text mb-2">{insignia.nombre}</h4>
                     <img src={IMAGENES_INSIGNIAS[insignia.idInsignia]} alt={insignia.nombre} className="w-24 h-24 mx-auto mb-3" />
                     <p className="text-sm text-eco-text-secondary mb-3">{insignia.descripcion}</p>
-                    <div className="bg-green-50 rounded-md p-2.5">
+                    <div className="bg-green-50 dark:bg-green-900/30 rounded-md p-2.5">
                       <span className="text-xs font-bold text-eco-success block">Recompensa</span>
                       <span className="text-sm text-eco-text">{insignia.recompensa}</span>
                     </div>
@@ -126,7 +126,7 @@ export default function RecompensasCiudadano() {
               🔒 Insignias pendientes ({pendientes.length})
             </h3>
             {pendientes.length === 0 ? (
-              <div className="bg-green-50 rounded-lg border border-eco-success p-6 text-center">
+              <div className="bg-green-50 dark:bg-green-900/30 rounded-lg border border-eco-success p-6 text-center">
                 <p className="text-eco-success font-semibold">Felicidades! Has desbloqueado todas las insignias.</p>
               </div>
             ) : (
@@ -138,7 +138,7 @@ export default function RecompensasCiudadano() {
                     <p className="text-sm text-eco-text-secondary mb-2">
                       Registra <strong className="text-eco-primary">{insignia.requisitoIncidencias}</strong> incidencias para desbloquear.
                     </p>
-                    <div className="bg-gray-50 rounded-md p-2.5">
+                    <div className="bg-gray-50 dark:bg-gray-800 rounded-md p-2.5">
                       <span className="text-xs font-bold text-eco-text-secondary block">Recompensa</span>
                       <span className="text-sm text-eco-text">{insignia.recompensa}</span>
                     </div>
