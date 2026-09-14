@@ -66,7 +66,7 @@ export default function Header({ onMenuClick,onLogout }) {
   }
 
   return (
-    <header className="header flex items-center justify-between px-7 py-4 bg-eco-primary shadow-md sticky top-0 z-[100] gap-4 max-md:px-5 max-md:py-3.5 max-sm:px-4 max-sm:py-3">
+    <header className="header flex items-center justify-between px-7 py-4 bg-eco-primary dark:bg-eco-primary-dark shadow-md sticky top-0 z-[100] gap-4 max-md:px-5 max-md:py-3.5 max-sm:px-4 max-sm:py-3">
 
       {/* Menu hamburguesa (solo movil) */}
       <button
