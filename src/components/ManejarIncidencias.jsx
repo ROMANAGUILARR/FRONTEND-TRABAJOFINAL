@@ -38,6 +38,11 @@ function esDemo() {
 }
 
 function leerIncidenciasDemo() {
+  // Si hay datos guardados en localStorage, usarlos
+  const guardadas = localStorage.getItem('todasIncidenciasDemo')
+  if (guardadas) return JSON.parse(guardadas)
+
+  // Datos iniciales mock
   const mock = [
     { idIncidencia: 1, titulo: 'Acumulacion de basura', descripcion: 'Acumulacion de residuos en la esquina de Av. Principal', estado: 'RESUELTO', fecha: '2026-09-10', direccionTexto: 'Av. Principal 123' },
     { idIncidencia: 2, titulo: 'Contaminacion del agua', descripcion: 'Vertido de aguas residuales en el canal', estado: 'EN_PROCESO', fecha: '2026-09-11', direccionTexto: 'Jr. San Martin 456' },
@@ -55,10 +60,15 @@ function leerIncidenciasDemo() {
     fecha: inc.fecha,
     direccionTexto: inc.direccionTexto
   }))
-  return [...mock, ...localesConId]
+  const todas = [...mock, ...localesConId]
+  localStorage.setItem('todasIncidenciasDemo', JSON.stringify(todas))
+  return todas
 }
 
 function guardarIncidenciasDemo(incidencias) {
+  // Guardar TODAS las incidencias (mock + locales) para persistir cambios
+  localStorage.setItem('todasIncidenciasDemo', JSON.stringify(incidencias))
+  // También actualizar incidenciasLocales para compatibilidad con otros módulos
   const locales = incidencias.filter(inc => inc.idIncidencia >= 100)
   const originales = locales.map(inc => ({
     categoria: inc.titulo,
