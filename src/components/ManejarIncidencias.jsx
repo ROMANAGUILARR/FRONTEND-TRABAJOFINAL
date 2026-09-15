@@ -120,10 +120,18 @@ export default function ManejarIncidencias() {
   async function handleCambioEstadoIncidencia(id, estadoActual) {
     setIncidenciaSeleccionada(null)
     const siguienteEstado = estadoActual === 'PENDIENTE' ? 'EN_PROCESO' : 'RESUELTO'
+    console.log('Cambiando estado:', { id, estadoActual, siguienteEstado })
     if (esDemo()) {
-      const actualizadas = incidencias.map(inc => inc.idIncidencia === id ? { ...inc, estado: siguienteEstado } : inc)
+      const actualizadas = incidencias.map(inc => {
+        if (inc.idIncidencia === id) {
+          console.log('Match found:', inc.idIncidencia, '-> changing to', siguienteEstado)
+          return { ...inc, estado: siguienteEstado }
+        }
+        return inc
+      })
       setIncidencias(actualizadas)
       guardarIncidenciasDemo(actualizadas)
+      console.log('Incidencias actualizadas:', actualizadas.map(i => i.idIncidencia + ':' + i.estado))
       return
     }
     const token = localStorage.getItem("token")
