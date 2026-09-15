@@ -10,7 +10,6 @@ Aplicativo web para el reporte, seguimiento y gestión de incidencias ambientale
 - [🔴 Problema que soluciona](#-problema-que-soluciona)
 - [🏗️ Arquitectura](#-arquitectura)
 - [💎 Características](#-características)
-- [📋 Requisitos previos](#-requisitos-previos)
 - [💻 Tecnologías usadas](#-tecnologías-usadas)
 - [🛠️ Configuración](#-configuración)
 - [▶️ Ejecución](#-ejecución)
@@ -71,13 +70,6 @@ Y los administradores pueden:
 - 🌙 Modo oscuro.
 - 📱 Interfaz moderna y responsiva.
 - 🔗 Comunicación con backend mediante API REST.
-
----
-
-## 📋 Requisitos previos
-
-- [Node.js](https://nodejs.org/) (versión LTS recomendada) y npm.
-- [Backend de EcoSolido](https://github.com/ROMANAGUILARR) ejecutándose en `http://localhost:8080`.
 
 ---
 
