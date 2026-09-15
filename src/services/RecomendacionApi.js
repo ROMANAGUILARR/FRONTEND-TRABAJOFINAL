@@ -1,5 +1,13 @@
 //En RecomendacionApi.js
+import { MOCK_RECOMENDACIONES } from './mockData'
+
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
+
+function esDemo() {
+  const token = localStorage.getItem('token')
+  return token === 'demo-token' || token === 'demo-token-admin'
+}
+
 function extraerMensajeError(cuerpo, status) {
   if (status === 502) {
     return (
@@ -30,6 +38,8 @@ function extraerMensajeError(cuerpo, status) {
   }
 }
 export async function generarRecomendaciones(tipoMaterial,ContextoExtra=""){
+    if (esDemo()) return MOCK_RECOMENDACIONES
+
     const token=localStorage.getItem('token')
     const response=await fetch(`${API_BASE}/educacion/recomendaciones`,{
         method:'POST',
