@@ -141,9 +141,7 @@ export async function subirFotosACloudinary(archivos) {
 
 export async function registrarIncidencia(categoria, descripcion, urlsFotos, archivos, direccionTexto, latitud, longitud) {
   if (esDemo()) {
-    const puntosActuales = parseInt(localStorage.getItem('puntos') || '0', 10)
-    localStorage.setItem('puntos', String(puntosActuales + 15))
-    return { mensaje: 'Incidencia registrada exitosamente (modo demo)', puntosGanados: 15 }
+    return { mensaje: 'Incidencia registrada exitosamente (modo demo)', puntosGanados: 0 }
   }
 
   const formData = new FormData();
@@ -187,7 +185,7 @@ export async function registrarIncidencia(categoria, descripcion, urlsFotos, arc
 }
 
 export async function obtenerPuntosUsuario() {
-  if (esDemo()) return parseInt(localStorage.getItem('puntos') || String(MOCK_PUNTOS), 10)
+  if (esDemo()) return 0
 
   const token = localStorage.getItem("token");
   console.log('Token puntos:', token)
@@ -210,11 +208,9 @@ export async function obtenerPuntosUsuario() {
 
 export async function obtenerInsigniasUsuario() {
   if (esDemo()) {
-    const desbloqueadasLocal = JSON.parse(localStorage.getItem('insigniasDesbloqueadas') || '[]')
-    return MOCK_INSIGNIAS.map(ins => ({
-      ...ins,
-      desbloqueada: ins.desbloqueada || desbloqueadasLocal.includes(ins.nombre)
-    }))
+    localStorage.removeItem('insigniasDesbloqueadas')
+    localStorage.removeItem('puntos')
+    return MOCK_INSIGNIAS.map(ins => ({ ...ins, desbloqueada: false }))
   }
 
   const token = localStorage.getItem("token");
