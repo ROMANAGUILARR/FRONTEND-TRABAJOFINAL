@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 import { IconUsuario } from './icons'
 import Button from './ui/Button'
 import './MiCuenta.css'
@@ -31,7 +32,7 @@ export default function MiCuenta() {
                 <div className="micuenta__datos flex flex-col gap-3 mb-8">
                     <div className="micuenta__fila">
                         <span className="micuenta__etiqueta">Usuario</span>
-                        <span className="micuenta__valor">{esAdmin ? 'Admin' : 'Demo'}</span>
+                        <span className="micuenta__valor">{user?.nombreUsuario || localStorage.getItem('nombreUsuario') || '—'}</span>
                     </div>
                     <div className="micuenta__fila">
                         <span className="micuenta__etiqueta">Rol</span>
@@ -41,7 +42,7 @@ export default function MiCuenta() {
                     </div>
                     <div className="micuenta__fila">
                         <span className="micuenta__etiqueta">Puntos</span>
-                        <span className="micuenta__valor">⭐ 0 pts</span>
+                        <span className="micuenta__valor">⭐ {user?.puntos ?? localStorage.getItem('puntos') ?? 0} pts</span>
                     </div>
                 </div>
 
