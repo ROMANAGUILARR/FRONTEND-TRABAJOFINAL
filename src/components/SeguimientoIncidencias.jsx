@@ -61,11 +61,17 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
   function cargarDatosDemo() {
     localStorage.removeItem('incidenciasLocales')
     localStorage.removeItem('todasIncidenciasDemo')
+    localStorage.removeItem('insigniasDesbloqueadas')
     setMetricas({ total: 0, enProceso: 0, pendientes: 0, resueltos: 0 })
     setIncidencias([])
   }
 
-
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token === 'demo-token' || token === 'demo-token-admin') {
+      cargarDatosDemo()
+    }
+  }, [])
 
   useEffect(() => {
     async function obtenerMetricas() {
