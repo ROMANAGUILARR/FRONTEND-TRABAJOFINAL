@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './SeguimientoIncidencias.css'
 import './ManejarIncidencias.css'
 import ChangeStateConfirmModal from './ChangeStateConfirmModal'
+import DeleteConfirmModal from './DeleteConfirmModal'
 
 const ESTADOS = {
   PENDIENTE: 'pending',
@@ -74,6 +75,7 @@ export default function ManejarIncidencias() {
   const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
   const [busqueda, setBusqueda] = useState('')
   const [incidenciaSeleccionada, setIncidenciaSeleccionada] = useState(null)
+  const [incidenciaAEliminar, setIncidenciaAEliminar] = useState(null)
   const [incidencias, setIncidencias] = useState([])
   const [editando, setEditando] = useState(null)
   const [formulario, setFormulario] = useState({ titulo: '', descripcion: '', estado: 'PENDIENTE', direccionTexto: '' })
@@ -106,7 +108,12 @@ export default function ManejarIncidencias() {
   }
 
   function handleEliminar(id) {
-    if (!confirm('¿Estás seguro de eliminar esta incidencia?')) return
+    setIncidenciaAEliminar(id)
+  }
+
+  function confirmarEliminar() {
+    const id = incidenciaAEliminar
+    setIncidenciaAEliminar(null)
     const actualizadas = incidencias.filter(inc => inc.idIncidencia !== id)
     setIncidencias(actualizadas)
     if (esDemo()) guardarIncidenciasDemo(actualizadas)
@@ -274,6 +281,13 @@ export default function ManejarIncidencias() {
           onConfirm={() => handleCambioEstadoIncidencia(incidenciaSeleccionada.idIncidencia, incidenciaSeleccionada.estado)}
           onCancel={() => setIncidenciaSeleccionada(null)}
           estado={incidenciaSeleccionada.estado}
+        />
+      )}
+
+      {incidenciaAEliminar && (
+        <DeleteConfirmModal
+          onConfirm={confirmarEliminar}
+          onCancel={() => setIncidenciaAEliminar(null)}
         />
       )}
     </main>
