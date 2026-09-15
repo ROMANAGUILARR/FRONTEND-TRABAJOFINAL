@@ -196,8 +196,4 @@ src/
 - Datos de prueba precargados.
 - Funcionalidades limitadas para exploración.
 
----
 
-## 📸 Capturas de pantalla
-
-> *Próximamente...*
