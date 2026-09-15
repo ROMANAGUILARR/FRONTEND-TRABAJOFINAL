@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { obtenerUsuarios, obtenerIncidenciasPorUsuario } from '../services/incidenciasApi'
 import './ManejarIncidencias.css'
+import ReporteIncidencias from './ReporteIncidencias'
 
 const ESTADO_BADGE = {
   PENDIENTE: 'admin-badge--pending',
@@ -22,6 +23,9 @@ export default function GestionarCiudadanos() {
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null)
   const [incidenciasUsuario, setIncidenciasUsuario] = useState([])
   const [cargandoIncidencias, setCargandoIncidencias] = useState(false)
+  const [mostrandoReporte, setMostrandoReporte] = useState(false)
+  const [usuarioReporte, setUsuarioReporte] = useState(null)
+  const [incidenciasReporte, setIncidenciasReporte] = useState([])
 
   useEffect(() => {
     async function cargarUsuarios() {
@@ -57,6 +61,17 @@ export default function GestionarCiudadanos() {
     }
   }
 
+  async function abrirReporte(usuario) {
+    setUsuarioReporte(usuario)
+    try {
+      const data = await obtenerIncidenciasPorUsuario(usuario.idUsuario)
+      setIncidenciasReporte(data)
+    } catch {
+      setIncidenciasReporte([])
+    }
+    setMostrandoReporte(true)
+  }
+
   const formatearFecha = (fechaString) => {
     if (!fechaString) return ''
     const fecha = new Date(fechaString)
@@ -80,6 +95,15 @@ export default function GestionarCiudadanos() {
 
   return (
     <main style={{ flex: 1, padding: '24px', overflowY: 'auto', background: 'var(--color-bg)' }}>
+
+      {mostrandoReporte && usuarioReporte ? (
+        <ReporteIncidencias
+          usuario={usuarioReporte}
+          incidencias={incidenciasReporte}
+          onVolver={() => { setMostrandoReporte(false); setUsuarioReporte(null) }}
+        />
+      ) : (
+      <>
       <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text)', margin: '0 0 4px' }}>
         Gestión de Ciudadanos
       </h2>
@@ -157,7 +181,8 @@ export default function GestionarCiudadanos() {
                     </div>
                   </div>
 
-                  {/* Botón Ver Registros */}
+                  {/* Botones de acción */}
+                  <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
                   <button onClick={() => verRegistros(usuario)} className={`admin-btn ${isSelected ? 'admin-btn--primary' : ''}`} style={{
                     background: isSelected ? undefined : '#E8F5E9',
                     color: isSelected ? undefined : '#2E7D32',
@@ -165,6 +190,10 @@ export default function GestionarCiudadanos() {
                   }}>
                     {isSelected ? 'Ocultar Registros' : 'Ver Registros'}
                   </button>
+                  <button onClick={() => abrirReporte(usuario)} className="admin-btn admin-btn--edit">
+                    Reporte
+                  </button>
+                  </div>
                 </div>
 
                 {/* Panel de registros */}
@@ -214,6 +243,8 @@ export default function GestionarCiudadanos() {
             )
           })}
         </div>
+      )}
+      </>
       )}
     </main>
   )
