@@ -1,4 +1,4 @@
-# 🌿 EcoSolido — Frontend
+# 🌿 EcoSolido
 
 Aplicativo web para el reporte, seguimiento y gestión de incidencias ambientales. Permite a los ciudadanos registrar problemas ecológicos en su comunidad, hacer seguimiento del estado de sus reportes y obtener recompensas por su participación. Los administradores pueden gestionar incidencias, generar reportes en PDF/Excel y visualizar dashboards estadísticos.
 
