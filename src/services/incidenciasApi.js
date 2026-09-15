@@ -1,5 +1,5 @@
 import { MENSAJE_FOTOS_NO_VISIBLES } from '../utils/iaDescripcion'
-import { MOCK_PUNTOS, MOCK_INSIGNIAS, MOCK_USUARIOS } from './mockData'
+import { MOCK_PUNTOS, MOCK_INSIGNIAS, MOCK_USUARIOS, MOCK_INCIDENCIAS_POR_USUARIO } from './mockData'
 
 function esDemo() {
   const token = localStorage.getItem('token')
@@ -264,6 +264,22 @@ export async function obtenerUsuarios() {
 
   if (!response.ok) {
     throw new Error('Error al obtener usuarios')
+  }
+
+  return response.json()
+}
+
+export async function obtenerIncidenciasPorUsuario(usuarioId) {
+  if (esDemo()) return MOCK_INCIDENCIAS_POR_USUARIO[usuarioId] || []
+
+  const token = localStorage.getItem('token')
+  const response = await fetch(`${API_BASE}/incidencias/usuario/${usuarioId}`, {
+    method: 'GET',
+    headers: { 'Authorization': `Bearer ${token}` }
+  })
+
+  if (!response.ok) {
+    throw new Error('Error al obtener incidencias del usuario')
   }
 
   return response.json()
