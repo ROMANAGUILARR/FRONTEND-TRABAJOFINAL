@@ -280,7 +280,6 @@ export default function EducacionMedioAmbiental() {
               <div className="educacion__card-contenido">
                 <h3 className="educacion__card-titulo">{articulo.titulo}</h3>
                 <p className="educacion__card-resumen">{articulo.resumen}</p>
-                <span className="educacion__card-fecha">{articulo.fecha}</span>
               </div>
             </article>
           ))}
