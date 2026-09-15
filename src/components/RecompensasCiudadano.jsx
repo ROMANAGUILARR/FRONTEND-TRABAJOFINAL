@@ -118,7 +118,7 @@ export default function RecompensasCiudadano() {
           {/* Desbloqueadas */}
           <section className="mb-8">
             <h3 className="font-bold text-eco-text mb-4" style={{ fontSize: fs(1.15) }}>
-              🏅 Insignias desbloqueadas ({desbloqueadas.length})
+              Insignias desbloqueadas ({desbloqueadas.length})
             </h3>
             {desbloqueadas.length === 0 ? (
               <div className="bg-eco-bg-white rounded-lg border border-eco-border p-6 text-center shadow-sm">
@@ -129,7 +129,7 @@ export default function RecompensasCiudadano() {
                 {desbloqueadas.map(insignia => (
                   <Card key={insignia.idInsignia} variant="unlocked" className="text-center">
                     <h4 className="font-bold text-eco-text mb-2" style={{ fontSize: fs(1.15) }}>{insignia.nombre}</h4>
-                    <img src={IMAGENES_INSIGNIAS[insignia.idInsignia]} alt={insignia.nombre} className="w-24 h-24 mx-auto mb-3" />
+                    <img src={IMAGENES_INSIGNIAS[insignia.idInsignia]} alt={insignia.nombre} className="w-36 h-36 mx-auto mb-3" />
                     <p className="text-eco-text-secondary mb-3" style={{ fontSize: fs(0.9) }}>{insignia.descripcion}</p>
                     <div style={{ backgroundColor: '#2E7D32', borderRadius: '8px', padding: '12px', marginTop: 'auto' }}>
                       <span style={{ color: '#ffffff', fontWeight: 700, display: 'block', marginBottom: '4px', fontSize: fs(0.85) }}>Recompensa</span>
@@ -144,7 +144,7 @@ export default function RecompensasCiudadano() {
           {/* Pendientes */}
           <section className="mb-8">
             <h3 className="font-bold text-eco-text mb-4" style={{ fontSize: fs(1.15) }}>
-              🔒 Insignias pendientes ({pendientes.length})
+              Insignias pendientes ({pendientes.length})
             </h3>
             {pendientes.length === 0 ? (
               <div className="bg-eco-primary/10 dark:bg-green-900/30 rounded-lg border border-eco-success p-6 text-center">
@@ -155,7 +155,7 @@ export default function RecompensasCiudadano() {
                 {pendientes.map(insignia => (
                   <Card key={insignia.idInsignia} variant="locked" className="text-center">
                     <h4 className="font-bold text-eco-text mb-2" style={{ fontSize: fs(1.15) }}>{insignia.nombre}</h4>
-                    <img src={IMAGENES_INSIGNIAS[insignia.idInsignia]} alt={insignia.nombre} className="w-24 h-24 mx-auto mb-3 grayscale opacity-60" />
+                    <img src={IMAGENES_INSIGNIAS[insignia.idInsignia]} alt={insignia.nombre} className="w-36 h-36 mx-auto mb-3 grayscale opacity-60" />
                     <p className="text-eco-text-secondary mb-2" style={{ fontSize: fs(0.85) }}>
                       Registra <strong className="text-eco-primary">{insignia.requisitoIncidencias}</strong> incidencias para desbloquear.
                     </p>
