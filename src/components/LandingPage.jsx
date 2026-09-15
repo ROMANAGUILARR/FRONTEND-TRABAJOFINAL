@@ -3,8 +3,50 @@ import { useAuth } from '../hooks/useAuth'
 import Button from './ui/Button'
 import { IconUsuario } from './icons'
 import logo from '../assets/LOGO ECOSOLIDO.png'
-import hero from '../assets/hero.png'
 import './LandingPage.css'
+
+const pasos = [
+  {
+    num: '01',
+    titulo: 'Reporta',
+    desc: 'Toma fotos de la incidencia, describe el problema y marca la ubicación exacta en el mapa.',
+    icono: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="lp-paso-icon">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" />
+      </svg>
+    )
+  },
+  {
+    num: '02',
+    titulo: 'Seguimiento',
+    desc: 'Tu reporte se asigna automáticamente a una cuadrilla. Consulta el estado en tiempo real.',
+    icono: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="lp-paso-icon">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+      </svg>
+    )
+  },
+  {
+    num: '03',
+    titulo: 'Resolución',
+    desc: 'La cuadrilla atiende la incidencia. Recibes notificación cuando se resuelve.',
+    icono: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="lp-paso-icon">
+        <path d="M22 11.08V12a10 10 0 11-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" />
+      </svg>
+    )
+  },
+  {
+    num: '04',
+    titulo: 'Recompensa',
+    desc: 'Ganas ecopuntos e insignias por cada aporte. Canjéalas por beneficios.',
+    icono: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="lp-paso-icon">
+        <circle cx="12" cy="8" r="7" /><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+      </svg>
+    )
+  }
+]
 
 const modulosCiudadano = [
   {
@@ -24,7 +66,7 @@ const modulosCiudadano = [
       </svg>
     ),
     titulo: 'Seguimiento en Tiempo Real',
-    descripcion: 'Consulta el estado de tus reportes: Pendiente → En Proceso → Resuelto. Trazabilidad completa.',
+    descripcion: 'Consulta el estado de tus reportes: Pendiente → En Proceso → Resuelto con trazabilidad completa.',
     color: '#1565C0'
   },
   {
@@ -44,7 +86,7 @@ const modulosCiudadano = [
       </svg>
     ),
     titulo: 'Insignias y Recompensas',
-    descripcion: 'Gana puntos e insignias por cada aporte. Tu participación activa tiene recompensa.',
+    descripcion: 'Gana ecopuntos e insignias por cada aporte. Tu participación activa tiene recompensa.',
     color: '#E65100'
   }
 ]
@@ -57,17 +99,17 @@ const modulosAdmin = [
       </svg>
     ),
     titulo: 'Dashboard Estadístico',
-    descripcion: 'Visualiza métricas, gráficos y tendencias de todas las incidencias registradas en tiempo real.',
+    descripcion: 'Visualiza métricas, gráficos y tendencias de todas las incidencias registradas.',
     color: '#2E7D32'
   },
   {
     icono: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="lp-card-icon">
-        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" />
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
       </svg>
     ),
     titulo: 'Gestionar Incidencias',
-    descripcion: 'Edita, actualiza el estado y administra todas las incidencias del sistema centralizado.',
+    descripcion: 'Edita, actualiza el estado y administra todas las incidencias del sistema.',
     color: '#1565C0'
   },
   {
@@ -77,26 +119,19 @@ const modulosAdmin = [
       </svg>
     ),
     titulo: 'Gestionar Ciudadanos',
-    descripcion: 'Administra los ciudadanos registrados, consulta su historial y gestiona sus permisos.',
+    descripcion: 'Administra los ciudadanos registrados, consulta su historial y gestiona permisos.',
     color: '#6A1B9A'
   },
   {
     icono: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="lp-card-icon">
-        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" />
       </svg>
     ),
     titulo: 'Reportes PDF y Excel',
     descripcion: 'Genera reportes detallados exportables en PDF y Excel por ciudadano o por periodo.',
     color: '#BF360C'
   }
-]
-
-const pasos = [
-  { num: '01', titulo: 'Regístrate', desc: 'Crea tu cuenta gratuita con tus datos básicos.' },
-  { num: '02', titulo: 'Reporta', desc: 'Toma fotos, describe la incidencia y marca la ubicación.' },
-  { num: '03', titulo: 'Haz seguimiento', desc: 'Consulta el estado de tu reporte en tiempo real.' },
-  { num: '04', titulo: 'Gana recompensas', desc: 'Acumula puntos e insignias por cada aporte.' }
 ]
 
 export default function LandingPage() {
@@ -122,7 +157,7 @@ export default function LandingPage() {
           <div className="lp-nav-actions">
             {isAuthenticated ? (
               <Button variant="primary" size="md" onClick={() => navigate(user?.rol === 'ADMIN' ? '/dashboard' : '/registro')}>
-                <IconUsuario /> Ir al panel
+                Ir al Panel
               </Button>
             ) : (
               <>
@@ -130,7 +165,7 @@ export default function LandingPage() {
                   Iniciar Sesión
                 </Button>
                 <Button variant="primary" size="md" onClick={() => navigate('/registrarse')}>
-                  Crear Cuenta
+                  <IconUsuario /> Crear Cuenta
                 </Button>
               </>
             )}
@@ -142,19 +177,19 @@ export default function LandingPage() {
       <section className="lp-hero">
         <div className="lp-hero-inner">
           <div className="lp-hero-text">
-            <span className="lp-hero-badge">🌱 Plataforma ciudadana ambiental</span>
+            <span className="lp-hero-badge">🌱 Plataforma ciudadana ambiental activa</span>
             <h1 className="lp-hero-title">
-              Reporta incidencias ambientales y gana recompensas
+              Reporta incidencias ambientales y cuida tu ciudad
             </h1>
             <p className="lp-hero-desc">
-              EcoSolido conecta a los ciudadanos con su comunidad: reporta problemas
-              ecológicos, haz seguimiento en tiempo real y obtén puntos por tu
-              compromiso con el medio ambiente.
+              Registra acúmulos de basura, agua contaminada o quemas ilegales con fotos
+              y ubicación exacta. Coordina cuadrillas de atención inmediata y gana
+              ecopuntos por tu compromiso.
             </p>
             <div className="lp-hero-btns">
               {isAuthenticated ? (
                 <Button variant="primary" size="lg" onClick={() => navigate(user?.rol === 'ADMIN' ? '/dashboard' : '/registro')}>
-                  Ir al panel
+                  Ir al Panel
                 </Button>
               ) : (
                 <>
@@ -173,8 +208,21 @@ export default function LandingPage() {
               </button>
             )}
           </div>
-          <div className="lp-hero-img-wrap">
-            <img src={hero} alt="EcoSolido" className="lp-hero-img" />
+
+          {/* Stats panel derecho */}
+          <div className="lp-hero-stats">
+            <div className="lp-hero-stat">
+              <span className="lp-hero-stat-num">1,420</span>
+              <span className="lp-hero-stat-label">RESUELTAS ESTE MES</span>
+            </div>
+            <div className="lp-hero-stat">
+              <span className="lp-hero-stat-num">94%</span>
+              <span className="lp-hero-stat-label">EFECTIVIDAD CUADRILLAS</span>
+            </div>
+            <div className="lp-hero-stat">
+              <span className="lp-hero-stat-num">+18.5k</span>
+              <span className="lp-hero-stat-label">ECOPUNTOS OTORGADOS</span>
+            </div>
           </div>
         </div>
       </section>
@@ -182,12 +230,15 @@ export default function LandingPage() {
       {/* ===== CÓMO FUNCIONA ===== */}
       <section className="lp-pasos">
         <div className="lp-pasos-inner">
-          <h2 className="lp-section-title">¿Cómo funciona?</h2>
-          <p className="lp-section-subtitle">Cuatro pasos simples para hacer la diferencia</p>
+          <h2 className="lp-section-title">¿Cómo funciona EcoSolido?</h2>
+          <p className="lp-section-subtitle">Cuatro pasos simples para hacer la diferencia en tu comunidad</p>
           <div className="lp-pasos-grid">
             {pasos.map((p, i) => (
               <div key={i} className="lp-paso">
-                <span className="lp-paso-num">{p.num}</span>
+                <div className="lp-paso-icon-wrap">
+                  {p.icono}
+                </div>
+                <span className="lp-paso-num">Paso {p.num}</span>
                 <h3 className="lp-paso-titulo">{p.titulo}</h3>
                 <p className="lp-paso-desc">{p.desc}</p>
               </div>
@@ -204,7 +255,7 @@ export default function LandingPage() {
           <div className="lp-cards-grid">
             {modulosCiudadano.map((mod, i) => (
               <div key={i} className="lp-card" style={{ '--card-accent': mod.color }}>
-                <div className="lp-card-icon-wrap" style={{ background: mod.color + '14', color: mod.color }}>
+                <div className="lp-card-icon-wrap" style={{ background: mod.color + '12', color: mod.color }}>
                   {mod.icono}
                 </div>
                 <h3 className="lp-card-titulo">{mod.titulo}</h3>
@@ -216,14 +267,14 @@ export default function LandingPage() {
       </section>
 
       {/* ===== MÓDULOS ADMIN ===== */}
-      <section className="lp-modulos lp-modulos--admin">
+      <section className="lp-modulos lp-modulos--alt">
         <div className="lp-modulos-inner">
           <h2 className="lp-section-title">Módulos del Administrador</h2>
           <p className="lp-section-subtitle">Herramientas de gestión y control para el equipo administrativo</p>
           <div className="lp-cards-grid">
             {modulosAdmin.map((mod, i) => (
               <div key={i} className="lp-card" style={{ '--card-accent': mod.color }}>
-                <div className="lp-card-icon-wrap" style={{ background: mod.color + '14', color: mod.color }}>
+                <div className="lp-card-icon-wrap" style={{ background: mod.color + '12', color: mod.color }}>
                   {mod.icono}
                 </div>
                 <h3 className="lp-card-titulo">{mod.titulo}</h3>
@@ -234,7 +285,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ===== STATS ===== */}
+      {/* ===== STATS BANNER ===== */}
       <section className="lp-stats">
         <div className="lp-stats-inner">
           <div className="lp-stat">
