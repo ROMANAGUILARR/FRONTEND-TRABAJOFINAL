@@ -133,14 +133,12 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
     pdf.text('Total de registros: ' + incidencias.length, margin, y)
     y += 30
 
-    // Firmas
+    // Firma
     pdf.setFont('helvetica', 'normal')
     pdf.setFontSize(9)
     pdf.setTextColor(80, 80, 80)
     pdf.line(margin + 10, y, margin + 70, y)
     pdf.text('Firma del Solicitante', margin + 15, y + 5)
-    pdf.line(pageWidth - margin - 70, y, pageWidth - margin - 10, y)
-    pdf.text('Fecha: ' + fechaHoy, pageWidth - margin - 60, y + 5)
 
     // Imprimir - usar iframe oculto (no requiere popup)
     const blob = pdf.output('blob')
@@ -174,22 +172,6 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
 
   return (
     <div className="reporte-print-area">
-      {/* Botones de acción (no se imprimen) */}
-      <div className="reporte-acciones">
-        <button onClick={onVolver} className="reporte-btn reporte-btn--volver">
-          Volver
-        </button>
-        <button onClick={descargarPDF} className="reporte-btn reporte-btn--pdf">
-          Descargar PDF
-        </button>
-        <button onClick={imprimir} className="reporte-btn reporte-btn--print">
-          Imprimir
-        </button>
-        <button onClick={descargarExcel} className="reporte-btn reporte-btn--excel">
-          Descargar Excel
-        </button>
-      </div>
-
       {/* Plantilla del reporte */}
       <div ref={reporteRef} className="reporte-container">
         {/* Encabezado */}
@@ -249,17 +231,29 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
           Total de registros: {incidencias.length}
         </div>
 
-        {/* Firma y fecha */}
+        {/* Firma */}
         <div className="reporte-firma">
           <div className="reporte-firma-bloque">
             <div className="reporte-firma-linea"></div>
             <span className="reporte-firma-label">Firma del Solicitante</span>
           </div>
-          <div className="reporte-firma-bloque">
-            <div className="reporte-firma-linea"></div>
-            <span className="reporte-firma-label">Fecha: {fechaHoy}</span>
-          </div>
         </div>
+      </div>
+
+      {/* Botones de acción (debajo de la plantilla) */}
+      <div className="reporte-acciones" style={{ marginTop: '24px', justifyContent: 'center', gap: '20px' }}>
+        <button onClick={onVolver} className="reporte-btn reporte-btn--volver">
+          Volver
+        </button>
+        <button onClick={descargarPDF} className="reporte-btn reporte-btn--pdf">
+          Descargar PDF
+        </button>
+        <button onClick={imprimir} className="reporte-btn reporte-btn--print">
+          Imprimir
+        </button>
+        <button onClick={descargarExcel} className="reporte-btn reporte-btn--excel">
+          Descargar Excel
+        </button>
       </div>
     </div>
   )
