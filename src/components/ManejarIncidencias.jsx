@@ -68,7 +68,6 @@ export default function ManejarIncidencias() {
   const [busqueda, setBusqueda] = useState('')
   const [incidenciaSeleccionada, setIncidenciaSeleccionada] = useState(null)
   const [incidencias, setIncidencias] = useState([])
-  const [mostrarFormulario, setMostrarFormulario] = useState(false)
   const [editando, setEditando] = useState(null)
   const [formulario, setFormulario] = useState({ titulo: '', descripcion: '', estado: 'PENDIENTE', direccionTexto: '' })
 
