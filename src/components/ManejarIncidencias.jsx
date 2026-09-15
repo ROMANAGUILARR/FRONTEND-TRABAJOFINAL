@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import './SeguimientoIncidencias.css'
 import './ManejarIncidencias.css'
-import ChangeStateConfirmModal from './ChangeStateConfirmModal'
 import DeleteConfirmModal from './DeleteConfirmModal'
 
 const ESTADOS = {
@@ -84,7 +83,6 @@ export default function ManejarIncidencias() {
   const [filtroEstado, setFiltroEstado] = useState('todos')
   const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
   const [busqueda, setBusqueda] = useState('')
-  const [incidenciaSeleccionada, setIncidenciaSeleccionada] = useState(null)
   const [incidenciaAEliminar, setIncidenciaAEliminar] = useState(null)
   const [incidencias, setIncidencias] = useState([])
   const [editando, setEditando] = useState(null)
@@ -132,39 +130,6 @@ export default function ManejarIncidencias() {
   function abrirEditar(incidencia) {
     setEditando(incidencia)
     setFormulario({ titulo: incidencia.titulo, descripcion: incidencia.descripcion, estado: incidencia.estado, direccionTexto: incidencia.direccionTexto || '' })
-  }
-
-  async function handleCambioEstadoIncidencia(id, estadoActual) {
-    setIncidenciaSeleccionada(null)
-    const siguienteEstado = estadoActual === 'PENDIENTE' ? 'EN_PROCESO' : 'RESUELTO'
-    console.log('Cambiando estado:', { id, estadoActual, siguienteEstado })
-    if (esDemo()) {
-      const actualizadas = incidencias.map(inc => {
-        if (inc.idIncidencia === id) {
-          console.log('Match found:', inc.idIncidencia, '-> changing to', siguienteEstado)
-          return { ...inc, estado: siguienteEstado }
-        }
-        return inc
-      })
-      setIncidencias(actualizadas)
-      guardarIncidenciasDemo(actualizadas)
-      console.log('Incidencias actualizadas:', actualizadas.map(i => i.idIncidencia + ':' + i.estado))
-      return
-    }
-    const token = localStorage.getItem("token")
-    try {
-      const respuesta = await fetch(`${API_BASE}/incidencias/cambiarEstado/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ estado: siguienteEstado })
-      })
-      if (!respuesta.ok) throw new Error(`Error ${respuesta.status}`)
-      const actualizada = await respuesta.json()
-      setIncidencias(prev => prev.map(inc => inc.idIncidencia === actualizada.idIncidencia ? actualizada : inc))
-    } catch (error) {
-      console.error(error)
-      alert("Error al cambiar el estado.")
-    }
   }
 
   const formatearFecha = (fechaString) => {
@@ -269,11 +234,6 @@ export default function ManejarIncidencias() {
 
                 {/* Acciones */}
                 <div style={{ display: 'flex', gap: '8px', flexShrink: 0, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-                  {incidencia.estado !== 'RESUELTO' && (
-                    <button onClick={() => setIncidenciaSeleccionada(incidencia)} className="admin-btn admin-btn--primary">
-                      Cambiar estado
-                    </button>
-                  )}
                   <button onClick={() => abrirEditar(incidencia)} className="admin-btn admin-btn--edit">
                     Editar
                   </button>
@@ -284,14 +244,6 @@ export default function ManejarIncidencias() {
               </div>
             ))}
         </div>
-      )}
-
-      {incidenciaSeleccionada && (
-        <ChangeStateConfirmModal
-          onConfirm={() => handleCambioEstadoIncidencia(incidenciaSeleccionada.idIncidencia, incidenciaSeleccionada.estado)}
-          onCancel={() => setIncidenciaSeleccionada(null)}
-          estado={incidenciaSeleccionada.estado}
-        />
       )}
 
       {incidenciaAEliminar && (
