@@ -8,10 +8,10 @@ const ESTADOS = {
   RESUELTO: 'resolved'
 }
 
-const CLASES_ESTADO = {
-  pending: 'estado--pending',
-  'in-progress': 'estado--progress',
-  resolved: 'estado--resolved'
+const ESTADO_CONFIG = {
+  PENDIENTE: { bg: '#FFF3E0', color: '#E65100', border: '#FF8F0F', label: 'Pendiente' },
+  EN_PROCESO: { bg: '#E3F2FD', color: '#1565C0', border: '#42A5F5', label: 'En Proceso' },
+  RESUELTO: { bg: '#E8F5E9', color: '#2E7D32', border: '#4CAF50', label: 'Resuelto' },
 }
 
 const CATEGORIAS = [
@@ -62,6 +62,17 @@ function guardarIncidenciasDemo(incidencias) {
   localStorage.setItem('incidenciasLocales', JSON.stringify(originales))
 }
 
+const inputStyle = {
+  padding: '10px 12px', border: '2px solid var(--color-border)', borderRadius: '8px',
+  background: 'var(--color-bg-white)', color: 'var(--color-text)', fontSize: '0.9rem',
+  fontFamily: 'inherit', width: '100%', outline: 'none',
+}
+
+const btnBase = {
+  padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer',
+  fontWeight: 600, fontSize: '0.85rem', transition: 'all 0.2s',
+}
+
 export default function ManejarIncidencias() {
   const [filtroEstado, setFiltroEstado] = useState('todos')
   const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
@@ -73,17 +84,11 @@ export default function ManejarIncidencias() {
 
   useEffect(() => {
     async function mostrarIncidencias() {
-      if (esDemo()) {
-        setIncidencias(leerIncidenciasDemo())
-        return
-      }
+      if (esDemo()) { setIncidencias(leerIncidenciasDemo()); return }
       try {
         const token = localStorage.getItem('token')
-        const response = await fetch(`${API_BASE}/incidencias/mostrarT`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
-        const data = await response.json()
-        setIncidencias(data)
+        const response = await fetch(`${API_BASE}/incidencias/mostrarT`, { headers: { 'Authorization': `Bearer ${token}` } })
+        setIncidencias(await response.json())
       } catch (error) {
         console.error('Error al obtener incidencias', error)
         setIncidencias([])
@@ -93,10 +98,7 @@ export default function ManejarIncidencias() {
   }, [])
 
   function handleEditar() {
-    if (!formulario.titulo || !formulario.descripcion) {
-      alert('Completa todos los campos obligatorios.')
-      return
-    }
+    if (!formulario.titulo || !formulario.descripcion) { alert('Completa todos los campos obligatorios.'); return }
     const actualizadas = incidencias.map(inc =>
       inc.idIncidencia === editando.idIncidencia
         ? { ...inc, titulo: formulario.titulo, descripcion: formulario.descripcion, estado: formulario.estado, direccionTexto: formulario.direccionTexto }
@@ -105,7 +107,6 @@ export default function ManejarIncidencias() {
     setIncidencias(actualizadas)
     if (esDemo()) guardarIncidenciasDemo(actualizadas)
     setEditando(null)
-    setFormulario({ titulo: '', descripcion: '', estado: 'PENDIENTE', direccionTexto: '' })
   }
 
   function handleEliminar(id) {
@@ -117,21 +118,13 @@ export default function ManejarIncidencias() {
 
   function abrirEditar(incidencia) {
     setEditando(incidencia)
-    setFormulario({
-      titulo: incidencia.titulo,
-      descripcion: incidencia.descripcion,
-      estado: incidencia.estado,
-      direccionTexto: incidencia.direccionTexto || ''
-    })
-    setMostrarFormulario(false)
+    setFormulario({ titulo: incidencia.titulo, descripcion: incidencia.descripcion, estado: incidencia.estado, direccionTexto: incidencia.direccionTexto || '' })
   }
 
   async function handleCambioEstadoIncidencia(id, estado) {
     setIncidenciaSeleccionada(null)
     if (esDemo()) {
-      const actualizadas = incidencias.map(inc =>
-        inc.idIncidencia === id ? { ...inc, estado } : inc
-      )
+      const actualizadas = incidencias.map(inc => inc.idIncidencia === id ? { ...inc, estado } : inc)
       setIncidencias(actualizadas)
       guardarIncidenciasDemo(actualizadas)
       return
@@ -161,108 +154,124 @@ export default function ManejarIncidencias() {
   const incidenciasFiltradas = incidencias.filter(incidencia => {
     const coincideEstado = filtroEstado === 'todos' || ESTADOS[incidencia.estado] === filtroEstado
     const fechaFormateada = formatearFecha(incidencia.fecha).toLowerCase()
-    const coincideBusqueda =
-      fechaFormateada.includes(busqueda.toLowerCase()) ||
+    const coincideBusqueda = fechaFormateada.includes(busqueda.toLowerCase()) ||
       (incidencia.titulo || '').toLowerCase().includes(busqueda.toLowerCase()) ||
       (incidencia.direccionTexto || '').toLowerCase().includes(busqueda.toLowerCase())
     return coincideEstado && coincideBusqueda
   })
 
   return (
-    <main className="seguimiento">
-      <h2 className="seguimiento__title">Gestionar Incidencias</h2>
+    <main style={{ flex: 1, padding: '24px', overflowY: 'auto', background: 'var(--color-bg)' }}>
+      <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text)', margin: '0 0 4px' }}>Gestionar Incidencias</h2>
+      <p style={{ color: 'var(--color-text-secondary)', marginBottom: '20px', fontSize: '0.9rem' }}>
+        Administra, edita y actualiza el estado de las incidencias registradas
+      </p>
 
+      {/* Formulario de edición */}
       {editando && (
-        <div style={{ background: 'var(--color-bg-white)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '20px', marginBottom: '20px' }}>
-          <h3 style={{ margin: '0 0 12px', color: 'var(--color-text)' }}>Editar Incidencia</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <select
-              value={formulario.titulo}
-              onChange={e => setFormulario(f => ({ ...f, titulo: e.target.value }))}
-              style={{ padding: '8px', border: '2px solid var(--color-border)', borderRadius: '6px', background: 'var(--color-bg-white)', color: 'var(--color-text)' }}
-            >
-              <option value="">-- Selecciona categoría --</option>
-              {CATEGORIAS.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
-            <textarea
-              placeholder="Descripción *"
-              value={formulario.descripcion}
-              onChange={e => setFormulario(f => ({ ...f, descripcion: e.target.value }))}
-              style={{ padding: '8px', border: '2px solid var(--color-border)', borderRadius: '6px', minHeight: '80px', background: 'var(--color-bg-white)', color: 'var(--color-text)' }}
-            />
-            <input
-              placeholder="Dirección"
-              value={formulario.direccionTexto}
-              onChange={e => setFormulario(f => ({ ...f, direccionTexto: e.target.value }))}
-              style={{ padding: '8px', border: '2px solid var(--color-border)', borderRadius: '6px', background: 'var(--color-bg-white)', color: 'var(--color-text)' }}
-            />
-            <select
-              value={formulario.estado}
-              onChange={e => setFormulario(f => ({ ...f, estado: e.target.value }))}
-              style={{ padding: '8px', border: '2px solid var(--color-border)', borderRadius: '6px', background: 'var(--color-bg-white)', color: 'var(--color-text)' }}
-            >
-              <option value="PENDIENTE">Pendiente</option>
-              <option value="EN_PROCESO">En Proceso</option>
-              <option value="RESUELTO">Resuelto</option>
-            </select>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <button className="seguimiento__cambio-btn" onClick={handleEditar}>
-                Guardar Cambios
-              </button>
-              <button className="seguimiento__filtro-btn" onClick={() => setEditando(null)}>
-                Cancelar
-              </button>
+        <div style={{ background: 'var(--color-bg-white)', border: '2px solid var(--color-eco-primary, #2E7D32)', borderRadius: '12px', padding: '24px', marginBottom: '24px', boxShadow: '0 4px 12px rgba(46,125,50,0.1)' }}>
+          <h3 style={{ margin: '0 0 16px', color: 'var(--color-text)', fontSize: '1.1rem', fontWeight: 700 }}>Editar Incidencia</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '4px', textTransform: 'uppercase' }}>Categoría</label>
+              <select value={formulario.titulo} onChange={e => setFormulario(f => ({ ...f, titulo: e.target.value }))} style={inputStyle}>
+                <option value="">-- Selecciona --</option>
+                {CATEGORIAS.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
             </div>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '4px', textTransform: 'uppercase' }}>Estado</label>
+              <select value={formulario.estado} onChange={e => setFormulario(f => ({ ...f, estado: e.target.value }))} style={inputStyle}>
+                <option value="PENDIENTE">Pendiente</option>
+                <option value="EN_PROCESO">En Proceso</option>
+                <option value="RESUELTO">Resuelto</option>
+              </select>
+            </div>
+            <div style={{ gridColumn: '1 / -1' }}>
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '4px', textTransform: 'uppercase' }}>Descripción</label>
+              <textarea value={formulario.descripcion} onChange={e => setFormulario(f => ({ ...f, descripcion: e.target.value }))} style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }} />
+            </div>
+            <div style={{ gridColumn: '1 / -1' }}>
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '4px', textTransform: 'uppercase' }}>Dirección</label>
+              <input value={formulario.direccionTexto} onChange={e => setFormulario(f => ({ ...f, direccionTexto: e.target.value }))} style={inputStyle} />
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '16px' }}>
+            <button onClick={() => setEditando(null)} style={{ ...btnBase, background: 'var(--color-bg)', color: 'var(--color-text)', border: '1px solid var(--color-border)' }}>Cancelar</button>
+            <button onClick={handleEditar} style={{ ...btnBase, background: 'var(--color-eco-primary, #2E7D32)', color: '#fff' }}>Guardar Cambios</button>
           </div>
         </div>
       )}
 
-      <div className="seguimiento__controls">
-        <div className="seguimiento__search">
-          <input type="text" placeholder="Buscar por fecha, titulo o ubicacion..." value={busqueda} onChange={(e) => setBusqueda(e.target.value)} className="seguimiento__search-input" />
-        </div>
-        <div className="seguimiento__filtros">
-          <button className={`seguimiento__filtro-btn ${filtroEstado === 'todos' ? 'seguimiento__filtro-btn--active' : ''}`} onClick={() => setFiltroEstado('todos')}>Todos</button>
-          <button className={`seguimiento__filtro-btn ${filtroEstado === 'pending' ? 'seguimiento__filtro-btn--active' : ''}`} onClick={() => setFiltroEstado('pending')}>Pendientes</button>
-          <button className={`seguimiento__filtro-btn ${filtroEstado === 'in-progress' ? 'seguimiento__filtro-btn--active' : ''}`} onClick={() => setFiltroEstado('in-progress')}>En Proceso</button>
-          <button className={`seguimiento__filtro-btn ${filtroEstado === 'resolved' ? 'seguimiento__filtro-btn--active' : ''}`} onClick={() => setFiltroEstado('resolved')}>Resueltos</button>
+      {/* Buscador y filtros */}
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
+        <input
+          type="text" placeholder="Buscar por fecha, título o ubicación..."
+          value={busqueda} onChange={e => setBusqueda(e.target.value)}
+          style={{ ...inputStyle, maxWidth: '350px' }}
+        />
+        <div style={{ display: 'flex', gap: '6px' }}>
+          {[{ key: 'todos', label: 'Todos', color: 'var(--color-text)' }, { key: 'pending', label: 'Pendientes', color: '#E65100' }, { key: 'in-progress', label: 'En Proceso', color: '#1565C0' }, { key: 'resolved', label: 'Resueltos', color: '#2E7D32' }].map(f => (
+            <button key={f.key} onClick={() => setFiltroEstado(f.key)} style={{
+              ...btnBase,
+              background: filtroEstado === f.key ? f.color : 'var(--color-bg-white)',
+              color: filtroEstado === f.key ? '#fff' : 'var(--color-text)',
+              border: filtroEstado === f.key ? 'none' : '1px solid var(--color-border)',
+            }}>{f.label}</button>
+          ))}
         </div>
       </div>
 
-      <div className="seguimiento__lista">
-        {incidenciasFiltradas.length === 0 ? (
-          <div className="seguimiento__vacio"><p>No se encontraron incidencias.</p></div>
-        ) : (
-          <div className="seguimiento__tarjetas">
-            {incidenciasFiltradas.map(incidencia => (
-              <div key={incidencia.idIncidencia} className="incidencia-tarjeta">
-                <div className="incidencia-tarjeta__header">
-                  <h3 className="incidencia-tarjeta__titulo">{incidencia.titulo}</h3>
-                  <span className={`incidencia-tarjeta__estado ${CLASES_ESTADO[ESTADOS[incidencia.estado]] || ''}`}>{incidencia.estado}</span>
+      {/* Tarjetas */}
+      {incidenciasFiltradas.length === 0 ? (
+        <div style={{ background: 'var(--color-bg-white)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '40px', textAlign: 'center' }}>
+          <p style={{ color: 'var(--color-text-secondary)', fontSize: '1rem' }}>No se encontraron incidencias.</p>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {incidenciasFiltradas.map(incidencia => {
+            const cfg = ESTADO_CONFIG[incidencia.estado] || ESTADO_CONFIG.PENDIENTE
+            return (
+              <div key={incidencia.idIncidencia} style={{
+                background: 'var(--color-bg-white)', border: '1px solid var(--color-border)',
+                borderRadius: '12px', padding: '20px 24px', boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
+                display: 'flex', alignItems: 'center', gap: '20px',
+              }}>
+                {/* Info */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+                    <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--color-text)' }}>{incidencia.titulo}</h3>
+                    <span style={{
+                      padding: '3px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 600,
+                      background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}`,
+                    }}>{cfg.label}</span>
+                  </div>
+                  <p style={{ margin: '0 0 4px', fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>{incidencia.descripcion}</p>
+                  <div style={{ display: 'flex', gap: '16px', fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
+                    <span>Fecha: {formatearFecha(incidencia.fecha)}</span>
+                    <span>Ubicación: {incidencia.direccionTexto || 'No se sabe'}</span>
+                  </div>
                 </div>
-                <p className="incidencia-tarjeta__fecha">Fecha: {formatearFecha(incidencia.fecha)}</p>
-                <p className="incidencia-tarjeta__descripcion">{incidencia.descripcion}</p>
-                <p className="incidencia-tarjeta__ubicacion">Ubicación: {incidencia.direccionTexto || 'No se sabe'}</p>
-                <div style={{ display: 'flex', gap: '8px', marginTop: '12px', flexWrap: 'wrap' }}>
+
+                {/* Acciones */}
+                <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
                   {incidencia.estado !== 'RESUELTO' && (
-                    <button className="seguimiento__cambio-btn" onClick={() => setIncidenciaSeleccionada(incidencia)}>Cambiar estado</button>
+                    <button onClick={() => setIncidenciaSeleccionada(incidencia)} style={{ ...btnBase, background: 'var(--color-eco-primary, #2E7D32)', color: '#fff', whiteSpace: 'nowrap' }}>
+                      Cambiar estado
+                    </button>
                   )}
-                  <button
-                    className="seguimiento__filtro-btn"
-                    style={{ background: 'var(--color-btn-warning)', color: 'white', border: 'none' }}
-                    onClick={() => abrirEditar(incidencia)}
-                  >Editar</button>
-                  <button
-                    className="seguimiento__filtro-btn"
-                    style={{ background: 'var(--color-btn-danger)', color: 'white', border: 'none' }}
-                    onClick={() => handleEliminar(incidencia.idIncidencia)}
-                  >Eliminar</button>
+                  <button onClick={() => abrirEditar(incidencia)} style={{ ...btnBase, background: '#E3F2FD', color: '#1565C0', border: '1px solid #90CAF9' }}>
+                    Editar
+                  </button>
+                  <button onClick={() => handleEliminar(incidencia.idIncidencia)} style={{ ...btnBase, background: '#FFEBEE', color: '#C62828', border: '1px solid #EF9A9A' }}>
+                    Eliminar
+                  </button>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-      </div>
+            )
+          })}
+        </div>
+      )}
 
       {incidenciaSeleccionada && (
         <ChangeStateConfirmModal

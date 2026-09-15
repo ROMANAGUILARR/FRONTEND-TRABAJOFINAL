@@ -1,11 +1,25 @@
 import { useState, useEffect } from 'react'
-import { obtenerUsuarios } from '../services/incidenciasApi'
+import { obtenerUsuarios, obtenerIncidenciasPorUsuario } from '../services/incidenciasApi'
+
+const ESTADO_CONFIG = {
+  PENDIENTE: { bg: '#FFF3E0', color: '#E65100', border: '#FF8F0F', label: 'Pendiente' },
+  EN_PROCESO: { bg: '#E3F2FD', color: '#1565C0', border: '#42A5F5', label: 'En Proceso' },
+  RESUELTO: { bg: '#E8F5E9', color: '#2E7D32', border: '#4CAF50', label: 'Resuelto' },
+}
+
+const btnBase = {
+  padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer',
+  fontWeight: 600, fontSize: '0.85rem', transition: 'all 0.2s',
+}
 
 export default function GestionarCiudadanos() {
   const [usuarios, setUsuarios] = useState([])
   const [cargando, setCargando] = useState(true)
   const [busqueda, setBusqueda] = useState('')
   const [filtroRol, setFiltroRol] = useState('TODOS')
+  const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null)
+  const [incidenciasUsuario, setIncidenciasUsuario] = useState([])
+  const [cargandoIncidencias, setCargandoIncidencias] = useState(false)
 
   useEffect(() => {
     async function cargarUsuarios() {
@@ -21,6 +35,31 @@ export default function GestionarCiudadanos() {
     }
     cargarUsuarios()
   }, [])
+
+  async function verRegistros(usuario) {
+    if (usuarioSeleccionado?.idUsuario === usuario.idUsuario) {
+      setUsuarioSeleccionado(null)
+      setIncidenciasUsuario([])
+      return
+    }
+    setUsuarioSeleccionado(usuario)
+    setCargandoIncidencias(true)
+    try {
+      const data = await obtenerIncidenciasPorUsuario(usuario.idUsuario)
+      setIncidenciasUsuario(data)
+    } catch (err) {
+      console.error('Error al cargar incidencias:', err)
+      setIncidenciasUsuario([])
+    } finally {
+      setCargandoIncidencias(false)
+    }
+  }
+
+  const formatearFecha = (fechaString) => {
+    if (!fechaString) return ''
+    const fecha = new Date(fechaString)
+    return new Intl.DateTimeFormat('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(fecha).replace(/\//g, '-')
+  }
 
   const usuariosFiltrados = usuarios.filter(u => {
     const coincideRol = filtroRol === 'TODOS' || u.rol === filtroRol
@@ -39,36 +78,32 @@ export default function GestionarCiudadanos() {
 
   return (
     <main style={{ flex: 1, padding: '24px', overflowY: 'auto', background: 'var(--color-bg)' }}>
-      <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text)', margin: '0 0 8px' }}>
+      <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text)', margin: '0 0 4px' }}>
         Gestión de Ciudadanos
       </h2>
-      <p style={{ color: 'var(--color-text-secondary)', marginBottom: '20px' }}>
-        Visualiza los ciudadanos registrados en la plataforma EcoSolido
+      <p style={{ color: 'var(--color-text-secondary)', marginBottom: '20px', fontSize: '0.9rem' }}>
+        Visualiza los ciudadanos registrados y sus incidencias
       </p>
 
       {/* Métricas */}
       <div style={{ display: 'flex', gap: '16px', marginBottom: '20px', flexWrap: 'wrap' }}>
-        <div style={{ background: 'var(--color-bg-white)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '16px 24px', flex: '1', minWidth: '150px' }}>
-          <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', textTransform: 'uppercase' }}>Total Usuarios</span>
-          <p style={{ fontSize: '1.8rem', fontWeight: 700, color: 'var(--color-text)', margin: '4px 0 0' }}>{usuarios.length}</p>
-        </div>
-        <div style={{ background: 'var(--color-bg-white)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '16px 24px', flex: '1', minWidth: '150px' }}>
-          <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', textTransform: 'uppercase' }}>Ciudadanos</span>
-          <p style={{ fontSize: '1.8rem', fontWeight: 700, color: 'var(--color-eco-primary, #2E7D32)', margin: '4px 0 0' }}>{totalCiudadanos}</p>
-        </div>
-        <div style={{ background: 'var(--color-bg-white)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '16px 24px', flex: '1', minWidth: '150px' }}>
-          <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', textTransform: 'uppercase' }}>Administradores</span>
-          <p style={{ fontSize: '1.8rem', fontWeight: 700, color: 'var(--color-text)', margin: '4px 0 0' }}>{totalAdmins}</p>
-        </div>
+        {[
+          { label: 'Total Usuarios', value: usuarios.length, color: 'var(--color-text)' },
+          { label: 'Ciudadanos', value: totalCiudadanos, color: 'var(--color-eco-primary, #2E7D32)' },
+          { label: 'Administradores', value: totalAdmins, color: 'var(--color-text)' },
+        ].map(m => (
+          <div key={m.label} style={{ background: 'var(--color-bg-white)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '16px 24px', flex: '1', minWidth: '150px' }}>
+            <span style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>{m.label}</span>
+            <p style={{ fontSize: '1.8rem', fontWeight: 700, color: m.color, margin: '4px 0 0' }}>{m.value}</p>
+          </div>
+        ))}
       </div>
 
       {/* Buscador y filtros */}
       <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
         <input
-          type="text"
-          placeholder="Buscar por nombre, DNI, email o usuario..."
-          value={busqueda}
-          onChange={e => setBusqueda(e.target.value)}
+          type="text" placeholder="Buscar por nombre, DNI, email o usuario..."
+          value={busqueda} onChange={e => setBusqueda(e.target.value)}
           style={{
             flex: 1, minWidth: '250px', padding: '10px 14px',
             border: '2px solid var(--color-border)', borderRadius: '8px',
@@ -76,19 +111,14 @@ export default function GestionarCiudadanos() {
             fontSize: '0.9rem', outline: 'none',
           }}
         />
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: '6px' }}>
           {['TODOS', 'CIUDADANO', 'ADMIN'].map(rol => (
-            <button
-              key={rol}
-              onClick={() => setFiltroRol(rol)}
-              style={{
-                padding: '8px 16px', borderRadius: '8px', border: 'none',
-                cursor: 'pointer', fontWeight: 600, fontSize: '0.85rem',
-                background: filtroRol === rol ? 'var(--color-eco-primary, #2E7D32)' : 'var(--color-bg-white)',
-                color: filtroRol === rol ? '#fff' : 'var(--color-text)',
-                border: filtroRol === rol ? 'none' : '1px solid var(--color-border)',
-              }}
-            >
+            <button key={rol} onClick={() => setFiltroRol(rol)} style={{
+              ...btnBase,
+              background: filtroRol === rol ? 'var(--color-eco-primary, #2E7D32)' : 'var(--color-bg-white)',
+              color: filtroRol === rol ? '#fff' : 'var(--color-text)',
+              border: filtroRol === rol ? 'none' : '1px solid var(--color-border)',
+            }}>
               {rol === 'TODOS' ? 'Todos' : rol === 'CIUDADANO' ? 'Ciudadanos' : 'Admins'}
             </button>
           ))}
@@ -103,51 +133,97 @@ export default function GestionarCiudadanos() {
           <p style={{ color: 'var(--color-text-secondary)' }}>No se encontraron usuarios.</p>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '16px' }}>
-          {usuariosFiltrados.map(usuario => (
-            <div
-              key={usuario.idUsuario}
-              style={{
-                background: 'var(--color-bg-white)', border: '1px solid var(--color-border)',
-                borderRadius: '12px', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 700, color: 'var(--color-text)' }}>
-                  {usuario.nombreCompleto} {usuario.apellidoCompleto}
-                </h3>
-                <span style={{
-                  padding: '3px 10px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 600,
-                  background: usuario.rol === 'ADMIN' ? 'var(--color-btn-ia, #37474F)' : 'var(--color-eco-primary, #2E7D32)',
-                  color: '#fff',
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {usuariosFiltrados.map(usuario => {
+            const isSelected = usuarioSeleccionado?.idUsuario === usuario.idUsuario
+            return (
+              <div key={usuario.idUsuario}>
+                {/* Tarjeta de usuario */}
+                <div style={{
+                  background: 'var(--color-bg-white)', border: isSelected ? '2px solid var(--color-eco-primary, #2E7D32)' : '1px solid var(--color-border)',
+                  borderRadius: '12px', padding: '20px 24px', boxShadow: isSelected ? '0 4px 12px rgba(46,125,50,0.1)' : '0 2px 6px rgba(0,0,0,0.04)',
+                  display: 'flex', alignItems: 'center', gap: '20px',
                 }}>
-                  {usuario.rol}
-                </span>
+                  {/* Info */}
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+                      <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--color-text)' }}>
+                        {usuario.nombreCompleto} {usuario.apellidoCompleto}
+                      </h3>
+                      <span style={{
+                        padding: '3px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 600,
+                        background: usuario.rol === 'ADMIN' ? '#E3F2FD' : '#E8F5E9',
+                        color: usuario.rol === 'ADMIN' ? '#1565C0' : '#2E7D32',
+                        border: `1px solid ${usuario.rol === 'ADMIN' ? '#90CAF9' : '#A5D6A7'}`,
+                      }}>{usuario.rol}</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: '20px', fontSize: '0.82rem', color: 'var(--color-text-secondary)', flexWrap: 'wrap' }}>
+                      <span>DNI: <strong style={{ color: 'var(--color-text)' }}>{usuario.dni}</strong></span>
+                      <span>Tel: <strong style={{ color: 'var(--color-text)' }}>{usuario.telefono}</strong></span>
+                      <span>Email: <strong style={{ color: 'var(--color-text)' }}>{usuario.correoElectronico}</strong></span>
+                      <span>Usuario: <strong style={{ color: 'var(--color-text)' }}>{usuario.nombreUsuario}</strong></span>
+                      <span>Puntos: <strong style={{ color: 'var(--color-eco-primary, #2E7D32)' }}>{usuario.puntos}</strong></span>
+                    </div>
+                  </div>
+
+                  {/* Botón Ver Registros */}
+                  <button onClick={() => verRegistros(usuario)} style={{
+                    ...btnBase,
+                    background: isSelected ? 'var(--color-eco-primary, #2E7D32)' : '#E8F5E9',
+                    color: isSelected ? '#fff' : '#2E7D32',
+                    border: isSelected ? 'none' : '1px solid #A5D6A7',
+                    whiteSpace: 'nowrap',
+                  }}>
+                    {isSelected ? 'Ocultar Registros' : 'Ver Registros'}
+                  </button>
+                </div>
+
+                {/* Panel de registros */}
+                {isSelected && (
+                  <div style={{
+                    background: 'var(--color-bg-white)', border: '2px solid var(--color-eco-primary, #2E7D32)',
+                    borderTop: 'none', borderRadius: '0 0 12px 12px', padding: '20px 24px',
+                    marginTop: '-1px', boxShadow: '0 4px 12px rgba(46,125,50,0.1)',
+                  }}>
+                    <h4 style={{ margin: '0 0 12px', color: 'var(--color-text)', fontSize: '0.95rem' }}>
+                      Registros de {usuario.nombreCompleto} {usuario.apellidoCompleto}
+                    </h4>
+                    {cargandoIncidencias ? (
+                      <p style={{ color: 'var(--color-text-secondary)' }}>Cargando registros...</p>
+                    ) : incidenciasUsuario.length === 0 ? (
+                      <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>Este usuario no tiene registros de incidencias.</p>
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                        {incidenciasUsuario.map(inc => {
+                          const cfg = ESTADO_CONFIG[inc.estado] || ESTADO_CONFIG.PENDIENTE
+                          return (
+                            <div key={inc.id} style={{
+                              padding: '12px 16px', border: '1px solid var(--color-border)',
+                              borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '12px',
+                            }}>
+                              <div style={{ flex: 1 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
+                                  <strong style={{ fontSize: '0.9rem', color: 'var(--color-text)' }}>{inc.categoria}</strong>
+                                  <span style={{
+                                    padding: '2px 10px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 600,
+                                    background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}`,
+                                  }}>{cfg.label}</span>
+                                </div>
+                                <p style={{ margin: '0', fontSize: '0.82rem', color: 'var(--color-text-secondary)' }}>{inc.descripcion}</p>
+                                <span style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>
+                                  {formatearFecha(inc.fecha)} — {inc.direccionTexto || 'Sin ubicación'}
+                                </span>
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', fontSize: '0.85rem' }}>
-                <div>
-                  <span style={{ color: 'var(--color-text-secondary)' }}>DNI: </span>
-                  <span style={{ color: 'var(--color-text)', fontWeight: 500 }}>{usuario.dni}</span>
-                </div>
-                <div>
-                  <span style={{ color: 'var(--color-text-secondary)' }}>Teléfono: </span>
-                  <span style={{ color: 'var(--color-text)', fontWeight: 500 }}>{usuario.telefono}</span>
-                </div>
-                <div style={{ gridColumn: '1 / -1' }}>
-                  <span style={{ color: 'var(--color-text-secondary)' }}>Email: </span>
-                  <span style={{ color: 'var(--color-text)', fontWeight: 500 }}>{usuario.correoElectronico}</span>
-                </div>
-                <div>
-                  <span style={{ color: 'var(--color-text-secondary)' }}>Usuario: </span>
-                  <span style={{ color: 'var(--color-text)', fontWeight: 500 }}>{usuario.nombreUsuario}</span>
-                </div>
-                <div>
-                  <span style={{ color: 'var(--color-text-secondary)' }}>Puntos: </span>
-                  <span style={{ color: 'var(--color-eco-primary, #2E7D32)', fontWeight: 700 }}>{usuario.puntos}</span>
-                </div>
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       )}
     </main>
