@@ -40,19 +40,111 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
   }
 
   async function imprimir() {
-    const elemento = reporteRef.current
-    const canvas = await html2canvas(elemento, { scale: 2, useCORS: true, backgroundColor: '#ffffff' })
-    const imgData = canvas.toDataURL('image/png')
-    const printWindow = window.open('')
-    printWindow.document.write('<html><head><title>Reporte</title></head><body style="margin:0;text-align:center;"></body></html>')
-    const img = printWindow.document.createElement('img')
-    img.src = imgData
-    img.style.width = '100%'
-    img.style.height = 'auto'
-    printWindow.document.body.appendChild(img)
-    img.onload = function() {
-      printWindow.print()
-    }
+    const pdf = new jsPDF('p', 'mm', 'a4')
+    const pageWidth = pdf.internal.pageSize.getWidth()
+    const margin = 20
+    let y = margin
+
+    // Logo
+    try {
+      pdf.addImage(logoEcoSolido, 'PNG', margin, y, 20, 20)
+    } catch {}
+    pdf.setFontSize(16)
+    pdf.setFont('helvetica', 'bold')
+    pdf.setTextColor(46, 125, 50)
+    pdf.text('Hoja de Recuento de Registro de Incidencias', margin + 25, y + 10)
+    pdf.setFontSize(9)
+    pdf.setFont('helvetica', 'normal')
+    pdf.setTextColor(100, 100, 100)
+    pdf.text('Sistema de Gestion Ambiental - EcoSolido', margin + 25, y + 16)
+    y += 28
+
+    // Línea verde
+    pdf.setDrawColor(46, 125, 50)
+    pdf.setLineWidth(0.8)
+    pdf.line(margin, y, pageWidth - margin, y)
+    y += 10
+
+    // Fecha
+    pdf.setFontSize(10)
+    pdf.setTextColor(50, 50, 50)
+    pdf.text('Fecha de solicitud: ' + fechaHoy, pageWidth - margin - 50, y)
+    y += 10
+
+    // Nombre
+    pdf.setFontSize(12)
+    pdf.setFont('helvetica', 'bold')
+    pdf.text('Nombre: ' + usuario.nombreCompleto + ' ' + usuario.apellidoCompleto, margin, y)
+    y += 12
+
+    // Tabla
+    const colWidths = [12, 70, 30, 45, 25]
+    const headers = ['#', 'Descripcion', 'Estado', 'Ubicacion', 'Fecha']
+
+    // Header
+    pdf.setFillColor(46, 125, 50)
+    pdf.rect(margin, y, colWidths.reduce((a, b) => a + b, 0), 8, 'F')
+    pdf.setFontSize(8)
+    pdf.setFont('helvetica', 'bold')
+    pdf.setTextColor(255, 255, 255)
+    let x = margin
+    headers.forEach((h, i) => {
+      pdf.text(h, x + 2, y + 5.5)
+      x += colWidths[i]
+    })
+    y += 8
+
+    // Filas
+    pdf.setFont('helvetica', 'normal')
+    pdf.setTextColor(50, 50, 50)
+    incidencias.forEach((inc, idx) => {
+      if (y > 260) { pdf.addPage(); y = margin }
+      const bg = idx % 2 === 0 ? [249, 249, 249] : [255, 255, 255]
+      pdf.setFillColor(...bg)
+      pdf.rect(margin, y, colWidths.reduce((a, b) => a + b, 0), 7, 'F')
+      pdf.setDrawColor(220, 220, 220)
+      pdf.line(margin, y + 7, pageWidth - margin, y + 7)
+      pdf.setFontSize(8)
+      x = margin
+      const vals = [
+        String(idx + 1),
+        (inc.descripcion || '').substring(0, 40),
+        ESTADO_LABEL[inc.estado] || inc.estado,
+        (inc.direccionTexto || 'No especificada').substring(0, 25),
+        formatearFecha(inc.fecha)
+      ]
+      vals.forEach((v, i) => {
+        pdf.text(v, x + 2, y + 5)
+        x += colWidths[i]
+      })
+      y += 7
+    })
+
+    // Línea final
+    pdf.setDrawColor(46, 125, 50)
+    pdf.setLineWidth(0.8)
+    pdf.line(margin, y, pageWidth - margin, y)
+    y += 10
+
+    // Total
+    pdf.setFontSize(11)
+    pdf.setFont('helvetica', 'bold')
+    pdf.setTextColor(50, 50, 50)
+    pdf.text('Total de registros: ' + incidencias.length, margin, y)
+    y += 30
+
+    // Firmas
+    pdf.setFont('helvetica', 'normal')
+    pdf.setFontSize(9)
+    pdf.setTextColor(80, 80, 80)
+    pdf.line(margin + 10, y, margin + 70, y)
+    pdf.text('Firma del Solicitante', margin + 15, y + 5)
+    pdf.line(pageWidth - margin - 70, y, pageWidth - margin - 10, y)
+    pdf.text('Fecha: ' + fechaHoy, pageWidth - margin - 60, y + 5)
+
+    // Imprimir
+    pdf.autoPrint()
+    window.open(pdf.output('bloburl'), '_blank')
   }
 
   function descargarExcel() {
