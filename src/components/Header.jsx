@@ -61,7 +61,6 @@ export default function Header({ onMenuClick,onLogout }) {
 
   function handleConfirmarCierre() {
     logout();
-    onLogout();
     navigate('/login', { replace: true })
   }
 
