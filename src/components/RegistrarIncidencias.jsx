@@ -316,6 +316,7 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
         const incidenciasLocales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]')
         incidenciasLocales.push(nuevaIncidencia)
         localStorage.setItem('incidenciasLocales', JSON.stringify(incidenciasLocales))
+        window.dispatchEvent(new Event('incidencia-registrada'))
       }
 
       if (onIncidenciaRegistrada) {
