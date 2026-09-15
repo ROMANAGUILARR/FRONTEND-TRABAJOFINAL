@@ -70,7 +70,8 @@ const inputStyle = {
 
 const btnBase = {
   padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer',
-  fontWeight: 600, fontSize: '0.85rem', transition: 'all 0.2s',
+  fontWeight: 600, fontSize: '0.85rem', transition: 'all 0.2s', whiteSpace: 'nowrap',
+  minWidth: 'fit-content', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
 }
 
 export default function ManejarIncidencias() {
@@ -254,7 +255,7 @@ export default function ManejarIncidencias() {
                 </div>
 
                 {/* Acciones */}
-                <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                <div style={{ display: 'flex', gap: '8px', flexShrink: 0, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                   {incidencia.estado !== 'RESUELTO' && (
                     <button onClick={() => setIncidenciaSeleccionada(incidencia)} style={{ ...btnBase, background: 'var(--color-eco-primary, #2E7D32)', color: '#fff', whiteSpace: 'nowrap' }}>
                       Cambiar estado
