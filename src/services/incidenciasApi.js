@@ -1,4 +1,10 @@
 import { MENSAJE_FOTOS_NO_VISIBLES } from '../utils/iaDescripcion'
+import { MOCK_PUNTOS, MOCK_INSIGNIAS } from './mockData'
+
+function esDemo() {
+  const token = localStorage.getItem('token')
+  return token === 'demo-token' || token === 'demo-token-admin'
+}
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
 const MAX_LADO_PX = 1280
@@ -171,6 +177,8 @@ export async function registrarIncidencia(categoria, descripcion, urlsFotos, arc
 }
 
 export async function obtenerPuntosUsuario() {
+  if (esDemo()) return MOCK_PUNTOS
+
   const token = localStorage.getItem("token");
   console.log('Token puntos:', token)
   const response = await fetch(`${API_BASE}/incidencias/puntos`, {
@@ -191,6 +199,8 @@ export async function obtenerPuntosUsuario() {
 }
 
 export async function obtenerInsigniasUsuario() {
+  if (esDemo()) return MOCK_INSIGNIAS
+
   const token = localStorage.getItem("token");
   const response = await fetch(`${API_BASE}/insignias/mis-insignias`, {
     method: 'GET',

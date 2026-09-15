@@ -28,7 +28,7 @@ export default function BarraProgreso({ puntos }) {
             </div>
 
             {/* Meta */}
-            <div className="text-xs text-gray-500 dark:text-gray-400">
+            <div className="text-xs text-eco-text-secondary">
                 {puntosNum === 0 ? (
                     <p className="text-base bg-eco-danger text-white p-2.5 rounded-md">
                         Aun no has realizado contribuciones. Registra tu primera incidencia!
