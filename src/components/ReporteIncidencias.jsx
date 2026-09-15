@@ -143,8 +143,7 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
     pdf.text('Fecha: ' + fechaHoy, pageWidth - margin - 60, y + 5)
 
     // Imprimir
-    pdf.autoPrint()
-    window.open(pdf.output('bloburl'), '_blank')
+    pdf.output('dataurlnewwindow')
   }
 
   function descargarExcel() {
