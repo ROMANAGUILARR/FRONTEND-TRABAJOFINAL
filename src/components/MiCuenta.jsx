@@ -1,9 +1,6 @@
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../hooks/useAuth'
-import { IconUsuario, IconSalir } from './icons'
+import { IconUsuario } from './icons'
 import Button from './ui/Button'
-import CerrarSesionModal from './CerrarSesionModal'
-import { useState } from 'react'
 import './MiCuenta.css'
 
 /**
@@ -12,15 +9,9 @@ import './MiCuenta.css'
  */
 export default function MiCuenta() {
     const navigate = useNavigate()
-    const { user, logout } = useAuth()
-    const [showCerrarSModal, setShowCerrarSModal] = useState(false)
+    const { user } = useAuth()
 
     const esAdmin = user?.rol === 'ADMIN'
-
-    function handleConfirmarCierre() {
-        logout()
-        navigate('/login', { replace: true })
-    }
 
     return (
         <div className="micuenta min-h-screen bg-eco-bg flex items-center justify-center p-5">
@@ -56,27 +47,16 @@ export default function MiCuenta() {
 
                 {/* Acciones */}
                 <div className="flex flex-col gap-3">
-                    <Button variant="secondary" size="lg" fullWidth onClick={() => navigate(-1)}>
-                        Volver
-                    </Button>
                     <Button
-                        variant="danger"
+                        variant="secondary"
                         size="lg"
                         fullWidth
-                        onClick={() => setShowCerrarSModal(true)}
+                        onClick={() => navigate(-1)}
+                        className="micuenta__volver-btn"
                     >
-                        <IconSalir />
-                        Cerrar Sesion
+                        Volver
                     </Button>
                 </div>
-
-                {/* Modal de confirmación */}
-                {showCerrarSModal && (
-                    <CerrarSesionModal
-                        onConfirm={handleConfirmarCierre}
-                        onCancel={() => setShowCerrarSModal(false)}
-                    />
-                )}
             </div>
         </div>
     )

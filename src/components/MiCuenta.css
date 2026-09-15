@@ -50,3 +50,14 @@
     text-align: right;
     word-break: break-word;
 }
+
+/* Boton Volver (gris neutro) */
+.micuenta__volver-btn {
+    background: #9e9e9e !important;
+    color: #ffffff !important;
+    margin-top: 8px;
+}
+
+.micuenta__volver-btn:hover {
+    background: #757575 !important;
+}
