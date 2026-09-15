@@ -17,14 +17,14 @@ Los administradores cuentan con un panel completo para gestionar incidencias, vi
 Las comunidades enfrentan problemas ambientales como acumulación de basura, contaminación del agua y quema ilegal de residuos, pero carecen de un canal formal y accesible para reportar estas incidencias y darles seguimiento.
 
 **EcoSolido** soluciona esto al proporcionar una plataforma digital donde los ciudadanos pueden:
-- 📸 Reportar incidencias con fotos, descripción y ubicación exacta en un mapa.
-- 📊 Dar seguimiento al estado de sus reportes (Pendiente → En Proceso → Resuelto).
-- 🏆 Recibir recompensas e insignias por su participación activa.
+- Reportar incidencias con fotos, descripción y ubicación exacta en un mapa.
+- Dar seguimiento al estado de sus reportes (Pendiente → En Proceso → Resuelto).
+- Recibir recompensas e insignias por su participación activa.
 
 Y los administradores pueden:
-- 📋 Gestionar y actualizar el estado de todas las incidencias.
-- 👥 Administrar los ciudadanos registrados.
-- 📈 Visualizar estadísticas y generar reportes detallados.
+- Gestionar y actualizar el estado de todas las incidencias.
+- Administrar los ciudadanos registrados.
+- Visualizar estadísticas y generar reportes detallados.
 
 ---
 
