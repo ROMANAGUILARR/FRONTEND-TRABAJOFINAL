@@ -44,11 +44,6 @@ Y los administradores pueden:
 - Gestión de ciudadanos registrados.
 - Generación de reportes en PDF y Excel por ciudadano.
 
-### 🎮 Modo Demo
-- Acceso sin necesidad de backend.
-- Datos de prueba precargados.
-- Funcionalidades limitadas para exploración.
-
 ---
 
 ## 💻 Tecnologías usadas
