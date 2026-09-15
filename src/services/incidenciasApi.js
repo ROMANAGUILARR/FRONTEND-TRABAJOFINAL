@@ -44,6 +44,8 @@ function extraerMensajeError(cuerpo, status) {
 }
 
 export async function describirFotosConIA(imagenesBase64) {
+  if (esDemo()) return 'Acumulacion de residuos solidos en la via publica. Se observan bolsas de basura rotas con desperdicios dispersos que obstruyen el paso peatonal.'
+
   const token = localStorage.getItem("token");
   const response = await fetch(`${API_BASE}/incidencias/generar-descripcion`, {
     method: 'POST',
@@ -114,6 +116,8 @@ export async function prepararImagenesParaIA(archivos) {
 }
 
 export async function subirFotosACloudinary(archivos) {
+  if (esDemo()) return archivos.map((_, i) => `https://demo-ecosolido.com/foto-${i + 1}.jpg`)
+
   const formData = new FormData()
   archivos.forEach((file) => formData.append('fotos', file))
   const token = localStorage.getItem("token");
@@ -136,6 +140,8 @@ export async function subirFotosACloudinary(archivos) {
 }
 
 export async function registrarIncidencia(categoria, descripcion, urlsFotos, archivos, direccionTexto, latitud, longitud) {
+  if (esDemo()) return { mensaje: 'Incidencia registrada exitosamente (modo demo)', puntosGanados: 15 }
+
   const formData = new FormData();
   const incidenciaBlob = new Blob([
     JSON.stringify({ 
