@@ -92,15 +92,15 @@
   padding:10px;
   margin:5px 0;
   min-height:6rem;
-  border-radius:10px;
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
   width:100%;
   font-family: var(--font-sans);
-}
-[data-theme="dark"] .educacion__textarea{
-  border: 2px solid var(--color-border);
   color: var(--color-text);
   background: var(--color-bg-white);
-  border-radius: var(--radius-md);
+}
+[data-theme="dark"] .educacion__textarea{
+  border-color: var(--color-border);
 }
 .educacion__header {
   margin-bottom: 24px;
