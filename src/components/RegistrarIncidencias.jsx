@@ -310,6 +310,14 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
         longitud: ubicacion.lng
       }
 
+      // Guardar en localStorage para modo demo/offline
+      const token = localStorage.getItem('token')
+      if (token === 'demo-token' || token === 'demo-token-admin') {
+        const incidenciasLocales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]')
+        incidenciasLocales.push(nuevaIncidencia)
+        localStorage.setItem('incidenciasLocales', JSON.stringify(incidenciasLocales))
+      }
+
       if (onIncidenciaRegistrada) {
         onIncidenciaRegistrada(nuevaIncidencia)
       }
