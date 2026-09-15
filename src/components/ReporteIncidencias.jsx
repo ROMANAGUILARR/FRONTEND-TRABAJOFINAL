@@ -142,8 +142,13 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
     pdf.line(pageWidth - margin - 70, y, pageWidth - margin - 10, y)
     pdf.text('Fecha: ' + fechaHoy, pageWidth - margin - 60, y + 5)
 
-    // Imprimir
-    pdf.output('dataurlnewwindow')
+    // Imprimir - abrir PDF en nueva ventana
+    const blob = pdf.output('blob')
+    const url = URL.createObjectURL(blob)
+    const win = window.open(url, '_blank')
+    if (win) {
+      win.onload = () => { win.print() }
+    }
   }
 
   function descargarExcel() {
