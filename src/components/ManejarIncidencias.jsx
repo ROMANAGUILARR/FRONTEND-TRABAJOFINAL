@@ -117,10 +117,11 @@ export default function ManejarIncidencias() {
     setFormulario({ titulo: incidencia.titulo, descripcion: incidencia.descripcion, estado: incidencia.estado, direccionTexto: incidencia.direccionTexto || '' })
   }
 
-  async function handleCambioEstadoIncidencia(id, estado) {
+  async function handleCambioEstadoIncidencia(id, estadoActual) {
     setIncidenciaSeleccionada(null)
+    const siguienteEstado = estadoActual === 'PENDIENTE' ? 'EN_PROCESO' : 'RESUELTO'
     if (esDemo()) {
-      const actualizadas = incidencias.map(inc => inc.idIncidencia === id ? { ...inc, estado } : inc)
+      const actualizadas = incidencias.map(inc => inc.idIncidencia === id ? { ...inc, estado: siguienteEstado } : inc)
       setIncidencias(actualizadas)
       guardarIncidenciasDemo(actualizadas)
       return
@@ -130,7 +131,7 @@ export default function ManejarIncidencias() {
       const respuesta = await fetch(`${API_BASE}/incidencias/cambiarEstado/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ estado })
+        body: JSON.stringify({ estado: siguienteEstado })
       })
       if (!respuesta.ok) throw new Error(`Error ${respuesta.status}`)
       const actualizada = await respuesta.json()
