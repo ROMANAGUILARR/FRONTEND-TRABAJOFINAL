@@ -3,8 +3,6 @@ import './SeguimientoIncidencias.css'
 import './ManejarIncidencias.css'
 import ChangeStateConfirmModal from './ChangeStateConfirmModal'
 import DeleteConfirmModal from './DeleteConfirmModal'
-import ReporteIncidencias from './ReporteIncidencias'
-import { obtenerUsuarios, obtenerIncidenciasPorUsuario } from '../services/incidenciasApi'
 
 const ESTADOS = {
   PENDIENTE: 'pending',
@@ -91,10 +89,6 @@ export default function ManejarIncidencias() {
   const [incidencias, setIncidencias] = useState([])
   const [editando, setEditando] = useState(null)
   const [formulario, setFormulario] = useState({ titulo: '', descripcion: '', estado: 'PENDIENTE', direccionTexto: '' })
-  const [mostrandoReporte, setMostrandoReporte] = useState(false)
-  const [usuarioReporte, setUsuarioReporte] = useState(null)
-  const [incidenciasReporte, setIncidenciasReporte] = useState([])
-  const [usuarios, setUsuarios] = useState([])
 
   useEffect(() => {
     async function mostrarIncidencias() {
@@ -109,8 +103,6 @@ export default function ManejarIncidencias() {
       }
     }
     mostrarIncidencias()
-    // Cargar usuarios para el reporte
-    obtenerUsuarios().then(setUsuarios).catch(() => setUsuarios([]))
   }, [])
 
   function handleEditar() {
@@ -175,17 +167,6 @@ export default function ManejarIncidencias() {
     }
   }
 
-  async function generarReporte(usuario) {
-    setUsuarioReporte(usuario)
-    try {
-      const data = await obtenerIncidenciasPorUsuario(usuario.idUsuario)
-      setIncidenciasReporte(data)
-    } catch {
-      setIncidenciasReporte([])
-    }
-    setMostrandoReporte(true)
-  }
-
   const formatearFecha = (fechaString) => {
     if (!fechaString) return ''
     const fecha = new Date(fechaString)
@@ -203,34 +184,10 @@ export default function ManejarIncidencias() {
 
   return (
     <main style={{ flex: 1, padding: '24px', overflowY: 'auto', background: 'var(--color-bg)' }}>
-
-      {mostrandoReporte && usuarioReporte ? (
-        <ReporteIncidencias
-          usuario={usuarioReporte}
-          incidencias={incidenciasReporte}
-          onVolver={() => { setMostrandoReporte(false); setUsuarioReporte(null) }}
-        />
-      ) : (
-      <>
       <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text)', margin: '0 0 4px' }}>Gestionar Incidencias</h2>
       <p style={{ color: 'var(--color-text-secondary)', marginBottom: '20px', fontSize: '0.9rem' }}>
         Administra, edita y actualiza el estado de las incidencias registradas
       </p>
-
-      {/* Selector de reporte */}
-      <div style={{ background: 'var(--color-bg-white)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '16px 20px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-        <span style={{ fontWeight: 600, color: 'var(--color-text)', fontSize: '0.9rem' }}>Generar Reporte:</span>
-        <select
-          onChange={e => { if (e.target.value) generarReporte(usuarios.find(u => u.idUsuario === parseInt(e.target.value))) }}
-          defaultValue=""
-          className="admin-input" style={{ maxWidth: '300px' }}
-        >
-          <option value="" disabled>-- Selecciona un usuario --</option>
-          {usuarios.filter(u => u.rol === 'CIUDADANO').map(u => (
-            <option key={u.idUsuario} value={u.idUsuario}>{u.nombreCompleto} {u.apellidoCompleto}</option>
-          ))}
-        </select>
-      </div>
 
       {/* Formulario de edición */}
       {editando && (
@@ -342,8 +299,6 @@ export default function ManejarIncidencias() {
           onConfirm={confirmarEliminar}
           onCancel={() => setIncidenciaAEliminar(null)}
         />
-      )}
-      </>
       )}
     </main>
   )
