@@ -44,18 +44,15 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
     const canvas = await html2canvas(elemento, { scale: 2, useCORS: true })
     const imgData = canvas.toDataURL('image/png')
     const ventana = window.open('', '_blank', 'width=800,height=600')
-    ventana.document.write(`
-      <!DOCTYPE html>
-      <html>
-      <head><title>Reporte de Incidencias</title></head>
-      <body style="margin:0;padding:20px;text-align:center;">
-        <img src="${imgData}" style="max-width:100%;height:auto;" />
-      </body>
-      </html>
-    `)
+    ventana.document.write(`<!DOCTYPE html><html><head><title>Reporte</title></head><body style="margin:0;padding:20px;text-align:center;"></body></html>`)
     ventana.document.close()
-    ventana.onload = () => {
-      ventana.print()
+    const img = ventana.document.createElement('img')
+    img.src = imgData
+    img.style.maxWidth = '100%'
+    img.style.height = 'auto'
+    img.onload = () => {
+      ventana.document.body.appendChild(img)
+      setTimeout(() => ventana.print(), 300)
     }
   }
 
