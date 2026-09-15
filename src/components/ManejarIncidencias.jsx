@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './SeguimientoIncidencias.css'
+import './ManejarIncidencias.css'
 import ChangeStateConfirmModal from './ChangeStateConfirmModal'
 
 const ESTADOS = {
@@ -8,10 +9,16 @@ const ESTADOS = {
   RESUELTO: 'resolved'
 }
 
-const ESTADO_CONFIG = {
-  PENDIENTE: { bg: '#FFF3E0', color: '#E65100', border: '#FF8F0F', label: 'Pendiente' },
-  EN_PROCESO: { bg: '#E3F2FD', color: '#1565C0', border: '#42A5F5', label: 'En Proceso' },
-  RESUELTO: { bg: '#E8F5E9', color: '#2E7D32', border: '#4CAF50', label: 'Resuelto' },
+const ESTADO_BADGE = {
+  PENDIENTE: 'admin-badge--pending',
+  EN_PROCESO: 'admin-badge--progress',
+  RESUELTO: 'admin-badge--resolved',
+}
+
+const ESTADO_LABEL = {
+  PENDIENTE: 'Pendiente',
+  EN_PROCESO: 'En Proceso',
+  RESUELTO: 'Resuelto',
 }
 
 const CATEGORIAS = [
@@ -60,19 +67,6 @@ function guardarIncidenciasDemo(incidencias) {
     direccionTexto: inc.direccionTexto
   }))
   localStorage.setItem('incidenciasLocales', JSON.stringify(originales))
-}
-
-const inputStyle = {
-  padding: '10px 12px', border: '2px solid var(--color-border)', borderRadius: '8px',
-  background: 'var(--color-bg-white)', color: 'var(--color-text)', fontSize: '0.9rem',
-  fontFamily: 'inherit', width: '100%', outline: 'none',
-}
-
-const btnBase = {
-  padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer',
-  fontWeight: 600, fontSize: '0.85rem', transition: 'all 0.2s', whiteSpace: 'nowrap',
-  minWidth: 'fit-content', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-  color: '#fff',
 }
 
 export default function ManejarIncidencias() {
@@ -176,14 +170,14 @@ export default function ManejarIncidencias() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '4px', textTransform: 'uppercase' }}>Categoría</label>
-              <select value={formulario.titulo} onChange={e => setFormulario(f => ({ ...f, titulo: e.target.value }))} style={inputStyle}>
+              <select value={formulario.titulo} onChange={e => setFormulario(f => ({ ...f, titulo: e.target.value }))} className="admin-input">
                 <option value="">-- Selecciona --</option>
                 {CATEGORIAS.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
             <div>
               <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '4px', textTransform: 'uppercase' }}>Estado</label>
-              <select value={formulario.estado} onChange={e => setFormulario(f => ({ ...f, estado: e.target.value }))} style={inputStyle}>
+              <select value={formulario.estado} onChange={e => setFormulario(f => ({ ...f, estado: e.target.value }))} className="admin-input">
                 <option value="PENDIENTE">Pendiente</option>
                 <option value="EN_PROCESO">En Proceso</option>
                 <option value="RESUELTO">Resuelto</option>
@@ -191,16 +185,16 @@ export default function ManejarIncidencias() {
             </div>
             <div style={{ gridColumn: '1 / -1' }}>
               <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '4px', textTransform: 'uppercase' }}>Descripción</label>
-              <textarea value={formulario.descripcion} onChange={e => setFormulario(f => ({ ...f, descripcion: e.target.value }))} style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }} />
+              <textarea value={formulario.descripcion} onChange={e => setFormulario(f => ({ ...f, descripcion: e.target.value }))} className="admin-input" style={{ minHeight: '80px', resize: 'vertical' }} />
             </div>
             <div style={{ gridColumn: '1 / -1' }}>
               <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '4px', textTransform: 'uppercase' }}>Dirección</label>
-              <input value={formulario.direccionTexto} onChange={e => setFormulario(f => ({ ...f, direccionTexto: e.target.value }))} style={inputStyle} />
+              <input value={formulario.direccionTexto} onChange={e => setFormulario(f => ({ ...f, direccionTexto: e.target.value }))} className="admin-input" />
             </div>
           </div>
           <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '16px' }}>
-            <button onClick={() => setEditando(null)} style={{ ...btnBase, background: 'var(--color-bg)', color: 'var(--color-text)', border: '1px solid var(--color-border)' }}>Cancelar</button>
-            <button onClick={handleEditar} style={{ ...btnBase, background: 'var(--color-eco-primary, #2E7D32)', color: '#fff' }}>Guardar Cambios</button>
+            <button onClick={() => setEditando(null)} className="admin-btn admin-btn--cancel">Cancelar</button>
+            <button onClick={handleEditar} className="admin-btn admin-btn--save">Guardar Cambios</button>
           </div>
         </div>
       )}
@@ -210,12 +204,11 @@ export default function ManejarIncidencias() {
         <input
           type="text" placeholder="Buscar por fecha, título o ubicación..."
           value={busqueda} onChange={e => setBusqueda(e.target.value)}
-          style={{ ...inputStyle, maxWidth: '350px' }}
+          className="admin-input" style={{ maxWidth: '350px' }}
         />
         <div style={{ display: 'flex', gap: '6px' }}>
           {[{ key: 'todos', label: 'Todos', color: 'var(--color-text)' }, { key: 'pending', label: 'Pendientes', color: '#E65100' }, { key: 'in-progress', label: 'En Proceso', color: '#1565C0' }, { key: 'resolved', label: 'Resueltos', color: '#2E7D32' }].map(f => (
-            <button key={f.key} onClick={() => setFiltroEstado(f.key)} style={{
-              ...btnBase,
+            <button key={f.key} onClick={() => setFiltroEstado(f.key)} className="admin-btn" style={{
               background: filtroEstado === f.key ? f.color : 'var(--color-bg-white)',
               color: filtroEstado === f.key ? '#fff' : 'var(--color-text)',
               border: filtroEstado === f.key ? 'none' : '1px solid var(--color-border)',
@@ -231,22 +224,15 @@ export default function ManejarIncidencias() {
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {incidenciasFiltradas.map(incidencia => {
-            const cfg = ESTADO_CONFIG[incidencia.estado] || ESTADO_CONFIG.PENDIENTE
-            return (
-              <div key={incidencia.idIncidencia} style={{
-                background: 'var(--color-bg-white)', border: '1px solid var(--color-border)',
-                borderRadius: '12px', padding: '20px 24px', boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
-                display: 'flex', alignItems: 'center', gap: '20px',
-              }}>
+          {incidenciasFiltradas.map(incidencia => (
+              <div key={incidencia.idIncidencia} className="admin-card">
                 {/* Info */}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
                     <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--color-text)' }}>{incidencia.titulo}</h3>
-                    <span style={{
-                      padding: '3px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 600,
-                      background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}`,
-                    }}>{cfg.label}</span>
+                    <span className={`admin-badge ${ESTADO_BADGE[incidencia.estado] || 'admin-badge--pending'}`}>
+                      {ESTADO_LABEL[incidencia.estado] || incidencia.estado}
+                    </span>
                   </div>
                   <p style={{ margin: '0 0 4px', fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>{incidencia.descripcion}</p>
                   <div style={{ display: 'flex', gap: '16px', fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
@@ -258,20 +244,19 @@ export default function ManejarIncidencias() {
                 {/* Acciones */}
                 <div style={{ display: 'flex', gap: '8px', flexShrink: 0, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                   {incidencia.estado !== 'RESUELTO' && (
-                    <button onClick={() => setIncidenciaSeleccionada(incidencia)} style={{ ...btnBase, background: 'var(--color-eco-primary, #2E7D32)', color: '#fff', whiteSpace: 'nowrap' }}>
+                    <button onClick={() => setIncidenciaSeleccionada(incidencia)} className="admin-btn admin-btn--primary">
                       Cambiar estado
                     </button>
                   )}
-                  <button onClick={() => abrirEditar(incidencia)} style={{ ...btnBase, background: '#E3F2FD', color: '#1565C0', border: '1px solid #90CAF9' }}>
+                  <button onClick={() => abrirEditar(incidencia)} className="admin-btn admin-btn--edit">
                     Editar
                   </button>
-                  <button onClick={() => handleEliminar(incidencia.idIncidencia)} style={{ ...btnBase, background: '#FFEBEE', color: '#C62828', border: '1px solid #EF9A9A' }}>
+                  <button onClick={() => handleEliminar(incidencia.idIncidencia)} className="admin-btn admin-btn--delete">
                     Eliminar
                   </button>
                 </div>
               </div>
-            )
-          })}
+            ))}
         </div>
       )}
 
