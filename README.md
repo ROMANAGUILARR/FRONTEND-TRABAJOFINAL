@@ -145,8 +145,8 @@ npm run preview
 
 ```text
 src/
-├── assets/                    # 🖼️ Imágenes, logos e insignias
-├── components/                # 🧩 Componentes de React
+├── assets/                    # Imágenes, logos e insignias
+├── components/                # Componentes de React
 │   ├── ui/                    #    Componentes reutilizables (Button, Card, Modal, Input)
 │   ├── Login.jsx              #    Inicio de sesión
 │   ├── Registrarse.jsx        #    Registro de usuarios
@@ -159,18 +159,18 @@ src/
 │   ├── ReporteIncidencias.jsx #    Generación de reportes PDF/Excel
 │   ├── LocationPicker.jsx     #    Selector de ubicación en mapa
 │   └── ...                    #    Otros componentes (modales, sidebar, header)
-├── hooks/                     # 🪝 Hooks personalizados
+├── hooks/                     # Hooks personalizados
 │   ├── useAuth.js             #    Autenticación y manejo de sesión
 │   └── useKeyboardShortcuts.js #   Atajos de teclado
-├── services/                  # 🔌 Capa de comunicación con el backend
+├── services/                  # Capa de comunicación con el backend
 │   ├── incidenciasApi.js      #    Funciones API (login, incidencias, puntos, insignias)
 │   └── mockData.js            #    Datos de prueba para modo demo
-├── styles/                    # 🎨 Estilos globales
-├── utils/                     # 🛠️ Utilidades
+├── styles/                    # Estilos globales
+├── utils/                     # Utilidades
 │   ├── iaDescripcion.js       #    Descripción automática con IA
 │   └── reverseGeocode.js      #    Geocodificación inversa
-├── App.jsx                    # 📱 Componente principal con rutas
-└── main.jsx                   # 🚀 Punto de entrada
+├── App.jsx                    # Componente principal con rutas
+└── main.jsx                   # Punto de entrada
 ```
 
 ---
