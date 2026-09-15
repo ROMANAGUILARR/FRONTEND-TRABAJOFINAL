@@ -50,7 +50,7 @@ export default function MiCuenta() {
                     </div>
                     <div className="micuenta__fila">
                         <span className="micuenta__etiqueta">Puntos</span>
-                        <span className="micuenta__valor">⭐ {user?.puntos ?? 0} pts</span>
+                        <span className="micuenta__valor">⭐ 0 pts</span>
                     </div>
                 </div>
 
