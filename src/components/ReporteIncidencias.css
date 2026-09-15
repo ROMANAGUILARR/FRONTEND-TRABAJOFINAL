@@ -191,21 +191,14 @@
   .reporte-container {
     padding: 20px;
     box-shadow: none;
-  }
-
-  body * {
-    visibility: hidden;
-  }
-
-  .reporte-container,
-  .reporte-container * {
-    visibility: visible;
-  }
-
-  .reporte-container {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
+    background: #fff;
+  }
+
+  .reporte-container * {
+    visibility: visible;
   }
 }
