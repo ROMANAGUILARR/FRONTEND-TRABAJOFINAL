@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './SeguimientoIncidencias.css'
 import './ManejarIncidencias.css'
+import './AIConfirmModal.css'
 import DeleteConfirmModal from './DeleteConfirmModal'
 
 const ESTADOS = {
