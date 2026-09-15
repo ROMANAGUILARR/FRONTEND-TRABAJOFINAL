@@ -26,11 +26,34 @@ export const MOCK_INCIDENCIAS = [
   { id: 8, categoria: 'Contaminacion del aire', descripcion: 'Humo negro proveniente de fabrica textil', estado: 'EN_PROCESO', fecha: '2026-09-14', direccionTexto: 'Zona Industrial' },
 ]
 
-export const MOCK_RECOMENDACIONES = [
-  'Separa los residuos organicos de los inorganicos antes de desecharlos. Usa bolsas de color verde para organicos y negras para el resto.',
-  'Lava los envases de plastico antes de depositarlos en el contenedor de reciclaje para evitar contaminacion cruzada.',
-  'Reduce el uso de plasticos de un solo uso llevando tu propia bolsa reutilizable al mercado.',
-  'Composta los residuos organicos de tu cocina para abonar plantas y huertos caseros.',
-  'Consulta el calendario de recoleccion de tu municipalidad para saber que dia se retira cada tipo de residuo.',
-  'Participa en las jornadas de limpieza comunitaria organizadas por tu junta vecinal.',
+export const MOCK_RECOMENDACIONES = {
+  'Orgánicos': [
+    'Separa los residuos orgánicos (cáscaras, restos de comida, huesos) en un balde con tapa para evitar malos olores y plagas.',
+    'Composta los residuos orgánicos de tu cocina: alterna capas de restos húmedos con hojas secas. En 2-3 meses tendrás abono natural.',
+    'No mezcles residuos orgánicos con plásticos o vidrio, ya que contamina el material y dificulta su procesamiento.',
+    'Usa las cáscaras de huevo y café como fertilizante directo para tus plantas, aportan calcio y nitrógeno.',
+    'Si no puedes composter, deposita los orgánicos en el contenedor verde indicado por tu municipalidad.',
+  ],
+  'Inorgánicos no aprovechables': [
+    'Los pañales, toallas higiénicas y colillas de cigarro van en el contenedor gris, nunca en el de reciclaje.',
+    'Las pilas y baterías contienen metales pesados tóxicos. Llévalas a puntos de recolección especiales, no las tires a la basura común.',
+    'Los residuos sanitarios como guantes y mascarillas deben ir en una bolsa cerrada antes de depositarlos en el contenedor.',
+    'Los medicamentos vencidos no se deben botar al desagüe. Llévalos a las farmacias que tienen programas de recolección.',
+    'La cerámica rota y los espejos no se reciclan. Envuélvelos en papel antes de desecharlos para evitar cortes al personal de limpieza.',
+  ],
+  'Inorgánicos aprovechables': [
+    'Lava los envases de plástico y latas antes de depositarlos en el contenedor de reciclaje para evitar contaminación cruzada.',
+    'Aplasta las botellas y cajas de cartón para que ocupen menos espacio en el contenedor y faciliten el transporte.',
+    'El papel y cartón limpios se reciclan, pero si están mojados o con grasa van al contenedor de no aprovechables.',
+    'El vidrio se puede reciclar infinitas veces sin perder calidad. Separa por colores si es posible (transparente, verde, ámbar).',
+    'Las bolsas plásticas se pueden llevar a supermercados que tienen puntos de recolección específicos para su reciclaje.',
+  ],
+}
+
+export const MOCK_RECOMENDACIONES_GENERICAS = [
+  'Separa siempre tus residuos antes de depositarlos en los contenedores correspondientes.',
+  'Reduce el consumo de productos con empaques innecesarios.',
+  'Reutiliza envases y bolsas siempre que sea posible antes de desecharlos.',
+  'Consulta el calendario de recolección de tu municipalidad.',
+  'Participa en las jornadas de limpieza comunitaria de tu barrio.',
 ]

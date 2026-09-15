@@ -1,5 +1,5 @@
 //En RecomendacionApi.js
-import { MOCK_RECOMENDACIONES } from './mockData'
+import { MOCK_RECOMENDACIONES, MOCK_RECOMENDACIONES_GENERICAS } from './mockData'
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
 
@@ -38,7 +38,7 @@ function extraerMensajeError(cuerpo, status) {
   }
 }
 export async function generarRecomendaciones(tipoMaterial,ContextoExtra=""){
-    if (esDemo()) return MOCK_RECOMENDACIONES
+    if (esDemo()) return MOCK_RECOMENDACIONES[tipoMaterial] || MOCK_RECOMENDACIONES_GENERICAS
 
     const token=localStorage.getItem('token')
     const response=await fetch(`${API_BASE}/educacion/recomendaciones`,{
