@@ -40,7 +40,7 @@ export default function MiCuenta() {
                 <div className="micuenta__datos flex flex-col gap-3 mb-8">
                     <div className="micuenta__fila">
                         <span className="micuenta__etiqueta">Usuario</span>
-                        <span className="micuenta__valor">{user?.nombreUsuario || '—'}</span>
+                        <span className="micuenta__valor">{esAdmin ? 'Admin' : 'Demo'}</span>
                     </div>
                     <div className="micuenta__fila">
                         <span className="micuenta__etiqueta">Rol</span>
