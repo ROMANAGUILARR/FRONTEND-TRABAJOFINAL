@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react'
 import './SeguimientoIncidencias.css'
 import HelpModal from './HelpModal'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
-import { MOCK_METRICAS, MOCK_INCIDENCIAS } from '../services/mockData'
+
 // Iconos SVG inline
 const IconTotal = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,18 +60,16 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
 
   function cargarDatosDemo() {
     const locales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]')
-    const todasInc = [...MOCK_INCIDENCIAS, ...locales.map((inc, i) => ({
+    const todasInc = locales.map((inc, i) => ({
       id: 100 + i,
       categoria: inc.categoria,
       descripcion: inc.descripcion,
       estado: 'PENDIENTE',
       fecha: inc.fecha,
       direccionTexto: inc.direccionTexto
-    }))]
-    const enProceso = MOCK_METRICAS.enProceso
-    const pendientes = MOCK_METRICAS.pendientes + locales.length
-    const resueltos = MOCK_METRICAS.resueltos
-    setMetricas({ total: MOCK_METRICAS.total + locales.length, enProceso, pendientes, resueltos })
+    }))
+    const pendientes = locales.length
+    setMetricas({ total: locales.length, enProceso: 0, pendientes, resueltos: 0 })
     setIncidencias(todasInc)
   }
 
