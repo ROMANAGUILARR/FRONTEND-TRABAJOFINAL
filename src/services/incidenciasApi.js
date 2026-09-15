@@ -143,6 +143,7 @@ export async function registrarIncidencia(categoria, descripcion, urlsFotos, arc
   if (esDemo()) {
     const puntosActuales = parseInt(localStorage.getItem('puntos') || '0', 10)
     localStorage.setItem('puntos', String(puntosActuales + 15))
+    window.dispatchEvent(new Event('incidencia-registrada'))
     return { mensaje: 'Incidencia registrada exitosamente (modo demo)', puntosGanados: 15 }
   }
 
