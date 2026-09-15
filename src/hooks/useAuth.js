@@ -10,7 +10,7 @@ const AuthContext = createContext(null);
  * Provider que envuelve la aplicación y comparte el estado de autenticación
  */
 export function AuthProvider({ children }) {
-  const API_BASE = import.meta.env.VITE_API_URL|| 'http://localhost:8080';
+  const API_BASE = import.meta.env.VITE_API_URL|| 'http://localhost:8081';
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);

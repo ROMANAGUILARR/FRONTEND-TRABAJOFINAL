@@ -1,0 +1,174 @@
+/* ===== Landing pública ===== */
+
+.landing {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* --- Barra superior --- */
+.landing__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    background: var(--eco-bg-white, #fff);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.landing__logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.landing__logo-img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+}
+
+.landing__logo-text {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--eco-text, #1a1a1a);
+}
+
+.landing__cuenta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* --- Hero --- */
+.landing__main {
+    flex: 1;
+}
+
+.landing__hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    padding: 64px 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.landing__hero-img {
+    max-width: 440px;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+}
+
+.landing__hero-content {
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.landing__title {
+    margin: 0;
+    font-size: 2.2rem;
+    line-height: 1.2;
+    color: var(--eco-text, #1a1a1a);
+}
+
+.landing__subtitle {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--eco-text-secondary, #555);
+}
+
+.landing__actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.landing__hint {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: var(--eco-text-secondary, #777);
+    font-style: italic;
+}
+
+/* --- Beneficios --- */
+.landing__features {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding: 48px 32px 64px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.landing__feature {
+    background: var(--eco-bg-white, #fff);
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 280px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.landing__feature-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.landing__feature h3 {
+    margin: 0 0 6px;
+    color: var(--eco-text, #1a1a1a);
+    font-size: 1.1rem;
+}
+
+.landing__feature p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--eco-text-secondary, #555);
+    line-height: 1.5;
+}
+
+/* --- Footer --- */
+.landing__footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.85rem;
+    color: var(--eco-text-secondary, #777);
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .landing__header {
+        padding: 12px 16px;
+    }
+
+    .landing__hero {
+        padding: 40px 16px;
+        gap: 24px;
+    }
+
+    .landing__hero-img {
+        max-width: 100%;
+    }
+
+    .landing__title {
+        font-size: 1.6rem;
+    }
+
+    .landing__actions .btn {
+        width: 100%;
+    }
+}
