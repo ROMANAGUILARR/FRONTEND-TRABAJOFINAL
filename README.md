@@ -16,8 +16,6 @@ Aplicativo web para el reporte, seguimiento y gestión de incidencias ambientale
 - [▶️ Ejecución](#-ejecución)
 - [📁 Estructura del proyecto](#-estructura-del-proyecto)
 - [⚙️ Funcionalidades principales](#-funcionalidades-principales)
-- [🌿 Ramas](#-ramas)
-
 ---
 
 ## 📝 Descripción
@@ -200,29 +198,6 @@ src/
 
 ---
 
-## 🌿 Ramas
-
-| Rama | Descripción |
-|------|-------------|
-| `main` | ✅ Rama estable con la versión final |
-| `Dev` | 🔧 Rama de desarrollo e integración |
-| `Feature-Itzair` | 🚀 Rama de funcionalidades asignadas |
-| `fix/ModoOscuro` | 🌙 Correcciones del modo oscuro |
-
----
-
 ## 📸 Capturas de pantalla
 
 > *Próximamente...*
-
----
-
-## 👨‍💻 Autor
-
-**ROMANAGUILARR** — [GitHub](https://github.com/ROMANAGUILARR)
-
----
-
-## 📄 Licencia
-
-Proyecto desarrollado como trabajo final para la carrera de Ingeniería de Sistemas — UTP, Ciclo VIII.
