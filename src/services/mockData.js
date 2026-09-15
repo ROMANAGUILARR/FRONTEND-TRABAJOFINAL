@@ -1,4 +1,4 @@
-export const MOCK_PUNTOS = 75
+export const MOCK_PUNTOS = 0
 
 export const MOCK_INSIGNIAS = [
   { idInsignia: 1, nombre: 'Primer reporte', descripcion: 'Has registrado tu primera incidencia y comenzado a transformar tu comunidad.', requisitoIncidencias: 1, recompensa: 'Bono de S/20 en tu billetera digital.', desbloqueada: true },
