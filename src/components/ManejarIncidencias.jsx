@@ -72,6 +72,7 @@ const btnBase = {
   padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer',
   fontWeight: 600, fontSize: '0.85rem', transition: 'all 0.2s', whiteSpace: 'nowrap',
   minWidth: 'fit-content', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+  color: '#fff',
 }
 
 export default function ManejarIncidencias() {
