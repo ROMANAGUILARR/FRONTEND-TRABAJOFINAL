@@ -95,7 +95,7 @@
 
 .reporte-firma {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 60px;
   padding-top: 8px;
 }

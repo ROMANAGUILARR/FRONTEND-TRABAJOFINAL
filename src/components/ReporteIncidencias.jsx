@@ -133,12 +133,13 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
     pdf.text('Total de registros: ' + incidencias.length, margin, y)
     y += 30
 
-    // Firma
+    // Firma centrada
     pdf.setFont('helvetica', 'normal')
     pdf.setFontSize(9)
     pdf.setTextColor(80, 80, 80)
-    pdf.line(margin + 10, y, margin + 70, y)
-    pdf.text('Firma del Solicitante', margin + 15, y + 5)
+    const firmaX = (pageWidth - 60) / 2
+    pdf.line(firmaX, y, firmaX + 60, y)
+    pdf.text('Firma del Solicitante', firmaX + 8, y + 5)
 
     // Imprimir - usar iframe oculto (no requiere popup)
     const blob = pdf.output('blob')
