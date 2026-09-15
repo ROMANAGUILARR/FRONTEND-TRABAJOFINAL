@@ -59,8 +59,8 @@ export function PublicRoute({ children }) {
     );
   }
 
-  // Si ya está autenticado y viene de login, redirigir a home
-  if (isAuthenticated && location.pathname === '/login') {
+  // Si ya está autenticado y viene de login o de la landing, redirigir a sus módulos
+  if (isAuthenticated && (location.pathname === '/login' || location.pathname === '/')) {
     return <Navigate to={user?.rol === 'ADMIN' ? '/dashboard' : '/registro'} replace />;
   }
 

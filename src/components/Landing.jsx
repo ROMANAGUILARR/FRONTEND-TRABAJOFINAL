@@ -4,13 +4,24 @@ import Button from './ui/Button'
 import logo from '../assets/LOGO ECOSOLIDO.png'
 import hero from '../assets/hero.png'
 import './Landing.css'
+import { useAuth } from '../hooks/useAuth'
 
 /**
  * Landing pública: primera pantalla que ve el usuario al entrar a la página.
- * Desde aquí puede dar click en "Cuenta" para loguearse o registrarse.
+ * Desde aquí puede dar click en "Cuenta" para loguearse o registrarse,
+ * o entrar en modo demo para ver los módulos del programa.
  */
 export default function Landing() {
     const navigate = useNavigate()
+    const { login } = useAuth()
+
+    // Modo demo: inicia sesión de prueba y lleva directo a los módulos
+    async function handleDemo() {
+        const result = await login('demo', 'demo')
+        if (result.success) {
+            navigate(result.rol === 'ADMIN' ? '/dashboard' : '/registro')
+        }
+    }
 
     return (
         <div className="landing min-h-screen bg-eco-bg">
@@ -50,6 +61,11 @@ export default function Landing() {
                             </Button>
                             <Button variant="secondary" size="lg" onClick={() => navigate('/registrarse')}>
                                 Registrarse
+                            </Button>
+                        </div>
+                        <div className="landing__actions">
+                            <Button variant="link" size="md" onClick={handleDemo}>
+                                Ver módulos (modo demo)
                             </Button>
                         </div>
                         <p className="landing__hint">
