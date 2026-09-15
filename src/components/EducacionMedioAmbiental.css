@@ -117,11 +117,27 @@
 }
 .educacion__recomendaciones{
   width:100%;
-  background-color:white;
-  border-radius:10px;
-  font-size:calc(0.8rem*var(--font-scale,1));
-  min-height:3rem;
-  box-shadow: 0 0 5px green;
+  background-color: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  font-size: calc(0.85rem * var(--font-scale, 1));
+  color: var(--color-text);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.15);
+}
+.educacion__recomendacion-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  line-height: 1.5;
+  color: var(--color-text);
+}
+.educacion__recomendacion-item:last-child {
+  border-bottom: none;
+}
+[data-theme="dark"] .educacion__recomendaciones {
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
 }
 .educacion__form{
   display:flex;
