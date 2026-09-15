@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
 import { obtenerUsuarios, obtenerIncidenciasPorUsuario } from '../services/incidenciasApi'
+import './ManejarIncidencias.css'
 
-const ESTADO_CONFIG = {
-  PENDIENTE: { bg: '#FFF3E0', color: '#E65100', border: '#FF8F0F', label: 'Pendiente' },
-  EN_PROCESO: { bg: '#E3F2FD', color: '#1565C0', border: '#42A5F5', label: 'En Proceso' },
-  RESUELTO: { bg: '#E8F5E9', color: '#2E7D32', border: '#4CAF50', label: 'Resuelto' },
+const ESTADO_BADGE = {
+  PENDIENTE: 'admin-badge--pending',
+  EN_PROCESO: 'admin-badge--progress',
+  RESUELTO: 'admin-badge--resolved',
 }
 
-const btnBase = {
-  padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer',
-  fontWeight: 600, fontSize: '0.85rem', transition: 'all 0.2s',
+const ESTADO_LABEL = {
+  PENDIENTE: 'Pendiente',
+  EN_PROCESO: 'En Proceso',
+  RESUELTO: 'Resuelto',
 }
 
 export default function GestionarCiudadanos() {
@@ -104,17 +106,11 @@ export default function GestionarCiudadanos() {
         <input
           type="text" placeholder="Buscar por nombre, DNI, email o usuario..."
           value={busqueda} onChange={e => setBusqueda(e.target.value)}
-          style={{
-            flex: 1, minWidth: '250px', padding: '10px 14px',
-            border: '2px solid var(--color-border)', borderRadius: '8px',
-            background: 'var(--color-bg-white)', color: 'var(--color-text)',
-            fontSize: '0.9rem', outline: 'none',
-          }}
+          className="admin-input" style={{ flex: 1, minWidth: '250px' }}
         />
         <div style={{ display: 'flex', gap: '6px' }}>
           {['TODOS', 'CIUDADANO', 'ADMIN'].map(rol => (
-            <button key={rol} onClick={() => setFiltroRol(rol)} style={{
-              ...btnBase,
+            <button key={rol} onClick={() => setFiltroRol(rol)} className="admin-btn" style={{
               background: filtroRol === rol ? 'var(--color-eco-primary, #2E7D32)' : 'var(--color-bg-white)',
               color: filtroRol === rol ? '#fff' : 'var(--color-text)',
               border: filtroRol === rol ? 'none' : '1px solid var(--color-border)',
@@ -150,12 +146,7 @@ export default function GestionarCiudadanos() {
                       <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--color-text)' }}>
                         {usuario.nombreCompleto} {usuario.apellidoCompleto}
                       </h3>
-                      <span style={{
-                        padding: '3px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 600,
-                        background: usuario.rol === 'ADMIN' ? '#E3F2FD' : '#E8F5E9',
-                        color: usuario.rol === 'ADMIN' ? '#1565C0' : '#2E7D32',
-                        border: `1px solid ${usuario.rol === 'ADMIN' ? '#90CAF9' : '#A5D6A7'}`,
-                      }}>{usuario.rol}</span>
+                      <span className={`admin-badge ${usuario.rol === 'ADMIN' ? 'admin-badge--progress' : 'admin-badge--resolved'}`}>{usuario.rol}</span>
                     </div>
                     <div style={{ display: 'flex', gap: '20px', fontSize: '0.82rem', color: 'var(--color-text-secondary)', flexWrap: 'wrap' }}>
                       <span>DNI: <strong style={{ color: 'var(--color-text)' }}>{usuario.dni}</strong></span>
@@ -167,12 +158,10 @@ export default function GestionarCiudadanos() {
                   </div>
 
                   {/* Botón Ver Registros */}
-                  <button onClick={() => verRegistros(usuario)} style={{
-                    ...btnBase,
-                    background: isSelected ? 'var(--color-eco-primary, #2E7D32)' : '#E8F5E9',
-                    color: isSelected ? '#fff' : '#2E7D32',
-                    border: isSelected ? 'none' : '1px solid #A5D6A7',
-                    whiteSpace: 'nowrap',
+                  <button onClick={() => verRegistros(usuario)} className={`admin-btn ${isSelected ? 'admin-btn--primary' : ''}`} style={{
+                    background: isSelected ? undefined : '#E8F5E9',
+                    color: isSelected ? undefined : '#2E7D32',
+                    border: isSelected ? undefined : '1px solid #A5D6A7',
                   }}>
                     {isSelected ? 'Ocultar Registros' : 'Ver Registros'}
                   </button>
@@ -194,20 +183,17 @@ export default function GestionarCiudadanos() {
                       <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>Este usuario no tiene registros de incidencias.</p>
                     ) : (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                        {incidenciasUsuario.map(inc => {
-                          const cfg = ESTADO_CONFIG[inc.estado] || ESTADO_CONFIG.PENDIENTE
-                          return (
-                            <div key={inc.id} style={{
-                              padding: '12px 16px', border: '1px solid var(--color-border)',
-                              borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '12px',
-                            }}>
-                              <div style={{ flex: 1 }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-                                  <strong style={{ fontSize: '0.9rem', color: 'var(--color-text)' }}>{inc.categoria}</strong>
-                                  <span style={{
-                                    padding: '2px 10px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 600,
-                                    background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}`,
-                                  }}>{cfg.label}</span>
+                        {incidenciasUsuario.map(inc => (
+                          <div key={inc.id} style={{
+                            padding: '12px 16px', border: '1px solid var(--color-border)',
+                            borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '12px',
+                          }}>
+                            <div style={{ flex: 1 }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
+                                <strong style={{ fontSize: '0.9rem', color: 'var(--color-text)' }}>{inc.categoria}</strong>
+                                <span className={`admin-badge ${ESTADO_BADGE[inc.estado] || 'admin-badge--pending'}`}>
+                                  {ESTADO_LABEL[inc.estado] || inc.estado}
+                                </span>
                                 </div>
                                 <p style={{ margin: '0', fontSize: '0.82rem', color: 'var(--color-text-secondary)' }}>{inc.descripcion}</p>
                                 <span style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>
