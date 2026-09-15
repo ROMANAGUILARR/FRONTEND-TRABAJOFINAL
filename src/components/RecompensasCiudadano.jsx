@@ -45,6 +45,21 @@ export default function RecompensasCiudadano() {
       }
     }
     cargarPuntos()
+
+    function handleNuevaIncidencia() {
+      const pts = parseInt(localStorage.getItem('puntos') || '0', 10)
+      setPuntos(pts)
+      updatePuntos(pts)
+      cargarInsignias()
+    }
+    async function cargarInsignias() {
+      try {
+        const data = await obtenerInsigniasUsuario()
+        setInsignias(data)
+      } catch {}
+    }
+    window.addEventListener('incidencia-registrada', handleNuevaIncidencia)
+    return () => window.removeEventListener('incidencia-registrada', handleNuevaIncidencia)
   }, [updatePuntos])
 
   useEffect(() => {
