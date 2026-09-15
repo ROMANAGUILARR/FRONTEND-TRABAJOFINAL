@@ -184,16 +184,25 @@
 
 /* Estilos para impresión */
 @media print {
-  body > *:not(.reporte-print-area) {
+  #root {
+    display: block !important;
+  }
+
+  #root * {
     display: none !important;
   }
 
+  .reporte-print-area,
+  .reporte-print-area * {
+    display: revert !important;
+  }
+
   .reporte-print-area {
-    display: block !important;
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     width: 100%;
+    z-index: 99999;
     background: #fff;
     padding: 20px;
   }
@@ -203,8 +212,8 @@
   }
 
   .reporte-container {
-    box-shadow: none;
-    padding: 0;
-    max-width: 100%;
+    box-shadow: none !important;
+    padding: 0 !important;
+    max-width: 100% !important;
   }
 }
