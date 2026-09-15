@@ -39,21 +39,48 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
     pdf.save(`Reporte_${usuario.nombreCompleto}_${usuario.apellidoCompleto}.pdf`)
   }
 
-  async function imprimir() {
+  function imprimir() {
     const elemento = reporteRef.current
-    const canvas = await html2canvas(elemento, { scale: 2, useCORS: true })
-    const imgData = canvas.toDataURL('image/png')
     const ventana = window.open('', '_blank', 'width=800,height=600')
-    ventana.document.write(`<!DOCTYPE html><html><head><title>Reporte</title></head><body style="margin:0;padding:20px;text-align:center;"></body></html>`)
+    if (!ventana) { alert('Permite las ventanas emergentes para imprimir.'); return }
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+  <title>Reporte de Incidencias</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; padding: 30px; color: #111; background: #fff; }
+    .reporte-container { max-width: 800px; margin: 0 auto; }
+    .reporte-header { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; border-bottom: 3px solid #2E7D32; padding-bottom: 16px; }
+    .reporte-logo { width: 70px; height: 70px; object-fit: contain; }
+    .reporte-titulo h1 { font-size: 18px; font-weight: 700; color: #2E7D32; text-transform: uppercase; }
+    .reporte-titulo p { font-size: 12px; color: #666; margin-top: 4px; }
+    .reporte-fecha-solicitud { text-align: right; font-size: 13px; color: #333; margin-bottom: 24px; }
+    .reporte-usuario-nombre { font-size: 15px; font-weight: 600; color: #333; margin-bottom: 16px; }
+    .reporte-tabla { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
+    .reporte-tabla thead th { background: #2E7D32; color: #fff; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 12px; text-transform: uppercase; }
+    .reporte-tabla tbody td { padding: 8px 12px; border-bottom: 1px solid #ddd; color: #333; }
+    .reporte-tabla tbody tr:nth-child(even) { background: #f9f9f9; }
+    .reporte-tabla tbody tr:last-child td { border-bottom: 2px solid #2E7D32; }
+    .reporte-total { font-size: 14px; font-weight: 600; color: #333; margin-bottom: 40px; }
+    .reporte-firma { display: flex; justify-content: space-between; margin-top: 60px; padding-top: 8px; }
+    .reporte-firma-bloque { text-align: center; min-width: 200px; }
+    .reporte-firma-linea { border-top: 1px solid #333; margin-bottom: 4px; }
+    .reporte-firma-label { font-size: 12px; color: #555; }
+    .reporte-estado-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+    .reporte-estado-badge--resuelto { background: #E8F5E9; color: #2E7D32; }
+    .reporte-estado-badge--proceso { background: #E3F2FD; color: #1565C0; }
+    .reporte-estado-badge--pendiente { background: #FFF3E0; color: #E65100; }
+    @media print { body { padding: 0; } }
+  </style>
+</head>
+<body>
+  ${elemento.innerHTML}
+</body>
+</html>`
+    ventana.document.write(html)
     ventana.document.close()
-    const img = ventana.document.createElement('img')
-    img.src = imgData
-    img.style.maxWidth = '100%'
-    img.style.height = 'auto'
-    img.onload = () => {
-      ventana.document.body.appendChild(img)
-      setTimeout(() => ventana.print(), 300)
-    }
+    setTimeout(() => ventana.print(), 500)
   }
 
   function descargarExcel() {
