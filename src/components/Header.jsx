@@ -15,9 +15,7 @@ const obtenerTemaInicial = () => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
 };
 export default function Header({ onMenuClick,onLogout }) {
-  const [temaOscuro, setTemaOscuro] = useState(() => {
-    obtenerTemaInicial()
-  })
+  const [temaOscuro, setTemaOscuro] = useState(obtenerTemaInicial)
   const navigate = useNavigate()
   const [showCerrarSModal, setShowCerrarSModal] = useState(false)
   const { logout, user } = useAuth();
