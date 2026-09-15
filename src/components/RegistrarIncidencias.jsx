@@ -31,9 +31,9 @@ const PUNTOS_POR_INCIDENCIA = 10
 const INSIGNIAS_LOCALES = [
   { nombre: 'Primer reporte', recompensa: 'Bono de S/20 en tu billetera digital para canjear en mercados locales.', requisito: 1 },
   { nombre: 'Reportero activo', recompensa: 'Bono de S/50 en tu billetera digital + recarga de 10 GB móviles.', requisito: 5 },
-  { nombre: 'Guardián del barrio', recompensa: 'Vale de S/100 en canasta familiar + reconocimiento público en redes sociales.', requisito: 10 },
-  { nombre: 'EcoHéroe', recompensa: 'Vale de S/200 en canasta familiar + kit de productos ecológicos para el hogar.', requisito: 15 },
-  { nombre: 'Embajador EcoSólido', recompensa: 'Vale de S/500 en canasta familiar + kit EcoSólido + certificado de Embajador Ambiental.', requisito: 20 },
+  { nombre: 'Guardian del barrio', recompensa: 'Vale de S/100 en canasta familiar + reconocimiento público en redes sociales.', requisito: 10 },
+  { nombre: 'EcoHeroe', recompensa: 'Vale de S/200 en canasta familiar + kit de productos ecológicos para el hogar.', requisito: 15 },
+  { nombre: 'Embajador EcoSolido', recompensa: 'Vale de S/500 en canasta familiar + kit EcoSólido + certificado de Embajador Ambiental.', requisito: 20 },
 ]
 
 function evaluarInsigniasLocales(totalIncidencias, insigniasYaDesbloqueadas = []) {
@@ -316,6 +316,16 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
         const incidenciasLocales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]')
         incidenciasLocales.push(nuevaIncidencia)
         localStorage.setItem('incidenciasLocales', JSON.stringify(incidenciasLocales))
+
+        // Evaluar insignias en modo demo
+        const insigniasDesbloqueadas = JSON.parse(localStorage.getItem('insigniasDesbloqueadas') || '[]')
+        const nuevasInsigniasLocales = evaluarInsigniasLocales(incidenciasLocales.length, insigniasDesbloqueadas)
+        if (nuevasInsigniasLocales.length > 0) {
+          const todasInsignias = [...insigniasDesbloqueadas, ...nuevasInsigniasLocales]
+          localStorage.setItem('insigniasDesbloqueadas', JSON.stringify(todasInsignias))
+          setNuevasInsignias(nuevasInsigniasLocales)
+        }
+
         window.dispatchEvent(new Event('incidencia-registrada'))
       }
 
