@@ -116,9 +116,9 @@ export default function RecompensasCiudadano() {
                     <h4 className="font-bold text-eco-text mb-2" style={{ fontSize: fs(1.15) }}>{insignia.nombre}</h4>
                     <img src={IMAGENES_INSIGNIAS[insignia.idInsignia]} alt={insignia.nombre} className="w-24 h-24 mx-auto mb-3" />
                     <p className="text-eco-text-secondary mb-3" style={{ fontSize: fs(0.9) }}>{insignia.descripcion}</p>
-                    <div className="bg-eco-primary/10 dark:bg-green-900/30 border border-eco-primary/30 rounded-lg p-3">
-                      <span className="font-bold text-eco-primary block mb-1" style={{ fontSize: fs(0.85) }}>Recompensa</span>
-                      <span className="text-eco-text font-semibold block" style={{ fontSize: fs(0.9) }}>{insignia.recompensa}</span>
+                    <div style={{ backgroundColor: '#2E7D32', borderRadius: '8px', padding: '12px' }}>
+                      <span style={{ color: '#ffffff', fontWeight: 700, display: 'block', marginBottom: '4px', fontSize: fs(0.85) }}>Recompensa</span>
+                      <span style={{ color: '#ffffff', fontWeight: 600, display: 'block', fontSize: fs(0.9) }}>{insignia.recompensa}</span>
                     </div>
                   </Card>
                 ))}
@@ -144,9 +144,9 @@ export default function RecompensasCiudadano() {
                     <p className="text-eco-text-secondary mb-2" style={{ fontSize: fs(0.85) }}>
                       Registra <strong className="text-eco-primary">{insignia.requisitoIncidencias}</strong> incidencias para desbloquear.
                     </p>
-                    <div className="bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg p-3">
-                      <span className="font-bold text-eco-text block mb-1" style={{ fontSize: fs(0.85) }}>Recompensa</span>
-                      <span className="text-eco-text font-semibold block" style={{ fontSize: fs(0.9) }}>{insignia.recompensa}</span>
+                    <div style={{ backgroundColor: '#37474F', borderRadius: '8px', padding: '12px' }}>
+                      <span style={{ color: '#ffffff', fontWeight: 700, display: 'block', marginBottom: '4px', fontSize: fs(0.85) }}>Recompensa</span>
+                      <span style={{ color: '#ffffff', fontWeight: 600, display: 'block', fontSize: fs(0.9) }}>{insignia.recompensa}</span>
                     </div>
                   </Card>
                 ))}
