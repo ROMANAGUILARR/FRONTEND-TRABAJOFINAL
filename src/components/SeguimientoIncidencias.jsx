@@ -59,31 +59,13 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
   const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition()
 
   function cargarDatosDemo() {
-    const locales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]')
-    const todasInc = locales.map((inc, i) => ({
-      id: 100 + i,
-      categoria: inc.categoria,
-      descripcion: inc.descripcion,
-      estado: 'PENDIENTE',
-      fecha: inc.fecha,
-      direccionTexto: inc.direccionTexto
-    }))
-    const pendientes = locales.length
-    setMetricas({ total: locales.length, enProceso: 0, pendientes, resueltos: 0 })
-    setIncidencias(todasInc)
+    localStorage.removeItem('incidenciasLocales')
+    localStorage.removeItem('todasIncidenciasDemo')
+    setMetricas({ total: 0, enProceso: 0, pendientes: 0, resueltos: 0 })
+    setIncidencias([])
   }
 
-  // Refrescar datos cuando se registra una incidencia en modo demo
-  useEffect(() => {
-    function handleNuevaIncidencia() {
-      const token = localStorage.getItem('token')
-      if (token === 'demo-token' || token === 'demo-token-admin') {
-        cargarDatosDemo()
-      }
-    }
-    window.addEventListener('incidencia-registrada', handleNuevaIncidencia)
-    return () => window.removeEventListener('incidencia-registrada', handleNuevaIncidencia)
-  }, [])
+
 
   useEffect(() => {
     async function obtenerMetricas() {
