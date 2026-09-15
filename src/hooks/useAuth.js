@@ -142,6 +142,7 @@ export function AuthProvider({ children }) {
     seguimiento: ['CIUDADANO'],
     educacion: ['CIUDADANO'],
     insignias: ['CIUDADANO'],
+    ciudadanos: ['ADMIN'],
     gestion: ['ADMIN'],
     dashboard: ['ADMIN'],
   };
