@@ -15,6 +15,7 @@ import { useAuth } from './hooks/useAuth'
 import ProtectedRoute, { PublicRoute } from './components/ProtectedRoute'
 import Dashboard from './components/Dashboard'
 import ManejarIncidencias from './components/ManejarIncidencias'
+import GestionarCiudadanos from './components/GestionarCiudadanos'
 import DefaultRedirect from './components/DefaultRedirect'
 
 // Componente de diseño para el layout principal (con Header y Sidebar)
@@ -85,6 +86,11 @@ function App() {
           <Route path="/gestion" element={
             <ProtectedRoute module="gestion">
               < ManejarIncidencias/>
+            </ProtectedRoute>
+          } />
+          <Route path="/ciudadanos" element={
+            <ProtectedRoute module="ciudadanos">
+              <GestionarCiudadanos />
             </ProtectedRoute>
           } />
           <Route path="/dashboard" element={

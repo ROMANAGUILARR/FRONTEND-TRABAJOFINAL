@@ -1,5 +1,5 @@
 import { MENSAJE_FOTOS_NO_VISIBLES } from '../utils/iaDescripcion'
-import { MOCK_PUNTOS, MOCK_INSIGNIAS } from './mockData'
+import { MOCK_PUNTOS, MOCK_INSIGNIAS, MOCK_USUARIOS } from './mockData'
 
 function esDemo() {
   const token = localStorage.getItem('token')
@@ -251,6 +251,22 @@ export function esErrorTecnicoIA(mensaje) {
     m.includes('error inesperado') ||
     m.includes('error de hugging')
   )
+}
+
+export async function obtenerUsuarios() {
+  if (esDemo()) return MOCK_USUARIOS
+
+  const token = localStorage.getItem('token')
+  const response = await fetch(`${API_BASE}/usuario/listar`, {
+    method: 'GET',
+    headers: { 'Authorization': `Bearer ${token}` }
+  })
+
+  if (!response.ok) {
+    throw new Error('Error al obtener usuarios')
+  }
+
+  return response.json()
 }
 
 export { MENSAJE_FOTOS_NO_VISIBLES }

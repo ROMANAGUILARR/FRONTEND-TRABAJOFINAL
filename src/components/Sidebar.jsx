@@ -38,8 +38,16 @@ const MENU_ITEMS = [
     roles: ['CIUDADANO']
   },
     { 
+    id: 'ciudadanos', 
+    label: 'Gestión de Ciudadanos', 
+    icon: IconRegistro, 
+    path: '/ciudadanos',
+    enabled: true,
+    roles: ['ADMIN']
+  },
+  { 
     id: 'gestion', 
-    label: 'Gestión de ciudadanos', 
+    label: 'Gestión de Incidencias', 
     icon: IconIncidencias, 
     path: '/gestion',
     enabled: true,
