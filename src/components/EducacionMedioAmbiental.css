@@ -11,10 +11,8 @@
 }
 .registrar__font2-controls {
   display: flex;
-  width:20%;
-  gap:10px;
-  padding:20px 0;
-  justify-content: right;
+  gap: 8px;
+  align-items: center;
 }
 .registrar__font2-controls button {
   border: 1px solid var(--color-border);
@@ -164,7 +162,6 @@
 .educacion__title {
   font-size:calc(1.5rem*var(--font-scale,1));
   font-weight: 700;
-  width:50%;
   color: var(--color-text);
   margin:0;
 }
