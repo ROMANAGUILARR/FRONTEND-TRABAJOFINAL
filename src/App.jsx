@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, useOutletCont
 import Header from './components/Header'
 import Sidebar from './components/Sidebar'
 import Login from './components/Login'
-import Landing from './components/Landing'
 import MiCuenta from './components/MiCuenta'
 import RegistrarIncidencias from './components/RegistrarIncidencias'
 import SeguimientoIncidencias from './components/SeguimientoIncidencias'
@@ -18,7 +17,7 @@ import ProtectedRoute, { PublicRoute } from './components/ProtectedRoute'
 import Dashboard from './components/Dashboard'
 import ManejarIncidencias from './components/ManejarIncidencias'
 import GestionarCiudadanos from './components/GestionarCiudadanos'
-import DefaultRedirect from './components/DefaultRedirect'
+import LandingPage from './components/LandingPage'
 
 // Componente de diseño para el layout principal (con Header y Sidebar)
 function MainLayout() {
@@ -65,6 +64,7 @@ function App() {
     <Router>
       <Routes>
         {/* Rutas públicas */}
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={
           <PublicRoute>
             <Login />
@@ -72,11 +72,6 @@ function App() {
         } />
         <Route path="/registrarse" element={<Registrarse />} />
         <Route path="/restablecer" element={<RestablecerContra />} />
-        <Route path="/" element={
-          <PublicRoute>
-            <Landing />
-          </PublicRoute>
-        } />
         <Route path="/cuenta" element={
           <ProtectedRoute>
             <MiCuenta />
@@ -120,11 +115,10 @@ function App() {
               <RecompensasCiudadano />
             </ProtectedRoute>
           } />
-        <Route index element={<DefaultRedirect />} />
         </Route>
         
-        {/* Redirigir rutas desconocidas */}
-        <Route path="*" element={<DefaultRedirect />} />
+        {/* Rutas desconocidas → landing */}
+        <Route path="*" element={<LandingPage />} />
       </Routes>
     </Router>
   )

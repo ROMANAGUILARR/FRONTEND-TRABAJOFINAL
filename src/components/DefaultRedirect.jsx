@@ -17,6 +17,7 @@ export default function DefaultRedirect() {
     )
   }
 
+  // Si no está autenticado, ir a la landing pública
   if (!isAuthenticated) {
     return <Navigate to="/" replace />
   }
