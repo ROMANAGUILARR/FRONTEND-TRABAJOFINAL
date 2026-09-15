@@ -142,12 +142,19 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
     pdf.line(pageWidth - margin - 70, y, pageWidth - margin - 10, y)
     pdf.text('Fecha: ' + fechaHoy, pageWidth - margin - 60, y + 5)
 
-    // Imprimir - abrir PDF en nueva ventana
+    // Imprimir - usar iframe oculto (no requiere popup)
     const blob = pdf.output('blob')
     const url = URL.createObjectURL(blob)
-    const win = window.open(url, '_blank')
-    if (win) {
-      win.onload = () => { win.print() }
+    const iframe = document.createElement('iframe')
+    iframe.style.display = 'none'
+    iframe.src = url
+    document.body.appendChild(iframe)
+    iframe.onload = () => {
+      iframe.contentWindow.print()
+      setTimeout(() => {
+        URL.revokeObjectURL(url)
+        document.body.removeChild(iframe)
+      }, 2000)
     }
   }
 
