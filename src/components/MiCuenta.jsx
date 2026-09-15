@@ -56,15 +56,9 @@ export default function MiCuenta() {
 
                 {/* Acciones */}
                 <div className="flex flex-col gap-3">
-                    {esAdmin ? (
-                        <Button variant="primary" size="lg" fullWidth onClick={() => navigate('/dashboard')}>
-                            Ir al Dashboard
-                        </Button>
-                    ) : (
-                        <Button variant="primary" size="lg" fullWidth onClick={() => navigate('/registro')}>
-                            Ir a Reportar Incidencias
-                        </Button>
-                    )}
+                    <Button variant="secondary" size="lg" fullWidth onClick={() => navigate(-1)}>
+                        Volver
+                    </Button>
                     <Button
                         variant="danger"
                         size="lg"
