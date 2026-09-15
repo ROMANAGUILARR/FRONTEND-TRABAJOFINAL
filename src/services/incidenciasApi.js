@@ -140,7 +140,11 @@ export async function subirFotosACloudinary(archivos) {
 }
 
 export async function registrarIncidencia(categoria, descripcion, urlsFotos, archivos, direccionTexto, latitud, longitud) {
-  if (esDemo()) return { mensaje: 'Incidencia registrada exitosamente (modo demo)', puntosGanados: 15 }
+  if (esDemo()) {
+    const puntosActuales = parseInt(localStorage.getItem('puntos') || '0', 10)
+    localStorage.setItem('puntos', String(puntosActuales + 15))
+    return { mensaje: 'Incidencia registrada exitosamente (modo demo)', puntosGanados: 15 }
+  }
 
   const formData = new FormData();
   const incidenciaBlob = new Blob([
