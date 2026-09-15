@@ -39,8 +39,20 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
     pdf.save(`Reporte_${usuario.nombreCompleto}_${usuario.apellidoCompleto}.pdf`)
   }
 
-  function imprimir() {
-    window.print()
+  async function imprimir() {
+    const elemento = reporteRef.current
+    const canvas = await html2canvas(elemento, { scale: 2, useCORS: true, backgroundColor: '#ffffff' })
+    const imgData = canvas.toDataURL('image/png')
+    const printWindow = window.open('')
+    printWindow.document.write('<html><head><title>Reporte</title></head><body style="margin:0;text-align:center;"></body></html>')
+    const img = printWindow.document.createElement('img')
+    img.src = imgData
+    img.style.width = '100%'
+    img.style.height = 'auto'
+    printWindow.document.body.appendChild(img)
+    img.onload = function() {
+      printWindow.print()
+    }
   }
 
   function descargarExcel() {
