@@ -183,7 +183,7 @@ export async function registrarIncidencia(categoria, descripcion, urlsFotos, arc
 }
 
 export async function obtenerPuntosUsuario() {
-  if (esDemo()) return MOCK_PUNTOS
+  if (esDemo()) return parseInt(localStorage.getItem('puntos') || String(MOCK_PUNTOS), 10)
 
   const token = localStorage.getItem("token");
   console.log('Token puntos:', token)
@@ -205,7 +205,13 @@ export async function obtenerPuntosUsuario() {
 }
 
 export async function obtenerInsigniasUsuario() {
-  if (esDemo()) return MOCK_INSIGNIAS
+  if (esDemo()) {
+    const desbloqueadasLocal = JSON.parse(localStorage.getItem('insigniasDesbloqueadas') || '[]')
+    return MOCK_INSIGNIAS.map(ins => ({
+      ...ins,
+      desbloqueada: ins.desbloqueada || desbloqueadasLocal.includes(ins.nombre)
+    }))
+  }
 
   const token = localStorage.getItem("token");
   const response = await fetch(`${API_BASE}/insignias/mis-insignias`, {

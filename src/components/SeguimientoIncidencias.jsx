@@ -62,7 +62,20 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
       try {
         const token = localStorage.getItem('token')
         if (token === 'demo-token' || token === 'demo-token-admin') {
-          setMetricas(MOCK_METRICAS)
+          const locales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]')
+          const todasInc = [...MOCK_INCIDENCIAS, ...locales.map((inc, i) => ({
+            id: 100 + i,
+            categoria: inc.categoria,
+            descripcion: inc.descripcion,
+            estado: 'PENDIENTE',
+            fecha: inc.fecha,
+            direccionTexto: inc.direccionTexto
+          }))]
+          const enProceso = MOCK_METRICAS.enProceso
+          const pendientes = MOCK_METRICAS.pendientes + locales.length
+          const resueltos = MOCK_METRICAS.resueltos
+          setMetricas({ total: MOCK_METRICAS.total + locales.length, enProceso, pendientes, resueltos })
+          setIncidencias(todasInc)
           return
         }
         const response = await fetch(`${API_BASE}/incidencias/metricas`, {
@@ -86,7 +99,16 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
       try {
         const token = localStorage.getItem('token')
         if (token === 'demo-token' || token === 'demo-token-admin') {
-          setIncidencias(MOCK_INCIDENCIAS)
+          const locales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]')
+          const todasInc = [...MOCK_INCIDENCIAS, ...locales.map((inc, i) => ({
+            id: 100 + i,
+            categoria: inc.categoria,
+            descripcion: inc.descripcion,
+            estado: 'PENDIENTE',
+            fecha: inc.fecha,
+            direccionTexto: inc.direccionTexto
+          }))]
+          setIncidencias(todasInc)
           return
         }
         const response = await fetch(`${API_BASE}/incidencias/seguir`, {
