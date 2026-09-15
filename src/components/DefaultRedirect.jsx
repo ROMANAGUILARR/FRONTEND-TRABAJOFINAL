@@ -1,15 +1,12 @@
-import { useEffect } from "react"
 import { Navigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 
+/**
+ * Redirige al usuario autenticado a su módulo según su rol.
+ * Si no está autenticado, lo envía a la landing pública.
+ */
 export default function DefaultRedirect() {
-  const { user, isLoading, isAuthenticated, login } = useAuth()
-
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      login('demo', 'demo')
-    }
-  }, [isLoading, isAuthenticated])
+  const { user, isLoading, isAuthenticated } = useAuth()
 
   if (isLoading) {
     return (
@@ -21,12 +18,7 @@ export default function DefaultRedirect() {
   }
 
   if (!isAuthenticated) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <p>Cargando...</p>
-      </div>
-    )
+    return <Navigate to="/" replace />
   }
 
   if (user?.rol === 'ADMIN') {

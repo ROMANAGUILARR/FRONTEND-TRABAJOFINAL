@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from './ui/Button'
 import Input from './ui/Input'
+import { useAuth } from '../hooks/useAuth'
 import './Registrarse.css'
 
 export default function Registrarse() {
     const navigate = useNavigate();
-    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
+    const { login } = useAuth();
+    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8081'
     const [formData, setFormData] = useState({
         nombre: '', apellido: '', email: '', telefono: '', DNI: '',
         nombreUsuario: '', contrasena: '', confirmarContrasena: '',
@@ -56,8 +58,18 @@ export default function Registrarse() {
                 throw new Error(errorText);
             }
 
-            setSuccess('Registro exitoso! Redirigiendo al login...');
-            setTimeout(() => navigate("/login"), 2000);
+            setSuccess('Registro exitoso! Ingresando al programa...');
+            // Auto-login: el usuario queda registrado e ingresa directo al programa
+            const resultadoLogin = await login(formData.nombreUsuario, formData.contrasena);
+            if (resultadoLogin.success) {
+                setTimeout(() => {
+                    navigate(resultadoLogin.rol === 'ADMIN' ? '/dashboard' : '/registro');
+                }, 1200);
+            } else {
+                // Si falla el auto-login, enviar al login manual
+                setSuccess('Registro exitoso! Redirigiendo al login...');
+                setTimeout(() => navigate("/login"), 2000);
+            }
         } catch (error) {
             setError(error.message);
         }

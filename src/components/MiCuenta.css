@@ -1,0 +1,52 @@
+/* ===== Mi Cuenta ===== */
+
+.micuenta__avatar {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: rgba(46, 125, 50, 0.1);
+    color: var(--eco-primary, #2e7d32);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.micuenta__avatar svg {
+    width: 40px;
+    height: 40px;
+}
+
+/* Filas de datos */
+.micuenta__datos {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    padding: 16px;
+    gap: 12px;
+}
+
+.micuenta__fila {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.micuenta__fila + .micuenta__fila {
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    padding-top: 12px;
+}
+
+.micuenta__etiqueta {
+    font-size: 0.9rem;
+    color: var(--eco-text-secondary, #555);
+    font-weight: 500;
+}
+
+.micuenta__valor {
+    font-size: 0.95rem;
+    color: var(--eco-text, #1a1a1a);
+    font-weight: 600;
+    text-align: right;
+    word-break: break-word;
+}

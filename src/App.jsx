@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, useOutletCont
 import Header from './components/Header'
 import Sidebar from './components/Sidebar'
 import Login from './components/Login'
+import Landing from './components/Landing'
+import MiCuenta from './components/MiCuenta'
 import RegistrarIncidencias from './components/RegistrarIncidencias'
 import SeguimientoIncidencias from './components/SeguimientoIncidencias'
 import EducacionMedioAmbiental from './components/EducacionMedioAmbiental'
@@ -70,6 +72,16 @@ function App() {
         } />
         <Route path="/registrarse" element={<Registrarse />} />
         <Route path="/restablecer" element={<RestablecerContra />} />
+        <Route path="/" element={
+          <PublicRoute>
+            <Landing />
+          </PublicRoute>
+        } />
+        <Route path="/cuenta" element={
+          <ProtectedRoute>
+            <MiCuenta />
+          </ProtectedRoute>
+        } />
         
         {/* Ruta del layout principal */}
         <Route element={<MainLayout />}>
