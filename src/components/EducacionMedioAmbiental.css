@@ -152,15 +152,14 @@
 .educacion__dropdown{
   margin-left:5px;
   padding:5px;
-  border-radius:4px;
-  font-family: var(--font-sans);
-}
-[data-theme="dark"] .educacion__dropdown{
   border: 2px solid var(--color-border);
+  border-radius: 4px;
+  font-family: var(--font-sans);
   color: var(--color-text);
   background: var(--color-bg-white);
-  border-radius: var(--radius-md);
-  transition: border-color 0.2s, box-shadow 0.2s;
+}
+[data-theme="dark"] .educacion__dropdown{
+  border-color: var(--color-border);
 }
 .educacion__title {
   font-size:calc(1.5rem*var(--font-scale,1));
