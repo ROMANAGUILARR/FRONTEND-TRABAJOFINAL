@@ -59,13 +59,13 @@ export const MOCK_RECOMENDACIONES_GENERICAS = [
 ]
 
 export const MOCK_USUARIOS = [
-  { idUsuario: 1, nombreCompleto: 'Maria', apellidoCompleto: 'Garcia Lopez', dni: '71234567', telefono: '987654321', correoElectronico: 'maria.garcia@email.com', nombreUsuario: 'maria_gl', puntos: 150, rol: 'CIUDADANO' },
-  { idUsuario: 2, nombreCompleto: 'Carlos', apellidoCompleto: 'Rodriguez Perez', dni: '72345678', telefono: '987123456', correoElectronico: 'carlos.rodriguez@email.com', nombreUsuario: 'carlos_rp', puntos: 85, rol: 'CIUDADANO' },
-  { idUsuario: 3, nombreCompleto: 'Ana', apellidoCompleto: 'Martinez Silva', dni: '73456789', telefono: '986543210', correoElectronico: 'ana.martinez@email.com', nombreUsuario: 'ana_ms', puntos: 200, rol: 'CIUDADANO' },
-  { idUsuario: 4, nombreCompleto: 'Luis', apellidoCompleto: 'Fernandez Torres', dni: '74567890', telefono: '985432109', correoElectronico: 'luis.fernandez@email.com', nombreUsuario: 'luis_ft', puntos: 30, rol: 'CIUDADANO' },
-  { idUsuario: 5, nombreCompleto: 'Sofia', apellidoCompleto: 'Lopez Ramirez', dni: '75678901', telefono: '984321098', correoElectronico: 'sofia.lopez@email.com', nombreUsuario: 'sofia_lr', puntos: 120, rol: 'CIUDADANO' },
+  { idUsuario: 1, nombreCompleto: 'Maria', apellidoCompleto: 'Garcia Lopez', dni: '71234567', telefono: '987654321', correoElectronico: 'maria.garcia@email.com', nombreUsuario: 'maria_gl', puntos: 45, rol: 'CIUDADANO' },
+  { idUsuario: 2, nombreCompleto: 'Carlos', apellidoCompleto: 'Rodriguez Perez', dni: '72345678', telefono: '987123456', correoElectronico: 'carlos.rodriguez@email.com', nombreUsuario: 'carlos_rp', puntos: 30, rol: 'CIUDADANO' },
+  { idUsuario: 3, nombreCompleto: 'Ana', apellidoCompleto: 'Martinez Silva', dni: '73456789', telefono: '986543210', correoElectronico: 'ana.martinez@email.com', nombreUsuario: 'ana_ms', puntos: 60, rol: 'CIUDADANO' },
+  { idUsuario: 4, nombreCompleto: 'Luis', apellidoCompleto: 'Fernandez Torres', dni: '74567890', telefono: '985432109', correoElectronico: 'luis.fernandez@email.com', nombreUsuario: 'luis_ft', puntos: 15, rol: 'CIUDADANO' },
+  { idUsuario: 5, nombreCompleto: 'Sofia', apellidoCompleto: 'Lopez Ramirez', dni: '75678901', telefono: '984321098', correoElectronico: 'sofia.lopez@email.com', nombreUsuario: 'sofia_lr', puntos: 30, rol: 'CIUDADANO' },
   { idUsuario: 6, nombreCompleto: 'Pedro', apellidoCompleto: 'Sanchez Diaz', dni: '76789012', telefono: '983210987', correoElectronico: 'pedro.sanchez@email.com', nombreUsuario: 'pedro_sd', puntos: 0, rol: 'CIUDADANO' },
-  { idUsuario: 7, nombreCompleto: 'Laura', apellidoCompleto: 'Gomez Herrera', dni: '77890123', telefono: '982109876', correoElectronico: 'laura.gomez@email.com', nombreUsuario: 'laura_gh', puntos: 60, rol: 'CIUDADANO' },
+  { idUsuario: 7, nombreCompleto: 'Laura', apellidoCompleto: 'Gomez Herrera', dni: '77890123', telefono: '982109876', correoElectronico: 'laura.gomez@email.com', nombreUsuario: 'laura_gh', puntos: 15, rol: 'CIUDADANO' },
   { idUsuario: 8, nombreCompleto: 'Admin', apellidoCompleto: 'EcoSolido', dni: '12345678', telefono: '999888777', correoElectronico: 'admin@ecosolido.com', nombreUsuario: 'admin', puntos: 0, rol: 'ADMIN' },
 ]
 
