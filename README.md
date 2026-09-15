@@ -4,20 +4,7 @@ Aplicativo web para el reporte, seguimiento y gestión de incidencias ambientale
 
 ---
 
-## 📖 Tabla de contenidos
-
-- [📝 Descripción](#-descripción)
-- [🔴 Problema que soluciona](#-problema-que-soluciona)
-- [🏗️ Arquitectura](#-arquitectura)
-- [💎 Características](#-características)
-- [💻 Tecnologías usadas](#-tecnologías-usadas)
-- [🛠️ Configuración](#-configuración)
-- [▶️ Ejecución](#-ejecución)
-- [📁 Estructura del proyecto](#-estructura-del-proyecto)
-- [⚙️ Funcionalidades principales](#-funcionalidades-principales)
----
-
-## 📝 Descripción
+## 📝 Descripción del proyecto
 
 **EcoSolido** es una plataforma web frontend orientada a la gestión ambiental comunitaria. La aplicación permite a los ciudadanos registrar incidencias ecológicas (acumulación de basura, contaminación del agua, quema de residuos, entre otras), hacer seguimiento en tiempo real del estado de sus reportes y obtener insignias y recompensas por su compromiso ambiental.
 
@@ -41,35 +28,26 @@ Y los administradores pueden:
 
 ---
 
-## 🏗️ Arquitectura
+## ⚙️ Funcionalidades principales
 
-```text
-┌─────────────────┐     HTTP/REST     ┌─────────────────┐     JDBC      ┌──────────┐
-│  React + Vite   │ ────────────────► │   Spring Boot   │ ────────────► │  MySQL   │
-│     :5173       │                   │     :8080       │               │  :3306   │
-└─────────────────┘                   └────────┬────────┘               └──────────┘
-                                               │
-                                               ├── 🗺️ Leaflet (mapas interactivos)
-                                               ├── 🤖 API de IA (descripción automática)
-                                               └── ☁️ Cloudinary (almacenamiento de fotos)
-```
+### 👤 Rol Ciudadano
+- Registro e inicio de sesión.
+- Registro de incidencias ambientales con fotos, descripción automática por IA y ubicación en mapa interactivo.
+- Seguimiento del estado de las incidencias (Pendiente → En Proceso → Resuelto).
+- Búsqueda por fecha, título o ubicación (con soporte de voz).
+- Visualización de insignias y recompensas obtenidas.
+- Educación medio ambiental.
 
----
+### 🛡️ Rol Administrador
+- Dashboard de estadísticas con Power BI.
+- Gestión de incidencias (editar, eliminar).
+- Gestión de ciudadanos registrados.
+- Generación de reportes en PDF y Excel por ciudadano.
 
-## 💎 Características
-
-- 🔐 Autenticación de usuarios (registro, inicio de sesión y recuperación de contraseña).
-- 🛡️ Seguridad mediante JWT.
-- 👥 Gestión de roles (Ciudadano y Administrador).
-- 📸 Registro de incidencias con fotos, descripción automática por IA y ubicación en mapa.
-- 🗺️ Mapas interactivos con Leaflet para seleccionar ubicación.
-- 📊 Dashboard de estadísticas con Power BI integrado.
-- 🏆 Sistema de recompensas e insignias por participación.
-- 📄 Generación de reportes en PDF y Excel.
-- 🎙️ Reconocimiento de voz para búsquedas.
-- 🌙 Modo oscuro.
-- 📱 Interfaz moderna y responsiva.
-- 🔗 Comunicación con backend mediante API REST.
+### 🎮 Modo Demo
+- Acceso sin necesidad de backend.
+- Datos de prueba precargados.
+- Funcionalidades limitadas para exploración.
 
 ---
 
@@ -164,28 +142,3 @@ src/
 ├── App.jsx                    # Componente principal con rutas
 └── main.jsx                   # Punto de entrada
 ```
-
----
-
-## ⚙️ Funcionalidades principales
-
-### 👤 Rol Ciudadano
-- Registro e inicio de sesión.
-- Registro de incidencias ambientales con fotos, descripción automática por IA y ubicación en mapa interactivo.
-- Seguimiento del estado de las incidencias (Pendiente → En Proceso → Resuelto).
-- Búsqueda por fecha, título o ubicación (con soporte de voz).
-- Visualización de insignias y recompensas obtenidas.
-- Educación medio ambiental.
-
-### 🛡️ Rol Administrador
-- Dashboard de estadísticas con Power BI.
-- Gestión de incidencias (editar, eliminar).
-- Gestión de ciudadanos registrados.
-- Generación de reportes en PDF y Excel por ciudadano.
-
-### 🎮 Modo Demo
-- Acceso sin necesidad de backend.
-- Datos de prueba precargados.
-- Funcionalidades limitadas para exploración.
-
-
