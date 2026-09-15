@@ -11,7 +11,12 @@ const ARTICULOS = [
     resumen: 'Descubre prácticas simples pero efectivas para disminuir tu impacto ambiental en el día a día.',
     categoria: 'Huella de Carbono',
     imagen: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&h=250&fit=crop',
-    fecha: '2026-06-01'
+    fecha: '2026-06-01',
+    contenido: [
+      'La huella de carbono es la cantidad total de gases de efecto invernadero que emitimos con nuestras acciones diarias. En Perú, cada persona genera en promedio 1.8 toneladas de CO₂ al año. Reducirla es clave para combatir el cambio climático.',
+      'Empieza por lo simple: apaga las luces cuando no las uses, usa transporte público o bicicleta, reduce el consumo de carne roja (su producción genera altas emisiones), y prefiere productos locales para evitar la contaminación del transporte.',
+      'En tu hogar, cambia las bombillas por LED, desconecta aparatos que no uses y lava la ropa con agua fría. Cada pequeño gesto suma. Si cada persona en Lima redujera su huella un 10%, se evitarían miles de toneladas de CO₂ al año.'
+    ]
   },
   {
     id: 2,
@@ -19,7 +24,12 @@ const ARTICULOS = [
     resumen: 'Aprende a separar correctamente tus residuos y contribuye al cuidado del medio ambiente.',
     categoria: 'Reciclaje',
     imagen: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=400&h=250&fit=crop',
-    fecha: '2026-05-28'
+    fecha: '2026-05-28',
+    contenido: [
+      'El reciclaje es uno de los gestos más poderosos que podemos hacer por el planeta. En Perú solo se recicla el 5% de los residuos generados. Aprender a separar correctamente es el primer paso para cambiar esta realidad.',
+      'Separa tus residuos en tres grupos: orgánicos (restos de comida, cáscaras), inorgánicos aprovechables (plástico, papel, cartón, vidrio, metal) e inorgánicos no aprovechables (pañales, colillas, papeles sucios). Lava los envases antes de depositarlos.',
+      'En muchas ciudades peruanas ya existen puntos de acopio y programas municipales de reciclaje. Consulta en tu municipalidad dónde puedes llevar tus materiales reciclables. El vidrio se puede reciclar infinitamente, y reciclar una tonelada de papel salva 17 árboles.'
+    ]
   },
   {
     id: 3,
@@ -27,7 +37,12 @@ const ARTICULOS = [
     resumen: 'Conoce cómo los plásticos de un solo uso afectan la vida marina y qué puedes hacer al respecto.',
     categoria: 'Contaminación',
     imagen: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=400&h=250&fit=crop',
-    fecha: '2026-05-25'
+    fecha: '2026-05-25',
+    contenido: [
+      'Cada año, más de 8 millones de toneladas de plástico llegan a los océanos del mundo. El Perú, con su larga costa del Pacífico, es especialmente afectado. Los plásticos tardan más de 400 años en degradarse y fragmentan en microplásticos que entran en la cadena alimentaria.',
+      'Los plásticos de un solo uso son los más peligrosos: bolsas, botellas, popotes y envoltorios. Miles de tortugas marinas, aves y peces mueren cada año al ingerirlos o enredarse en ellos. En las costas peruanas se han encontrado ballenas y leones marinos con plástico en sus estómagos.',
+      '¿Qué puedes hacer? Usa bolsas reutilizadas, lleva tu propia botella de agua, rechaza los popotes y envoltorios innecesarios. Participa en limpiezas de playas. Cada botella que reutilizas evita que llegue al mar. El cambio empieza con tus decisiones diarias.'
+    ]
   },
   {
     id: 4,
@@ -35,7 +50,12 @@ const ARTICULOS = [
     resumen: 'Explora las diferentes fuentes de energía limpia y cómo están transformando nuestro mundo.',
     categoria: 'Energía',
     imagen: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=400&h=250&fit=crop',
-    fecha: '2026-05-20'
+    fecha: '2026-05-20',
+    contenido: [
+      'Las energías renovables provienen de fuentes naturales inagotables: el sol, el viento, el agua y la biomasa. Perú tiene un enorme potolar: la costa recibe radiación solar intensa, los Andes tienen corrientes de viento constantes y la selva cuenta con ríos caudalosos.',
+      'La energía solar ha crecido significativamente en el país. Parques solares en Moquegua y Tacna ya generan electricidad para miles de hogares. La energía eólica en Marcona y Talara complementa la matriz energética. Estas fuentes no generan emisiones de CO₂ ni contaminan el agua.',
+      'Tú también puedes contribuir: instala paneles solares si es posible, elige proveedores de energía limpia, y apoya políticas de transición energética. Un futuro con energía limpia significa aire más puro, menos cambio climático y empleos verdes para las nuevas generaciones.'
+    ]
   },
   {
     id: 5,
@@ -43,7 +63,12 @@ const ARTICULOS = [
     resumen: 'Aprende a crear tu propio compost y reduce significativamente la basura que generas.',
     categoria: 'Compostaje',
     imagen: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=250&fit=crop',
-    fecha: '2026-05-15'
+    fecha: '2026-05-15',
+    contenido: [
+      'El compostaje convierte los residuos orgánicos (cáscaras de frutas, verduras, café, cáscaras de huevo) en abono natural para las plantas. Aproximadamente el 50% de la basura que generamos en casa es orgánica, así que compostar reduce enormemente lo que llega al vertedero.',
+      'Para empezar necesitas un balde o caja con tapa, tierra de jardín, y tus residuos orgánicos. Alterna capas de residuos húmedos con material seco (hojas secas, cartón). Revuelve cada semana y mantén la humedad. En 2 a 3 meses tendrás compost listo para tus plantas.',
+      'El compostaje no solo reduce la basura, también evita la generación de metano en los vertederos (un gas 25 veces más potente que el CO₂), mejora la tierra del jardín y reduce la necesidad de fertilizantes químicos. Es un ciclo natural que puedes iniciar en tu hogar hoy mismo.'
+    ]
   },
   {
     id: 6,
@@ -51,7 +76,12 @@ const ARTICULOS = [
     resumen: 'Descubre opciones de transporte que reducen la contaminación y mejoran tu salud.',
     categoria: 'Movilidad',
     imagen: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=250&fit=crop',
-    fecha: '2026-05-10'
+    fecha: '2026-05-10',
+    contenido: [
+      'El transporte es responsable del 25% de las emisiones de CO₂ en el mundo. En ciudades como Lima, los vehículos particulares son la principal fuente de contaminación del aire. Cambiar nuestros hábitos de movilidad tiene un impacto directo en la calidad del aire que respiramos.',
+      'Las alternativas son variadas: usa el Metropolitano o el Metro de Lima, comparte vehículo con compañeros de trabajo, camina o usa bicicleta para distancias cortas. Lima está ampliando sus ciclovías y ya cuenta con sistemas de bicicletas compartidas en algunas zonas.',
+      'Si necesitas un vehículo, considera los eléctricos o híbridos. Reducir tu uso del auto particular un día a la semana puede disminuir tu huella de carbono en un 15%. Además, caminar y andar en bicicleta mejora tu salud cardiovascular y reduce el estrés. Muévete de forma sostenible.'
+    ]
   }
 ]
 
@@ -218,19 +248,13 @@ export default function EducacionMedioAmbiental() {
                 Publicado el {articuloSeleccionado.fecha}
               </p>
               <div className="educacion__detalle-cuerpo">
-                <p>
-                  {articuloSeleccionado.resumen}
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                  nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-                <p>
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                  eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                  sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
+                {articuloSeleccionado.contenido ? (
+                  articuloSeleccionado.contenido.map((parrafo, i) => (
+                    <p key={i}>{parrafo}</p>
+                  ))
+                ) : (
+                  <p>{articuloSeleccionado.resumen}</p>
+                )}
               </div>
             </div>
           </div>
