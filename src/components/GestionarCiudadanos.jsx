@@ -115,7 +115,7 @@ export default function GestionarCiudadanos() {
       <div style={{ display: 'flex', gap: '16px', marginBottom: '20px', flexWrap: 'wrap' }}>
         {[
           { label: 'Total Usuarios', value: usuarios.length, color: 'var(--color-text)' },
-          { label: 'Ciudadanos', value: totalCiudadanos, color: 'var(--color-eco-primary, #2E7D32)' },
+          { label: 'Ciudadanos', value: totalCiudadanos, color: '#000000' },
           { label: 'Administradores', value: totalAdmins, color: 'var(--color-text)' },
         ].map(m => (
           <div key={m.label} style={{ background: 'var(--color-bg-white)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '16px 24px', flex: '1', minWidth: '150px' }}>
