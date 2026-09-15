@@ -93,27 +93,6 @@ export default function ManejarIncidencias() {
     mostrarIncidencias()
   }, [])
 
-  function handleCrear() {
-    if (!formulario.titulo || !formulario.descripcion) {
-      alert('Completa todos los campos obligatorios.')
-      return
-    }
-    const nueva = {
-      idIncidencia: Date.now(),
-      titulo: formulario.titulo,
-      descripcion: formulario.descripcion,
-      estado: formulario.estado,
-      fecha: new Date().toISOString().split('T')[0],
-      direccionTexto: formulario.direccionTexto
-    }
-    const actualizadas = [...incidencias, nueva]
-    setIncidencias(actualizadas)
-    if (esDemo()) guardarIncidenciasDemo(actualizadas)
-    setFormulario({ titulo: '', descripcion: '', estado: 'PENDIENTE', direccionTexto: '' })
-    setMostrarFormulario(false)
-    window.dispatchEvent(new Event('incidencia-registrada'))
-  }
-
   function handleEditar() {
     if (!formulario.titulo || !formulario.descripcion) {
       alert('Completa todos los campos obligatorios.')
@@ -146,12 +125,6 @@ export default function ManejarIncidencias() {
       direccionTexto: incidencia.direccionTexto || ''
     })
     setMostrarFormulario(false)
-  }
-
-  function abrirCrear() {
-    setEditando(null)
-    setFormulario({ titulo: '', descripcion: '', estado: 'PENDIENTE', direccionTexto: '' })
-    setMostrarFormulario(true)
   }
 
   async function handleCambioEstadoIncidencia(id, estado) {
@@ -200,13 +173,9 @@ export default function ManejarIncidencias() {
     <main className="seguimiento">
       <h2 className="seguimiento__title">Gestionar Incidencias</h2>
 
-      <div style={{ marginBottom: '16px' }}>
-        <button className="seguimiento__cambio-btn" onClick={abrirCrear}>+ Nueva Incidencia</button>
-      </div>
-
-      {(mostrarFormulario || editando) && (
+      {editando && (
         <div style={{ background: 'var(--color-bg-white)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '20px', marginBottom: '20px' }}>
-          <h3 style={{ margin: '0 0 12px', color: 'var(--color-text)' }}>{editando ? 'Editar Incidencia' : 'Nueva Incidencia'}</h3>
+          <h3 style={{ margin: '0 0 12px', color: 'var(--color-text)' }}>Editar Incidencia</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <select
               value={formulario.titulo}
@@ -238,10 +207,10 @@ export default function ManejarIncidencias() {
               <option value="RESUELTO">Resuelto</option>
             </select>
             <div style={{ display: 'flex', gap: '8px' }}>
-              <button className="seguimiento__cambio-btn" onClick={editando ? handleEditar : handleCrear}>
-                {editando ? 'Guardar Cambios' : 'Crear Incidencia'}
+              <button className="seguimiento__cambio-btn" onClick={handleEditar}>
+                Guardar Cambios
               </button>
-              <button className="seguimiento__filtro-btn" onClick={() => { setMostrarFormulario(false); setEditando(null) }}>
+              <button className="seguimiento__filtro-btn" onClick={() => setEditando(null)}>
                 Cancelar
               </button>
             </div>
