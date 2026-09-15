@@ -183,7 +183,10 @@ export default function GestionarCiudadanos() {
                       <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>Este usuario no tiene registros de incidencias.</p>
                     ) : (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                        {incidenciasUsuario.map(inc => (
+                        {incidenciasUsuario.map(inc => {
+                          const badgeClass = ESTADO_BADGE[inc.estado] || 'admin-badge--pending'
+                          const badgeLabel = ESTADO_LABEL[inc.estado] || inc.estado
+                          return (
                           <div key={inc.id} style={{
                             padding: '12px 16px', border: '1px solid var(--color-border)',
                             borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '12px',
@@ -191,16 +194,16 @@ export default function GestionarCiudadanos() {
                             <div style={{ flex: 1 }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
                                 <strong style={{ fontSize: '0.9rem', color: 'var(--color-text)' }}>{inc.categoria}</strong>
-                                <span className={`admin-badge ${ESTADO_BADGE[inc.estado] || 'admin-badge--pending'}`}>
-                                  {ESTADO_LABEL[inc.estado] || inc.estado}
-                                </span>
-                                </div>
-                                <p style={{ margin: '0', fontSize: '0.82rem', color: 'var(--color-text-secondary)' }}>{inc.descripcion}</p>
-                                <span style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>
-                                  {formatearFecha(inc.fecha)} — {inc.direccionTexto || 'Sin ubicación'}
+                                <span className={'admin-badge ' + badgeClass}>
+                                  {badgeLabel}
                                 </span>
                               </div>
+                              <p style={{ margin: '0', fontSize: '0.82rem', color: 'var(--color-text-secondary)' }}>{inc.descripcion}</p>
+                              <span style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>
+                                {formatearFecha(inc.fecha)} — {inc.direccionTexto || 'Sin ubicación'}
+                              </span>
                             </div>
+                          </div>
                           )
                         })}
                       </div>
