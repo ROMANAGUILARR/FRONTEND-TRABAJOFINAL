@@ -39,48 +39,23 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
     pdf.save(`Reporte_${usuario.nombreCompleto}_${usuario.apellidoCompleto}.pdf`)
   }
 
-  function imprimir() {
-    const contenido = reporteRef.current.innerHTML
+  async function imprimir() {
+    const elemento = reporteRef.current
+    const canvas = await html2canvas(elemento, { scale: 2, useCORS: true })
+    const imgData = canvas.toDataURL('image/png')
     const ventana = window.open('', '_blank', 'width=800,height=600')
     ventana.document.write(`
       <!DOCTYPE html>
       <html>
-      <head>
-        <title>Reporte de Incidencias</title>
-        <style>
-          body { font-family: 'Inter', Arial, sans-serif; margin: 0; padding: 20px; color: #111; }
-          .reporte-container { max-width: 800px; margin: 0 auto; padding: 20px; }
-          .reporte-header { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; border-bottom: 3px solid #2E7D32; padding-bottom: 16px; }
-          .reporte-logo { width: 70px; height: 70px; object-fit: contain; }
-          .reporte-titulo h1 { font-size: 1.2rem; font-weight: 700; color: #2E7D32; margin: 0; text-transform: uppercase; }
-          .reporte-titulo p { font-size: 0.8rem; color: #666; margin: 4px 0 0; }
-          .reporte-fecha-solicitud { text-align: right; font-size: 0.85rem; color: #333; margin-bottom: 24px; }
-          .reporte-usuario-nombre { font-size: 1rem; font-weight: 600; color: #333; margin-bottom: 16px; }
-          .reporte-tabla { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 0.85rem; }
-          .reporte-tabla thead th { background: #2E7D32; color: #fff; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
-          .reporte-tabla tbody td { padding: 8px 12px; border-bottom: 1px solid #ddd; color: #333; }
-          .reporte-tabla tbody tr:nth-child(even) { background: #f9f9f9; }
-          .reporte-tabla tbody tr:last-child td { border-bottom: 2px solid #2E7D32; }
-          .reporte-total { font-size: 0.9rem; font-weight: 600; color: #333; margin-bottom: 40px; }
-          .reporte-firma { display: flex; justify-content: space-between; margin-top: 60px; padding-top: 8px; }
-          .reporte-firma-bloque { text-align: center; min-width: 200px; }
-          .reporte-firma-linea { border-top: 1px solid #333; margin-bottom: 4px; }
-          .reporte-firma-label { font-size: 0.8rem; color: #555; }
-          .reporte-estado-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
-          .reporte-estado-badge--resuelto { background: #E8F5E9; color: #2E7D32; }
-          .reporte-estado-badge--proceso { background: #E3F2FD; color: #1565C0; }
-          .reporte-estado-badge--pendiente { background: #FFF3E0; color: #E65100; }
-        </style>
-      </head>
-      <body>
-        ${contenido}
+      <head><title>Reporte de Incidencias</title></head>
+      <body style="margin:0;padding:20px;text-align:center;">
+        <img src="${imgData}" style="max-width:100%;height:auto;" />
       </body>
       </html>
     `)
     ventana.document.close()
     ventana.onload = () => {
       ventana.print()
-      ventana.close()
     }
   }
 
