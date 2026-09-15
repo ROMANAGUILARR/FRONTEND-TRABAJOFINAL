@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, createContext, useContext } from 'react';
+import { MOCK_PUNTOS } from '../services/mockData';
 
 /**
  * Context para manejar la autenticación y permisos de forma global
@@ -52,11 +53,11 @@ export function AuthProvider({ children }) {
       const demoPermisos = { canRegister: true, canTrack: true, canAccessEducation: true, isAdmin: false };
       localStorage.setItem('token', 'demo-token');
       localStorage.setItem('nombreUsuario', 'Usuario Demo');
-      localStorage.setItem('puntos', '0');
+      localStorage.setItem('puntos', String(MOCK_PUNTOS));
       localStorage.setItem('rol', demoRol);
       localStorage.setItem('permissions', JSON.stringify(demoPermisos));
       setIsAuthenticated(true);
-      setUser({ nombreUsuario: 'Usuario Demo', puntos: 0, rol: demoRol });
+      setUser({ nombreUsuario: 'Usuario Demo', puntos: MOCK_PUNTOS, rol: demoRol });
       setPermissions(demoPermisos);
       return { success: true, rol: demoRol };
     }

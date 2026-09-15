@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react'
 import './SeguimientoIncidencias.css'
 import HelpModal from './HelpModal'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
+import { MOCK_METRICAS, MOCK_INCIDENCIAS } from '../services/mockData'
 // Iconos SVG inline
 const IconTotal = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,6 +61,10 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
     async function obtenerMetricas() {
       try {
         const token = localStorage.getItem('token')
+        if (token === 'demo-token' || token === 'demo-token-admin') {
+          setMetricas(MOCK_METRICAS)
+          return
+        }
         const response = await fetch(`${API_BASE}/incidencias/metricas`, {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -80,6 +85,10 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
     async function mostrarIncidencias() {
       try {
         const token = localStorage.getItem('token')
+        if (token === 'demo-token' || token === 'demo-token-admin') {
+          setIncidencias(MOCK_INCIDENCIAS)
+          return
+        }
         const response = await fetch(`${API_BASE}/incidencias/seguir`, {
           headers: {
             'Authorization': `Bearer ${token}`
