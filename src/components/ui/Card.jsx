@@ -16,7 +16,7 @@ export default function Card({
   return (
     <article
       onClick={onClick}
-      className={`rounded-lg shadow-md p-5 transition-all duration-200 border ${variants[variant]} ${onClick ? 'cursor-pointer hover:shadow-lg hover:-translate-y-0.5' : ''} ${className}`}
+      className={`rounded-lg shadow-md p-5 transition-all duration-200 border flex flex-col ${variants[variant]} ${onClick ? 'cursor-pointer hover:shadow-lg hover:-translate-y-0.5' : ''} ${className}`}
       {...props}
     >
       {children}
