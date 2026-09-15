@@ -39,124 +39,6 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
     pdf.save(`Reporte_${usuario.nombreCompleto}_${usuario.apellidoCompleto}.pdf`)
   }
 
-  async function imprimir() {
-    const pdf = new jsPDF('p', 'mm', 'a4')
-    const pageWidth = pdf.internal.pageSize.getWidth()
-    const margin = 20
-    let y = margin
-
-    // Logo
-    try {
-      pdf.addImage(logoEcoSolido, 'PNG', margin, y, 20, 20)
-    } catch {}
-    pdf.setFontSize(16)
-    pdf.setFont('helvetica', 'bold')
-    pdf.setTextColor(46, 125, 50)
-    pdf.text('Hoja de Recuento de Registro de Incidencias', margin + 25, y + 10)
-    pdf.setFontSize(9)
-    pdf.setFont('helvetica', 'normal')
-    pdf.setTextColor(100, 100, 100)
-    pdf.text('Sistema de Gestion Ambiental - EcoSolido', margin + 25, y + 16)
-    y += 28
-
-    // Línea verde
-    pdf.setDrawColor(46, 125, 50)
-    pdf.setLineWidth(0.8)
-    pdf.line(margin, y, pageWidth - margin, y)
-    y += 10
-
-    // Fecha
-    pdf.setFontSize(10)
-    pdf.setTextColor(50, 50, 50)
-    pdf.text('Fecha de solicitud: ' + fechaHoy, pageWidth - margin - 50, y)
-    y += 10
-
-    // Nombre
-    pdf.setFontSize(12)
-    pdf.setFont('helvetica', 'bold')
-    pdf.text('Nombre: ' + usuario.nombreCompleto + ' ' + usuario.apellidoCompleto, margin, y)
-    y += 12
-
-    // Tabla
-    const colWidths = [12, 70, 30, 45, 25]
-    const headers = ['#', 'Descripcion', 'Estado', 'Ubicacion', 'Fecha']
-
-    // Header
-    pdf.setFillColor(46, 125, 50)
-    pdf.rect(margin, y, colWidths.reduce((a, b) => a + b, 0), 8, 'F')
-    pdf.setFontSize(8)
-    pdf.setFont('helvetica', 'bold')
-    pdf.setTextColor(255, 255, 255)
-    let x = margin
-    headers.forEach((h, i) => {
-      pdf.text(h, x + 2, y + 5.5)
-      x += colWidths[i]
-    })
-    y += 8
-
-    // Filas
-    pdf.setFont('helvetica', 'normal')
-    pdf.setTextColor(50, 50, 50)
-    incidencias.forEach((inc, idx) => {
-      if (y > 260) { pdf.addPage(); y = margin }
-      const bg = idx % 2 === 0 ? [249, 249, 249] : [255, 255, 255]
-      pdf.setFillColor(...bg)
-      pdf.rect(margin, y, colWidths.reduce((a, b) => a + b, 0), 7, 'F')
-      pdf.setDrawColor(220, 220, 220)
-      pdf.line(margin, y + 7, pageWidth - margin, y + 7)
-      pdf.setFontSize(8)
-      x = margin
-      const vals = [
-        String(idx + 1),
-        (inc.descripcion || '').substring(0, 40),
-        ESTADO_LABEL[inc.estado] || inc.estado,
-        (inc.direccionTexto || 'No especificada').substring(0, 25),
-        formatearFecha(inc.fecha)
-      ]
-      vals.forEach((v, i) => {
-        pdf.text(v, x + 2, y + 5)
-        x += colWidths[i]
-      })
-      y += 7
-    })
-
-    // Línea final
-    pdf.setDrawColor(46, 125, 50)
-    pdf.setLineWidth(0.8)
-    pdf.line(margin, y, pageWidth - margin, y)
-    y += 10
-
-    // Total
-    pdf.setFontSize(11)
-    pdf.setFont('helvetica', 'bold')
-    pdf.setTextColor(50, 50, 50)
-    pdf.text('Total de registros: ' + incidencias.length, margin, y)
-    y += 30
-
-    // Firma centrada
-    pdf.setFont('helvetica', 'normal')
-    pdf.setFontSize(9)
-    pdf.setTextColor(80, 80, 80)
-    const firmaX = (pageWidth - 60) / 2
-    pdf.line(firmaX, y, firmaX + 60, y)
-    pdf.text('Firma del Solicitante', firmaX + 8, y + 5)
-
-    // Imprimir - usar iframe oculto (no requiere popup)
-    const blob = pdf.output('blob')
-    const url = URL.createObjectURL(blob)
-    const iframe = document.createElement('iframe')
-    iframe.style.display = 'none'
-    iframe.src = url
-    document.body.appendChild(iframe)
-    iframe.onload = () => {
-      iframe.contentWindow.print()
-      setTimeout(() => {
-        URL.revokeObjectURL(url)
-        document.body.removeChild(iframe)
-      }, 2000)
-    }
-  }
-
   function descargarExcel() {
     const datos = incidencias.map((inc, i) => ({
       '#': i + 1,
@@ -248,9 +130,6 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
         </button>
         <button onClick={descargarPDF} className="reporte-btn reporte-btn--pdf">
           Descargar PDF
-        </button>
-        <button onClick={imprimir} className="reporte-btn reporte-btn--print">
-          Imprimir
         </button>
         <button onClick={descargarExcel} className="reporte-btn reporte-btn--excel">
           Descargar Excel
