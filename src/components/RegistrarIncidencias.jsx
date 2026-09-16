@@ -499,22 +499,20 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
           <div className="registrar__field">
             <label htmlFor="categoria">Selecciona una categoría(6 categorías) <span style={{ color: '#ff7a00' }}>*</span>:</label>
             <div className="registrar__select-wrap" >
-              <datalist id="categorias-incidencia">
-                {CATEGORIAS.map((cat) => (
-                  <option key={cat} value={cat} />
-                ))}
-              </datalist>
-              <input
-                list="categorias-incidencia"
+              <select
                 id="categoria"
                 className={`${camposError.categoria ? "campo-error" : ""}`}
                 value={categoria}
-                placeholder="Seleccione una opción"
                 onChange={(e) => {
                   setCategoria(e.target.value)
                   setCamposError(prev => ({ ...prev, categoria: false }))
                 }}
-              />
+              >
+                <option value="">Seleccione una opción</option>
+                {CATEGORIAS.map((cat) => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
             </div>
           </div>
 
