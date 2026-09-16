@@ -4,8 +4,6 @@ import './ManejarIncidencias.css'
 import './AIConfirmModal.css'
 import DeleteConfirmModal from './DeleteConfirmModal'
 
-const ITEMS_POR_PAGINA = 10
-
 const ESTADOS = {
   PENDIENTE: 'pending',
   EN_PROCESO: 'in-progress',
@@ -90,11 +88,6 @@ export default function ManejarIncidencias() {
   const [incidencias, setIncidencias] = useState([])
   const [editando, setEditando] = useState(null)
   const [formulario, setFormulario] = useState({ titulo: '', descripcion: '', estado: 'PENDIENTE', direccionTexto: '' })
-  const [paginaActual, setPaginaActual] = useState(1)
-
-  useEffect(() => {
-    setPaginaActual(1)
-  }, [filtroEstado, busqueda])
 
   useEffect(() => {
     async function mostrarIncidencias() {
@@ -154,12 +147,6 @@ export default function ManejarIncidencias() {
       (incidencia.direccionTexto || '').toLowerCase().includes(busqueda.toLowerCase())
     return coincideEstado && coincideBusqueda
   })
-
-  const totalPaginas = Math.ceil(incidenciasFiltradas.length / ITEMS_POR_PAGINA)
-  const incidenciasPaginadas = incidenciasFiltradas.slice(
-    (paginaActual - 1) * ITEMS_POR_PAGINA,
-    paginaActual * ITEMS_POR_PAGINA
-  )
 
   return (
     <main style={{ flex: 1, padding: '24px', overflowY: 'auto', background: 'var(--color-bg)' }}>
@@ -229,7 +216,7 @@ export default function ManejarIncidencias() {
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {incidenciasPaginadas.map(incidencia => (
+          {incidenciasFiltradas.map(incidencia => (
               <div key={incidencia.idIncidencia} className="admin-card">
                 {/* Info */}
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -257,28 +244,6 @@ export default function ManejarIncidencias() {
                 </div>
               </div>
             ))}
-        </div>
-      )}
-
-      {totalPaginas > 1 && (
-        <div className="admin-paginacion">
-          <button
-            className="admin-paginacion-btn"
-            onClick={() => setPaginaActual(p => Math.max(1, p - 1))}
-            disabled={paginaActual === 1}
-          >
-            Anterior
-          </button>
-          <span className="admin-paginacion-info">
-            Página {paginaActual} de {totalPaginas}
-          </span>
-          <button
-            className="admin-paginacion-btn"
-            onClick={() => setPaginaActual(p => Math.min(totalPaginas, p + 1))}
-            disabled={paginaActual === totalPaginas}
-          >
-            Siguiente
-          </button>
         </div>
       )}
 

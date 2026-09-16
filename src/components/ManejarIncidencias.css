@@ -87,7 +87,7 @@
 .admin-badge {
   padding: 3px 12px;
   border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.4;
 }
@@ -108,113 +108,4 @@
   background: #E8F5E9;
   color: #2E7D32;
   border: 1px solid #4CAF50;
-}
-
-/* Botón verde outline (Ver Registros) */
-.admin-btn--verde-outline {
-  background: #E8F5E9 !important;
-  color: #2E7D32 !important;
-  border: 1px solid #A5D6A7 !important;
-}
-
-[data-theme="dark"] .admin-btn--verde-outline {
-  background: #166534 !important;
-  color: #81C784 !important;
-  border: 1px solid #2E7D32 !important;
-}
-
-[data-theme="dark"] .admin-badge--pending {
-  background: rgba(255, 152, 0, 0.2);
-  color: #FFB74D;
-  border-color: #FF9800;
-}
-
-[data-theme="dark"] .admin-badge--progress {
-  background: rgba(33, 150, 243, 0.2);
-  color: #64B5F6;
-  border-color: #42A5F5;
-}
-
-[data-theme="dark"] .admin-badge--resolved {
-  background: rgba(76, 175, 80, 0.2);
-  color: #81C784;
-  border-color: #4CAF50;
-}
-
-[data-theme="dark"] .admin-btn--edit {
-  background: rgba(33, 150, 243, 0.2) !important;
-  color: #64B5F6 !important;
-  border-color: #42A5F5 !important;
-}
-
-[data-theme="dark"] .admin-btn--delete {
-  background: rgba(244, 67, 54, 0.2) !important;
-  color: #EF9A9A !important;
-  border-color: #C62828 !important;
-}
-
-/* Dark mode */
-[data-theme="dark"] .admin-btn--edit {
-  background: #1a2744 !important;
-  color: #64b5f6 !important;
-  border-color: #1565c0 !important;
-}
-
-[data-theme="dark"] .admin-btn--delete {
-  background: #3e2723 !important;
-  color: #ef5350 !important;
-  border-color: #c62828 !important;
-}
-
-[data-theme="dark"] .admin-badge--pending {
-  background: #3e2723;
-  color: #ffb74d;
-  border-color: #e65100;
-}
-
-[data-theme="dark"] .admin-badge--progress {
-  background: #1a2744;
-  color: #64b5f6;
-  border-color: #1565c0;
-}
-
-[data-theme="dark"] .admin-badge--resolved {
-  background: #1b3a1f;
-  color: #66bb6a;
-  border-color: #2e7d32;
-}
-
-/* Paginación Admin */
-.admin-paginacion {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 20px;
-  padding: 16px 0;
-}
-.admin-paginacion-btn {
-  padding: 8px 16px;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  background: var(--color-bg-white);
-  color: var(--color-text);
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.85rem;
-  transition: all 0.2s;
-}
-.admin-paginacion-btn:hover:not(:disabled) {
-  background: #2E7D32;
-  color: #fff;
-  border-color: #2E7D32;
-}
-.admin-paginacion-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-.admin-paginacion-info {
-  font-size: 0.85rem;
-  color: var(--color-text-secondary);
-  font-weight: 500;
 }
