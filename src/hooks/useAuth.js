@@ -77,57 +77,8 @@ export function AuthProvider({ children }) {
       return { success: true, rol: demoRol };
     }
 
-    try {
-      const respuesta = await fetch(`${API_BASE}/usuario/autenticar`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombreUsuario, contrasena })
-      });
-
-      if (!respuesta.ok) {
-        const errorText = await respuesta.text();
-        throw new Error(errorText);
-      }
-
-      const data = await respuesta.json();
-      
-      // Guardar token y usuario (puntos reales devueltos por el backend)
-      const puntosIniciales = data.puntos ?? 0;
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('nombreUsuario', data.nombreUsuario);
-      localStorage.setItem('puntos', puntosIniciales);
-      localStorage.setItem('rol', data.rol); 
-      // Guardar permisos (pueden venir del backend o ser por defecto)
-      const userPermissions = data.permissions || {
-        canRegister: true,
-        canTrack: true,
-        canAccessEducation: true,
-        isAdmin: false
-      };
-      localStorage.setItem('permissions', JSON.stringify(userPermissions));
-      
-      setIsAuthenticated(true);
-      setUser({ nombreUsuario: data.nombreUsuario, puntos: puntosIniciales, rol: data.rol });
-      setPermissions(userPermissions);
-      
-      return { success: true, rol: data.rol };
-    } catch (error) {
-      // Si el backend no está disponible, entrar automáticamente en modo demo
-      if (error.message === 'Failed to fetch') {
-        const demoRol = 'CIUDADANO';
-        const demoPermisos = { canRegister: true, canTrack: true, canAccessEducation: true, isAdmin: false };
-        localStorage.setItem('token', 'demo-token');
-        localStorage.setItem('nombreUsuario', nombreUsuario || 'Usuario Demo');
-        localStorage.setItem('puntos', '0');
-        localStorage.setItem('rol', demoRol);
-        localStorage.setItem('permissions', JSON.stringify(demoPermisos));
-        setIsAuthenticated(true);
-        setUser({ nombreUsuario: nombreUsuario || 'Usuario Demo', puntos: 0, rol: demoRol });
-        setPermissions(demoPermisos);
-        return { success: true, rol: demoRol };
-      }
-      return { success: false, error: error.message };
-    }
+    // Si no es GASPER ni admin, rechazar
+    return { success: false, error: 'Usuario o contraseña incorrectos' };
   }, []);
 
   // Función de logout
