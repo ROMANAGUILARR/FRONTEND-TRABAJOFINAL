@@ -119,7 +119,7 @@
   display: inline-block;
   padding: 2px 8px;
   border-radius: 10px;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 600;
 }
 
@@ -216,4 +216,58 @@
     padding: 0 !important;
     max-width: 100% !important;
   }
+}
+
+/* Dark mode */
+[data-theme="dark"] .reporte-container {
+  background: #1f2937;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .reporte-titulo p {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .reporte-fecha-solicitud {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .reporte-usuario-nombre {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .reporte-tabla tbody td {
+  border-bottom-color: #374151;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .reporte-tabla tbody tr:nth-child(even) {
+  background: #111827;
+}
+
+[data-theme="dark"] .reporte-total {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .reporte-firma-linea {
+  border-top-color: #e5e7eb;
+}
+
+[data-theme="dark"] .reporte-firma-label {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .reporte-estado-badge--resuelto {
+  background: #1b3a1f;
+  color: #66bb6a;
+}
+
+[data-theme="dark"] .reporte-estado-badge--proceso {
+  background: #1a2744;
+  color: #64b5f6;
+}
+
+[data-theme="dark"] .reporte-estado-badge--pendiente {
+  background: #3e2723;
+  color: #ffb74d;
 }

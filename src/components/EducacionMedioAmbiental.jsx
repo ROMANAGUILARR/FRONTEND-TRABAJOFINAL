@@ -149,12 +149,19 @@ export default function EducacionMedioAmbiental() {
         </p>
         <form onSubmit={handleSubmit} className="educacion__form">
           <label className="educacion__label">Selecciona un tipo de residuo sólido <span style={{ color: '#ff7a00' }}>*</span>:</label>
-          <select className="educacion__dropdown" name="tipoMaterial" value={tipoMaterial} onChange={(e) => { setTipoMaterial(e.target.value) }}>
-            <option value="" disabled>--Selecione alguna opción--</option>
+          <datalist id="tipos-material">
             {CATEGORIAS2.map(categoria => (
-              <option key={categoria} value={categoria}>{categoria}</option>
+              <option key={categoria} value={categoria} />
             ))}
-          </select>
+          </datalist>
+          <input
+            list="tipos-material"
+            className="educacion__dropdown"
+            name="tipoMaterial"
+            value={tipoMaterial}
+            placeholder="--Selecione alguna opción--"
+            onChange={(e) => { setTipoMaterial(e.target.value) }}
+          />
           <label className="educacion__label">Especifica las recomendaciones que deseas en base a la categoría:</label>
           <textarea className="educacion__textarea" name="contexto" value={listening ? transcript : contextoExtra} maxLength={MAX_CONTEXTO} onChange={handleContextoChange}></textarea>
           {browserSupportsSpeechRecognition && (

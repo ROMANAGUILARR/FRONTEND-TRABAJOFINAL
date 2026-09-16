@@ -61,3 +61,24 @@
 .micuenta__volver-btn:hover {
     background: #757575 !important;
 }
+
+/* Dark mode */
+[data-theme="dark"] .micuenta__avatar {
+    background: rgba(46, 125, 50, 0.2);
+}
+
+[data-theme="dark"] .micuenta__datos {
+    border-color: #374151;
+}
+
+[data-theme="dark"] .micuenta__fila + .micuenta__fila {
+    border-top-color: #374151;
+}
+
+[data-theme="dark"] .micuenta__etiqueta {
+    color: #9ca3af;
+}
+
+[data-theme="dark"] .micuenta__valor {
+    color: #e5e7eb;
+}

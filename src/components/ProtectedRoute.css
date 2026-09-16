@@ -68,3 +68,29 @@
 .access-denied button:hover {
   background-color: #1b5e20;
 }
+
+/* Dark mode */
+[data-theme="dark"] .loading-container {
+  background: #111827;
+}
+
+[data-theme="dark"] .loading-spinner {
+  border-color: #374151;
+  border-top-color: #2e7d32;
+}
+
+[data-theme="dark"] .loading-container p {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .access-denied {
+  background: #111827;
+}
+
+[data-theme="dark"] .access-denied h2 {
+  color: #ef5350;
+}
+
+[data-theme="dark"] .access-denied p {
+  color: #9ca3af;
+}
