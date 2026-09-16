@@ -141,7 +141,7 @@ export default function LandingPage() {
   async function handleDemo() {
     const result = await login('demo', 'demo')
     if (result.success) {
-      navigate(result.rol === 'ADMIN' ? '/dashboard' : '/registro')
+      navigate(result.rol === 'ADMIN' ? '/ciudadanos' : '/registro')
     }
   }
 
@@ -156,7 +156,7 @@ export default function LandingPage() {
           </div>
           <div className="lp-nav-actions">
             {isAuthenticated ? (
-              <Button variant="primary" size="md" onClick={() => navigate(user?.rol === 'ADMIN' ? '/dashboard' : '/registro')}>
+              <Button variant="primary" size="md" onClick={() => navigate(user?.rol === 'ADMIN' ? '/ciudadanos' : '/registro')}>
                 Ir al Panel
               </Button>
             ) : (
@@ -188,7 +188,7 @@ export default function LandingPage() {
             </p>
             <div className="lp-hero-btns">
               {isAuthenticated ? (
-                <Button variant="primary" size="lg" onClick={() => navigate(user?.rol === 'ADMIN' ? '/dashboard' : '/registro')}>
+                <Button variant="primary" size="lg" onClick={() => navigate(user?.rol === 'ADMIN' ? '/ciudadanos' : '/registro')}>
                   Ir al Panel
                 </Button>
               ) : (

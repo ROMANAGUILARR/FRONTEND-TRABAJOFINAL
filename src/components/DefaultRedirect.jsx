@@ -23,7 +23,7 @@ export default function DefaultRedirect() {
   }
 
   if (user?.rol === 'ADMIN') {
-    return <Navigate to="/dashboard" replace />
+    return <Navigate to="/ciudadanos" replace />
   }
 
   return <Navigate to="/registro" replace />

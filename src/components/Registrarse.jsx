@@ -63,7 +63,7 @@ export default function Registrarse() {
             const resultadoLogin = await login(formData.nombreUsuario, formData.contrasena);
             if (resultadoLogin.success) {
                 setTimeout(() => {
-                    navigate(resultadoLogin.rol === 'ADMIN' ? '/dashboard' : '/registro');
+                    navigate(resultadoLogin.rol === 'ADMIN' ? '/ciudadanos' : '/registro');
                 }, 1200);
             } else {
                 // Si falla el auto-login, enviar al login manual
