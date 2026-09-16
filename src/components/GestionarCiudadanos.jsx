@@ -26,7 +26,6 @@ export default function GestionarCiudadanos() {
   const [mostrandoReporte, setMostrandoReporte] = useState(false)
   const [usuarioReporte, setUsuarioReporte] = useState(null)
   const [incidenciasReporte, setIncidenciasReporte] = useState([])
-  const [ultimoReporte, setUltimoReporte] = useState({})
 
   useEffect(() => {
     async function cargarUsuarios() {
@@ -54,11 +53,6 @@ export default function GestionarCiudadanos() {
     try {
       const data = await obtenerIncidenciasPorUsuario(usuario.idUsuario)
       setIncidenciasUsuario(data)
-      // Calcular último reporte
-      if (data.length > 0) {
-        const masReciente = data.reduce((max, inc) => inc.fecha > max ? inc.fecha : max, data[0].fecha)
-        setUltimoReporte(prev => ({ ...prev, [usuario.idUsuario]: masReciente }))
-      }
     } catch (err) {
       console.error('Error al cargar incidencias:', err)
       setIncidenciasUsuario([])
@@ -98,19 +92,6 @@ export default function GestionarCiudadanos() {
 
   const totalCiudadanos = usuarios.filter(u => u.rol === 'CIUDADANO').length
   const totalAdmins = usuarios.filter(u => u.rol === 'ADMIN').length
-
-  // Ranking de ciudadanos por puntos (solo ciudadanos, ordenados descendente)
-  const rankingCiudadanos = usuarios
-    .filter(u => u.rol === 'CIUDADANO')
-    .sort((a, b) => b.puntos - a.puntos)
-    .reduce((acc, u, i) => { acc[u.idUsuario] = i + 1; return acc }, {})
-
-  const getRankBadgeStyle = (rank) => {
-    if (rank === 1) return { background: 'linear-gradient(135deg, #FFD700, #FFA000)', color: '#fff', fontWeight: 700 }
-    if (rank === 2) return { background: 'linear-gradient(135deg, #C0C0C0, #9E9E9E)', color: '#fff', fontWeight: 700 }
-    if (rank === 3) return { background: 'linear-gradient(135deg, #CD7F32, #A0522D)', color: '#fff', fontWeight: 700 }
-    return { background: 'var(--color-bg)', color: 'var(--color-text-secondary)', fontWeight: 600 }
-  }
 
   return (
     <main style={{ flex: 1, padding: '24px', overflowY: 'auto', background: 'var(--color-bg)' }}>
@@ -186,16 +167,6 @@ export default function GestionarCiudadanos() {
                   {/* Info */}
                   <div style={{ flex: 1 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                      {usuario.rol === 'CIUDADANO' && rankingCiudadanos[usuario.idUsuario] && (
-                        <span style={{
-                          display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                          width: '28px', height: '28px', borderRadius: '50%', fontSize: '0.75rem',
-                          border: '1px solid var(--color-border)',
-                          ...getRankBadgeStyle(rankingCiudadanos[usuario.idUsuario])
-                        }}>
-                          #{rankingCiudadanos[usuario.idUsuario]}
-                        </span>
-                      )}
                       <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--color-text)' }}>
                         {usuario.nombreCompleto} {usuario.apellidoCompleto}
                       </h3>
@@ -207,16 +178,6 @@ export default function GestionarCiudadanos() {
                       <span>Email: <strong style={{ color: 'var(--color-text)' }}>{usuario.correoElectronico}</strong></span>
                       <span>Usuario: <strong style={{ color: 'var(--color-text)' }}>{usuario.nombreUsuario}</strong></span>
                       <span>Puntos: <strong style={{ color: 'var(--color-eco-primary, #2E7D32)' }}>{usuario.puntos}</strong></span>
-                    </div>
-                    <div style={{ display: 'flex', gap: '20px', fontSize: '0.8rem', color: 'var(--color-text-secondary)', marginTop: '6px', flexWrap: 'wrap' }}>
-                      {usuario.fechaRegistro && (
-                        <span>Registrado: <strong style={{ color: 'var(--color-text)' }}>{formatearFecha(usuario.fechaRegistro)}</strong></span>
-                      )}
-                      {ultimoReporte[usuario.idUsuario] ? (
-                        <span>Último reporte: <strong style={{ color: 'var(--color-text)' }}>{formatearFecha(ultimoReporte[usuario.idUsuario])}</strong></span>
-                      ) : usuario.rol === 'CIUDADANO' && (
-                        <span>Último reporte: <em style={{ color: 'var(--color-text-secondary)' }}>Ver registros para cargar</em></span>
-                      )}
                     </div>
                   </div>
 
