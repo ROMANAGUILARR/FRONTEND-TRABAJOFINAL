@@ -25,13 +25,12 @@ const ESTADO_LABEL = {
 }
 
 const CATEGORIAS = [
-  'Acumulacion de basura',
-  'Contaminacion del agua',
-  'Contaminacion del aire',
-  'Quema de residuos',
-  'Derrame de petroleo',
-  'Arbol caido',
-  'Falta de papelera',
+  'Acumulación y falta de recojo',
+  'Basura en vía pública',
+  'Contenedor dañado o lleno',
+  'Escombros o materiales de construcción',
+  'Residuos en parques o áreas verdes',
+  'Otro',
 ]
 
 function esDemo() {
@@ -46,11 +45,11 @@ function leerIncidenciasDemo() {
 
   // Datos iniciales mock
   const mock = [
-    { idIncidencia: 1, titulo: 'Acumulacion de basura', descripcion: 'Acumulacion de residuos en la esquina de Av. Principal', estado: 'RESUELTO', fecha: '2026-09-10', direccionTexto: 'Av. Principal 123' },
-    { idIncidencia: 2, titulo: 'Contaminacion del agua', descripcion: 'Vertido de aguas residuales en el canal', estado: 'EN_PROCESO', fecha: '2026-09-11', direccionTexto: 'Jr. San Martin 456' },
-    { idIncidencia: 3, titulo: 'Quema de residuos', descripcion: 'Quema ilegal de basura en terreno baldio', estado: 'PENDIENTE', fecha: '2026-09-12', direccionTexto: 'Calle Los Cedros 789' },
-    { idIncidencia: 4, titulo: 'Arbol caido', descripcion: 'Arbol caido bloquea la vereda', estado: 'RESUELTO', fecha: '2026-09-12', direccionTexto: 'Av. Grau 321' },
-    { idIncidencia: 5, titulo: 'Derrame de petroleo', descripcion: 'Pequeno derrame de aceite en la pista', estado: 'EN_PROCESO', fecha: '2026-09-13', direccionTexto: 'Panamericana Sur km 15' },
+    { idIncidencia: 1, titulo: 'Acumulación y falta de recojo', descripcion: 'Acumulacion de residuos en la esquina de Av. Principal', estado: 'RESUELTO', fecha: '2026-09-10', direccionTexto: 'Av. Principal 123' },
+    { idIncidencia: 2, titulo: 'Basura en vía pública', descripcion: 'Vertido de aguas residuales en el canal', estado: 'EN_PROCESO', fecha: '2026-09-11', direccionTexto: 'Jr. San Martin 456' },
+    { idIncidencia: 3, titulo: 'Residuos en parques o áreas verdes', descripcion: 'Quema ilegal de basura en terreno baldio', estado: 'PENDIENTE', fecha: '2026-09-12', direccionTexto: 'Calle Los Cedros 789' },
+    { idIncidencia: 4, titulo: 'Contenedor dañado o lleno', descripcion: 'Contenedor desbordado en parque', estado: 'RESUELTO', fecha: '2026-09-12', direccionTexto: 'Av. Grau 321' },
+    { idIncidencia: 5, titulo: 'Escombros o materiales de construcción', descripcion: 'Escombros abandonados en via publica', estado: 'EN_PROCESO', fecha: '2026-09-13', direccionTexto: 'Panamericana Sur km 15' },
   ]
   const locales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]')
   const idBase = 100
