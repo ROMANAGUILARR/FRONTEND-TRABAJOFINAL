@@ -6,16 +6,10 @@ import hero from '../assets/hero.png'
 import './Landing.css'
 import { useAuth } from '../hooks/useAuth'
 
-/**
- * Landing pública: primera pantalla que ve el usuario al entrar a la página.
- * Desde aquí puede dar click en "Cuenta" para loguearse o registrarse,
- * o entrar en modo demo para ver los módulos del programa.
- */
 export default function Landing() {
     const navigate = useNavigate()
     const { login } = useAuth()
 
-    // Modo demo: inicia sesión de prueba y lleva directo a los módulos
     async function handleDemo() {
         const result = await login('demo', 'demo')
         if (result.success) {
@@ -24,8 +18,8 @@ export default function Landing() {
     }
 
     return (
-        <div className="landing min-h-screen bg-eco-bg">
-            {/* Barra superior */}
+        <div className="landing">
+            {/* Header glassmorphism */}
             <header className="landing__header">
                 <div className="landing__logo-container">
                     <img src={logo} alt="Logo EcoSolido" className="landing__logo-img" />
@@ -42,60 +36,93 @@ export default function Landing() {
                 </Button>
             </header>
 
-            {/* Hero */}
             <main className="landing__main">
+                {/* Hero con gradiente verde */}
                 <section className="landing__hero">
-                    <img src={hero} alt="Ilustración EcoSolido" className="landing__hero-img" />
-                    <div className="landing__hero-content">
-                        <h1 className="landing__title">
-                            Reporta incidencias ambientales y gana recompensas
-                        </h1>
-                        <p className="landing__subtitle">
-                            EcoSolido es el programa donde los ciudadanos ayudan a mantener
-                            limpia su ciudad: registra incidencias, sigue su resolución,
-                            aprende sobre el medio ambiente y gana puntos e insignias.
-                        </p>
-                        <div className="landing__actions">
-                            <Button variant="primary" size="lg" onClick={() => navigate('/login')}>
-                                Iniciar Sesion
-                            </Button>
-                            <Button variant="secondary" size="lg" onClick={() => navigate('/registrarse')}>
-                                Registrarse
-                            </Button>
+                    {/* Formas decorativas flotantes */}
+                    <div className="landing__shape landing__shape--1" aria-hidden="true" />
+                    <div className="landing__shape landing__shape--2" aria-hidden="true" />
+                    <div className="landing__shape landing__shape--3" aria-hidden="true" />
+
+                    <div className="landing__hero-inner">
+                        <div className="landing__hero-content">
+                            <span className="landing__badge">Por una ciudad más limpia</span>
+                            <h1 className="landing__title">
+                                Reporta incidencias ambientales y gana recompensas
+                            </h1>
+                            <p className="landing__subtitle">
+                                Registra incidencias, sigue su resolución, aprende sobre el
+                                medio ambiente y gana puntos e insignias por tu compromiso.
+                            </p>
+                            <div className="landing__actions">
+                                <Button
+                                    variant="primary"
+                                    size="lg"
+                                    onClick={() => navigate('/login')}
+                                    className="landing__btn-hero"
+                                >
+                                    Iniciar Sesión
+                                </Button>
+                                <Button
+                                    size="lg"
+                                    onClick={() => navigate('/registrarse')}
+                                    className="landing__btn-outline"
+                                >
+                                    Registrarse
+                                </Button>
+                            </div>
+                            <div className="landing__actions">
+                                <Button variant="link" size="md" onClick={handleDemo} className="landing__btn-demo">
+                                    Ver módulos (modo demo)
+                                </Button>
+                            </div>
+                            <p className="landing__hint">
+                                Para participar del programa, ingresa a tu cuenta o crea una nueva.
+                            </p>
                         </div>
-                        <div className="landing__actions">
-                            <Button variant="link" size="md" onClick={handleDemo}>
-                                Ver módulos (modo demo)
-                            </Button>
+                        <div className="landing__hero-visual">
+                            <img src={hero} alt="Ilustración EcoSolido" className="landing__hero-img" />
                         </div>
-                        <p className="landing__hint">
-                            Para participar del programa, ingresa a tu cuenta o crea una nueva.
-                        </p>
                     </div>
                 </section>
 
                 {/* Beneficios */}
                 <section className="landing__features">
-                    <div className="landing__feature">
-                        <span className="landing__feature-icon">📸</span>
-                        <h3>Reporta</h3>
-                        <p>Registra incidencias ambientales con fotos y ubicación en segundos.</p>
-                    </div>
-                    <div className="landing__feature">
-                        <span className="landing__feature-icon">🌱</span>
-                        <h3>Aprende</h3>
-                        <p>Accede a educación ambiental y consejos para cuidar tu ciudad.</p>
-                    </div>
-                    <div className="landing__feature">
-                        <span className="landing__feature-icon">🏅</span>
-                        <h3>Recompénsate</h3>
-                        <p>Gana puntos e insignias por cada aporte a tu comunidad.</p>
+                    <h2 className="landing__features-title">¿Cómo funciona?</h2>
+                    <div className="landing__features-grid">
+                        <div className="landing__feature">
+                            <div className="landing__feature-icon-wrap">
+                                <span className="landing__feature-icon">📸</span>
+                            </div>
+                            <h3>Reporta</h3>
+                            <p>Registra incidencias ambientales con fotos y ubicación en segundos.</p>
+                        </div>
+                        <div className="landing__feature">
+                            <div className="landing__feature-icon-wrap">
+                                <span className="landing__feature-icon">🌱</span>
+                            </div>
+                            <h3>Aprende</h3>
+                            <p>Accede a educación ambiental y consejos para cuidar tu ciudad.</p>
+                        </div>
+                        <div className="landing__feature">
+                            <div className="landing__feature-icon-wrap">
+                                <span className="landing__feature-icon">🏅</span>
+                            </div>
+                            <h3>Recompénsate</h3>
+                            <p>Gana puntos e insignias por cada aporte a tu comunidad.</p>
+                        </div>
                     </div>
                 </section>
             </main>
 
             <footer className="landing__footer">
-                <p>© {new Date().getFullYear()} EcoSolido — Juntos por una ciudad más limpia.</p>
+                <div className="landing__footer-inner">
+                    <div className="landing__footer-brand">
+                        <img src={logo} alt="EcoSolido" className="landing__footer-logo" />
+                        <span>EcoSolido</span>
+                    </div>
+                    <p>© {new Date().getFullYear()} EcoSolido — Juntos por una ciudad más limpia.</p>
+                </div>
             </footer>
         </div>
     )

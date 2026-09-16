@@ -17,8 +17,6 @@ import ProtectedRoute, { PublicRoute } from './components/ProtectedRoute'
 import Dashboard from './components/Dashboard'
 import ManejarIncidencias from './components/ManejarIncidencias'
 import GestionarCiudadanos from './components/GestionarCiudadanos'
-import LandingPage from './components/LandingPage'
-
 // Componente de diseño para el layout principal (con Header y Sidebar)
 function MainLayout() {
   const [menuAbierto, setMenuAbierto] = useState(false)
@@ -64,7 +62,6 @@ function App() {
     <Router>
       <Routes>
         {/* Rutas públicas */}
-        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={
           <PublicRoute>
             <Login />
@@ -72,6 +69,7 @@ function App() {
         } />
         <Route path="/registrarse" element={<Registrarse />} />
         <Route path="/restablecer" element={<RestablecerContra />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/cuenta" element={
           <ProtectedRoute>
             <MiCuenta />
@@ -117,8 +115,8 @@ function App() {
           } />
         </Route>
         
-        {/* Rutas desconocidas → landing */}
-        <Route path="*" element={<LandingPage />} />
+        {/* Rutas desconocidas → login */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   )
