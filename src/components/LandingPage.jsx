@@ -139,7 +139,7 @@ export default function LandingPage() {
   const { isAuthenticated, user, login } = useAuth()
 
   async function handleDemo() {
-    const result = await login('demo', 'demo')
+    const result = await login('GASPER', 'Palacios10')
     if (result.success) {
       navigate(result.rol === 'ADMIN' ? '/ciudadanos' : '/registro')
     }

@@ -76,7 +76,7 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
 
   useEffect(() => {
     const token = localStorage.getItem('token')
-    if (token === 'demo-token' || token === 'demo-token-admin') {
+    if (token === 'token-gasper' || token === 'token-admin') {
       cargarDatosDemo()
     }
   }, [])
@@ -85,7 +85,7 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
     async function obtenerMetricas() {
       try {
         const token = localStorage.getItem('token')
-        if (token === 'demo-token' || token === 'demo-token-admin') {
+        if (token === 'token-gasper' || token === 'token-admin') {
           cargarDatosDemo()
           return
         }
@@ -109,7 +109,7 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
     async function mostrarIncidencias() {
       try {
         const token = localStorage.getItem('token')
-        if (token === 'demo-token' || token === 'demo-token-admin') {
+        if (token === 'token-gasper' || token === 'token-admin') {
           cargarDatosDemo()
           return
         }

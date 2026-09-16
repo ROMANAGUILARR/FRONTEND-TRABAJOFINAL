@@ -47,34 +47,34 @@ export function AuthProvider({ children }) {
 
   // Función de login
   const login = useCallback(async (nombreUsuario, contrasena) => {
-    // Modo demo: entra sin backend
+    // Ciudadano: GASPER
     if (nombreUsuario === 'GASPER' && contrasena === 'Palacios10') {
-      const demoRol = 'CIUDADANO';
-      const demoPermisos = { canRegister: true, canTrack: true, canAccessEducation: true, isAdmin: false };
-      localStorage.setItem('token', 'demo-token');
+      const rol = 'CIUDADANO';
+      const permisos = { canRegister: true, canTrack: true, canAccessEducation: true, isAdmin: false };
+      localStorage.setItem('token', 'token-gasper');
       localStorage.setItem('nombreUsuario', 'GASPER');
       localStorage.setItem('puntos', String(MOCK_PUNTOS));
-      localStorage.setItem('rol', demoRol);
-      localStorage.setItem('permissions', JSON.stringify(demoPermisos));
+      localStorage.setItem('rol', rol);
+      localStorage.setItem('permissions', JSON.stringify(permisos));
       setIsAuthenticated(true);
-      setUser({ nombreUsuario: 'GASPER', puntos: MOCK_PUNTOS, rol: demoRol });
-      setPermissions(demoPermisos);
-      return { success: true, rol: demoRol };
+      setUser({ nombreUsuario: 'GASPER', puntos: MOCK_PUNTOS, rol });
+      setPermissions(permisos);
+      return { success: true, rol };
     }
 
-    // Modo demo admin
+    // Admin
     if (nombreUsuario === 'admin' && contrasena === 'Palacios13579') {
-      const demoRol = 'ADMIN';
-      const demoPermisos = { canRegister: false, canTrack: false, canAccessEducation: false, isAdmin: true };
-      localStorage.setItem('token', 'demo-token-admin');
-      localStorage.setItem('nombreUsuario', 'Admin Demo');
+      const rol = 'ADMIN';
+      const permisos = { canRegister: false, canTrack: false, canAccessEducation: false, isAdmin: true };
+      localStorage.setItem('token', 'token-admin');
+      localStorage.setItem('nombreUsuario', 'Admin');
       localStorage.setItem('puntos', '0');
-      localStorage.setItem('rol', demoRol);
-      localStorage.setItem('permissions', JSON.stringify(demoPermisos));
+      localStorage.setItem('rol', rol);
+      localStorage.setItem('permissions', JSON.stringify(permisos));
       setIsAuthenticated(true);
-      setUser({ nombreUsuario: 'Admin Demo', puntos: 0, rol: demoRol });
-      setPermissions(demoPermisos);
-      return { success: true, rol: demoRol };
+      setUser({ nombreUsuario: 'Admin', puntos: 0, rol });
+      setPermissions(permisos);
+      return { success: true, rol };
     }
 
     try {
@@ -112,21 +112,7 @@ export function AuthProvider({ children }) {
       
       return { success: true, rol: data.rol };
     } catch (error) {
-      // Si el backend no está disponible, entrar automáticamente en modo demo
-      if (error.message === 'Failed to fetch') {
-        const demoRol = 'CIUDADANO';
-        const demoPermisos = { canRegister: true, canTrack: true, canAccessEducation: true, isAdmin: false };
-        localStorage.setItem('token', 'demo-token');
-        localStorage.setItem('nombreUsuario', nombreUsuario || 'Usuario Demo');
-        localStorage.setItem('puntos', '0');
-        localStorage.setItem('rol', demoRol);
-        localStorage.setItem('permissions', JSON.stringify(demoPermisos));
-        setIsAuthenticated(true);
-        setUser({ nombreUsuario: nombreUsuario || 'Usuario Demo', puntos: 0, rol: demoRol });
-        setPermissions(demoPermisos);
-        return { success: true, rol: demoRol };
-      }
-      return { success: false, error: error.message };
+      return { success: false, error: 'No se pudo conectar con el servidor. Verifica que el backend esté activo.' };
     }
   }, []);
 

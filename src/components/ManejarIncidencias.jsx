@@ -36,7 +36,7 @@ const CATEGORIAS = [
 
 function esDemo() {
   const token = localStorage.getItem('token')
-  return token === 'demo-token' || token === 'demo-token-admin'
+  return token === 'token-gasper' || token === 'token-admin'
 }
 
 function leerIncidenciasDemo() {
