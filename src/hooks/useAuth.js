@@ -23,25 +23,12 @@ export function AuthProvider({ children }) {
 
   // Verificar autenticación al montar el componente
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const nombreUsuario = localStorage.getItem('nombreUsuario');
-    const puntos = parseInt(localStorage.getItem('puntos') || '0', 10);
-    const savedPermissions = localStorage.getItem('permissions');
-    const rol = localStorage.getItem('rol');
-    if (token && nombreUsuario) {
-      setIsAuthenticated(true);
-      setUser({ nombreUsuario, puntos, rol }); 
-      if (savedPermissions) {
-        setPermissions(JSON.parse(savedPermissions));
-      } else {
-        setPermissions({
-          canRegister: true,
-          canTrack: true,
-          canAccessEducation: true,
-          isAdmin: false
-        });
-      }
-    }
+    // Limpiar sesión anterior al cargar la página
+    localStorage.removeItem('token');
+    localStorage.removeItem('nombreUsuario');
+    localStorage.removeItem('puntos');
+    localStorage.removeItem('permissions');
+    localStorage.removeItem('rol');
     setIsLoading(false);
   }, []);
 
