@@ -48,7 +48,7 @@ export function AuthProvider({ children }) {
   // Función de login
   const login = useCallback(async (nombreUsuario, contrasena) => {
     // Modo demo: entra sin backend
-    if (nombreUsuario === 'demo' && contrasena === 'demo') {
+    if (nombreUsuario === 'Palacios8' && contrasena === 'Palacios8') {
       const demoRol = 'CIUDADANO';
       const demoPermisos = { canRegister: true, canTrack: true, canAccessEducation: true, isAdmin: false };
       localStorage.setItem('token', 'demo-token');
@@ -63,7 +63,7 @@ export function AuthProvider({ children }) {
     }
 
     // Modo demo admin
-    if (nombreUsuario === 'admin' && contrasena === 'admin') {
+    if (nombreUsuario === 'admin' && contrasena === 'Palacios13579') {
       const demoRol = 'ADMIN';
       const demoPermisos = { canRegister: false, canTrack: false, canAccessEducation: false, isAdmin: true };
       localStorage.setItem('token', 'demo-token-admin');
