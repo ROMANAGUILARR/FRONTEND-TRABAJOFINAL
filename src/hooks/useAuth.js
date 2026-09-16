@@ -23,7 +23,25 @@ export function AuthProvider({ children }) {
 
   // Verificar autenticación al montar el componente
   useEffect(() => {
-    // No restaurar sesión - siempre mostrar login al entrar
+    const token = localStorage.getItem('token');
+    const nombreUsuario = localStorage.getItem('nombreUsuario');
+    const puntos = parseInt(localStorage.getItem('puntos') || '0', 10);
+    const savedPermissions = localStorage.getItem('permissions');
+    const rol = localStorage.getItem('rol');
+    if (token && nombreUsuario) {
+      setIsAuthenticated(true);
+      setUser({ nombreUsuario, puntos, rol });
+      if (savedPermissions) {
+        setPermissions(JSON.parse(savedPermissions));
+      } else {
+        setPermissions({
+          canRegister: true,
+          canTrack: true,
+          canAccessEducation: true,
+          isAdmin: false
+        });
+      }
+    }
     setIsLoading(false);
   }, []);
 
