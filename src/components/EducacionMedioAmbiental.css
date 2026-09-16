@@ -47,7 +47,7 @@
 .registrar__voz2-estado {
     color: #e53e3e;
     font-size: calc(0.85rem * var(--font-scale, 1));
-    font-style: italic;
+    font-style: normal;
 }
 [data-theme="dark"] .registrar__btn2--voz{
   color: var(--color-text) !important;
@@ -265,7 +265,7 @@
   background: var(--color-btn-primary);
   color: #ffffff;
   border-radius: 20px;
-  font-size:calc(0.75rem*var(--font-scale,1));
+  font-size:calc(0.85rem*var(--font-scale,1));
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -415,4 +415,102 @@
   .educacion__detalle-titulo {
     font-size:calc(1.25rem*var(--font-scale,1));
   }
+}
+
+/* ===== Dark Mode ===== */
+[data-theme="dark"] .educacion__label {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .educacion__card {
+  background: var(--color-bg-white);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .educacion__card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .educacion__card-titulo {
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .educacion__card-resumen {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .educacion__card-fecha {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .educacion__categoria-btn {
+  background: var(--color-bg-white);
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .educacion__detalle {
+  background: var(--color-bg-white);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .educacion__volver-btn {
+  background: var(--color-bg-white);
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .educacion__volver-btn:hover {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .educacion__detalle-titulo {
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .educacion__detalle-fecha {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .educacion__detalle-cuerpo p {
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .educacion__vacio {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .educacion_buttonOR {
+  background: #4a4a8a;
+  color: #fff;
+}
+
+[data-theme="dark"] .reco_titulo {
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .registrar__font2-controls button {
+  background: var(--color-bg-white);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .registrar__btn2--voz {
+  background: var(--color-bg-white) !important;
+  color: var(--color-btn-primary) !important;
+  border-color: var(--color-btn-primary) !important;
+}
+
+[data-theme="dark"] .registrar__btn2--voz--activo {
+  background: var(--color-btn-primary) !important;
+  color: #fff !important;
+}
+
+[data-theme="dark"] .registrar__voz2-estado {
+  color: #FF746C;
+}
+
+[data-theme="dark"] .educacion__subtitle {
+  color: var(--color-text-secondary);
 }

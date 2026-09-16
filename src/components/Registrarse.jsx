@@ -117,7 +117,7 @@ export default function Registrarse() {
                     <Input label="Telefono" name="telefono" type="tel" maxLength="9" placeholder="Tu numero de telefono" value={formData.telefono} onChange={handleChange} required />
                     <Input label="DNI" name="DNI" maxLength="8" placeholder="Establece el DNI" value={formData.DNI} onChange={handleChange} required />
                     <Input label="Nombre de usuario" name="nombreUsuario" placeholder="Elige un nombre de usuario" value={formData.nombreUsuario} onChange={handleChange} required />
-                    <Input label="Pregunta de seguridad" name="pregunta" placeholder="Respondible con 1 o 3 palabras" value={formData.pregunta} onChange={handleChange} required />
+                    <Input label="Pregunta de seguridad" name="pregunta" placeholder="Responda con 1 o 3 palabras" value={formData.pregunta} onChange={handleChange} required />
                     <Input label="Respuesta" name="respuesta" placeholder="Solo coloque la respuesta" value={formData.respuesta} onChange={handleChange} required />
 
                     <Input label="Contrasena" name="contrasena" placeholder="Minimo 6 caracteres" value={formData.contrasena} onChange={handleChange} required showToggle />

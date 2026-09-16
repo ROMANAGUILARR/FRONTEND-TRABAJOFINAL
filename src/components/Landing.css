@@ -261,7 +261,7 @@
 
 .landing__hint {
     margin: 0;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.55);
     animation: fadeInUp 0.8s ease-out 0.4s both;
 }

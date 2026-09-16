@@ -271,3 +271,29 @@
     font-size: 0.95rem;
   }
 }
+
+/* ===== Dark Mode ===== */
+[data-theme="dark"] .registrarse__container {
+  background: var(--color-bg-white);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4),
+    0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .registrarse__field input,
+[data-theme="dark"] .registrarse__field select {
+  background: var(--color-bg-white);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .registrarse__field input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .registrarse__toggle_pass {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .material-symbols-outlined {
+  color: var(--color-text);
+}

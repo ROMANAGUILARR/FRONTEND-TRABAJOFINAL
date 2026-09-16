@@ -51,7 +51,7 @@
 
 .location-picker__no-location {
   color: #666;
-  font-style: italic;
+  font-style: normal;
   font-size: 0.9rem;
   margin: 0.25rem 0 0.75rem 0;
 }
@@ -334,7 +334,7 @@
   color: #666;
   text-align: center;
   margin-top: 0.5rem;
-  font-style: italic;
+  font-style: normal;
   padding: 0.5rem;
   background: #f8f9fa;
   border-radius: 4px;
@@ -505,4 +505,94 @@
   color: #28a745;
   font-weight: bold;
   margin-top: 0.5rem;
+}
+
+/* Dark mode */
+[data-theme="dark"] .location-picker__label {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .location-picker__no-location {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .location-picker__confirmed-status {
+  background: #1b3a1f;
+  color: #66bb6a;
+  border-left-color: #28a745;
+}
+
+[data-theme="dark"] .location-picker__address-display {
+  color: #e5e7eb;
+  background: #1b3a1f;
+  border-left-color: #28a745;
+}
+
+[data-theme="dark"] .location-picker-modal {
+  background: #1f2937;
+}
+
+[data-theme="dark"] .location-picker-modal__header {
+  border-bottom-color: #374151;
+}
+
+[data-theme="dark"] .location-picker-modal__title {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .location-picker-modal__close {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .location-picker-modal__close:hover {
+  background: #374151;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .location-picker-modal__gps-warning {
+  color: #ffb74d;
+  background-color: #3e2723;
+}
+
+[data-theme="dark"] .location-picker-modal__gps-error {
+  background: #3e2723;
+  border-color: #c62828;
+  color: #ef5350;
+}
+
+[data-theme="dark"] .location-picker-modal__coordinates {
+  color: #9ca3af;
+  background: #111827;
+}
+
+[data-theme="dark"] .location-picker-modal__map-container {
+  border-color: #374151;
+  background: #111827;
+}
+
+[data-theme="dark"] .location-picker-modal__map-hint {
+  color: #9ca3af;
+  background: #111827;
+}
+
+[data-theme="dark"] .location-picker-modal__address {
+  background: #1b3a1f;
+  border-left-color: #28a745;
+}
+
+[data-theme="dark"] .location-picker-modal__address-text {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .location-picker {
+  border-color: #374151;
+  background: #1f2937;
+}
+
+[data-theme="dark"] .location-picker__title {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .location-picker__info {
+  color: #9ca3af;
 }

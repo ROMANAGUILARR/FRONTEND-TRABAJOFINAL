@@ -47,8 +47,6 @@
 .recompensas__subtitle {
   color: var(--color-text-secondary);
   font-size: calc(1rem*var(--font-scale,1));
-  white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
 .recompensas__seccion-title {
@@ -192,4 +190,69 @@
   .recompensas__grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ===== Dark Mode ===== */
+[data-theme="dark"] .recompensas__subtitle {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .recompensas__seccion-title {
+  color: var(--color-text);
+  border-bottom-color: var(--color-border);
+}
+
+[data-theme="dark"] .recompensa-card {
+  background: var(--color-bg-white);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .recompensa-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .recompensa-card__nombre {
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .recompensa-card__descripcion {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .recompensa-card__requisito {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .recompensa-card__recompensa {
+  background: var(--color-accent-green-light);
+}
+
+[data-theme="dark"] .recompensa-card__recompensa-texto {
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .recompensa-card__fecha {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .recompensas__vacio {
+  background: var(--color-bg-white);
+  border-color: var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .recompensas__estado {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .recompensas__estado--error {
+  color: #FF746C;
+}
+
+[data-theme="dark"] .recompensa-card--desbloqueada {
+  border-left-color: var(--color-btn-primary);
+}
+
+[data-theme="dark"] .recompensa-card--bloqueada {
+  border-left-color: var(--color-text-secondary);
 }

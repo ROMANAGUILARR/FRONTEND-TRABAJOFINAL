@@ -119,7 +119,7 @@ export default function GestionarCiudadanos() {
           { label: 'Administradores', value: totalAdmins, color: 'var(--color-text)' },
         ].map(m => (
           <div key={m.label} style={{ background: 'var(--color-bg-white)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '16px 24px', flex: '1', minWidth: '150px' }}>
-            <span style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>{m.label}</span>
+            <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>{m.label}</span>
             <p style={{ fontSize: '1.8rem', fontWeight: 700, color: m.color, margin: '4px 0 0' }}>{m.value}</p>
           </div>
         ))}
@@ -183,11 +183,7 @@ export default function GestionarCiudadanos() {
 
                   {/* Botones de acción */}
                   <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
-                  <button onClick={() => verRegistros(usuario)} className={`admin-btn ${isSelected ? 'admin-btn--primary' : ''}`} style={{
-                    background: isSelected ? undefined : '#E8F5E9',
-                    color: isSelected ? undefined : '#2E7D32',
-                    border: isSelected ? undefined : '1px solid #A5D6A7',
-                  }}>
+                  <button onClick={() => verRegistros(usuario)} className={`admin-btn ${isSelected ? 'admin-btn--primary' : 'admin-btn--verde-outline'}`}>
                     {isSelected ? 'Ocultar Registros' : 'Ver Registros'}
                   </button>
                   <button onClick={() => abrirReporte(usuario)} className="admin-btn admin-btn--edit">
@@ -228,7 +224,7 @@ export default function GestionarCiudadanos() {
                                 </span>
                               </div>
                               <p style={{ margin: '0', fontSize: '0.82rem', color: 'var(--color-text-secondary)' }}>{inc.descripcion}</p>
-                              <span style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>
+                              <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>
                                 {formatearFecha(inc.fecha)} — {inc.direccionTexto || 'Sin ubicación'}
                               </span>
                             </div>
