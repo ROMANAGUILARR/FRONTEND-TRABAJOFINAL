@@ -109,3 +109,318 @@
   color: #2E7D32;
   border: 1px solid #4CAF50;
 }
+
+/* ===== Métricas ===== */
+.admin-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.admin-metric-card {
+  background: var(--color-bg-white);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-left: 4px solid #2E7D32;
+}
+
+.admin-metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.admin-metric-card__numero {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.admin-metric-card__label {
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.admin-metric-card--total {
+  border-left-color: #2E7D32;
+}
+
+.admin-metric-card--total .admin-metric-card__numero {
+  color: #2E7D32;
+}
+
+.admin-metric-card--pending {
+  border-left-color: #E65100;
+}
+
+.admin-metric-card--pending .admin-metric-card__numero {
+  color: #E65100;
+}
+
+.admin-metric-card--progress {
+  border-left-color: #1565C0;
+}
+
+.admin-metric-card--progress .admin-metric-card__numero {
+  color: #1565C0;
+}
+
+.admin-metric-card--resolved {
+  border-left-color: #2E7D32;
+}
+
+.admin-metric-card--resolved .admin-metric-card__numero {
+  color: #2E7D32;
+}
+
+/* ===== Tabla ===== */
+.admin-table-wrapper {
+  overflow-x: auto;
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  background: #2E7D32;
+  color: #ffffff;
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.9rem;
+  color: var(--color-text);
+  vertical-align: middle;
+}
+
+.admin-table tr:nth-child(even) {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.admin-table tr:hover {
+  background: rgba(46, 125, 50, 0.04);
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table__descripcion {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-table__acciones {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+/* ===== Modal de edición ===== */
+.admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.admin-modal {
+  background: var(--color-bg-white);
+  border-radius: 16px;
+  padding: 28px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.admin-modal__title {
+  margin: 0 0 20px;
+  color: var(--color-text);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.admin-modal__form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.admin-modal__full-width {
+  grid-column: 1 / -1;
+}
+
+.admin-modal__label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.admin-modal__actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* ===== Paginación ===== */
+.admin-paginacion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 16px 0;
+}
+
+.admin-paginacion-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg-white);
+  color: var(--color-text);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.admin-paginacion-btn:hover:not(:disabled) {
+  background: #2E7D32;
+  color: #fff;
+  border-color: #2E7D32;
+}
+
+.admin-paginacion-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.admin-paginacion-info {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .admin-metrics {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .admin-metric-card {
+    padding: 16px;
+  }
+
+  .admin-metric-card__numero {
+    font-size: 1.5rem;
+  }
+
+  .admin-modal__form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-table__acciones {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Dark Mode ===== */
+[data-theme="dark"] .admin-metric-card {
+  background: var(--color-bg-white);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .admin-metric-card__label {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .admin-table-wrapper {
+  background: var(--color-bg-white);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .admin-table th {
+  background: #1B5E20;
+}
+
+[data-theme="dark"] .admin-table td {
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .admin-table tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+[data-theme="dark"] .admin-table tr:hover {
+  background: rgba(46, 125, 50, 0.08);
+}
+
+[data-theme="dark"] .admin-modal-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .admin-modal {
+  background: var(--color-bg-white);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .admin-modal__label {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .admin-paginacion-btn {
+  background: var(--color-bg-white);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .admin-paginacion-btn:hover:not(:disabled) {
+  background: #2E7D32;
+  color: #fff;
+  border-color: #2E7D32;
+}
+
+[data-theme="dark"] .admin-paginacion-info {
+  color: var(--color-text-secondary);
+}
