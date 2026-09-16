@@ -48,16 +48,16 @@ export function AuthProvider({ children }) {
   // Función de login
   const login = useCallback(async (nombreUsuario, contrasena) => {
     // Modo demo: entra sin backend
-    if (nombreUsuario === 'Palacios8' && contrasena === 'Palacios8') {
+    if (nombreUsuario === 'GASPER' && contrasena === 'Palacios10') {
       const demoRol = 'CIUDADANO';
       const demoPermisos = { canRegister: true, canTrack: true, canAccessEducation: true, isAdmin: false };
       localStorage.setItem('token', 'demo-token');
-      localStorage.setItem('nombreUsuario', 'Usuario Demo');
+      localStorage.setItem('nombreUsuario', 'GASPER');
       localStorage.setItem('puntos', String(MOCK_PUNTOS));
       localStorage.setItem('rol', demoRol);
       localStorage.setItem('permissions', JSON.stringify(demoPermisos));
       setIsAuthenticated(true);
-      setUser({ nombreUsuario: 'Usuario Demo', puntos: MOCK_PUNTOS, rol: demoRol });
+      setUser({ nombreUsuario: 'GASPER', puntos: MOCK_PUNTOS, rol: demoRol });
       setPermissions(demoPermisos);
       return { success: true, rol: demoRol };
     }
