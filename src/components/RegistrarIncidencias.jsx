@@ -312,7 +312,7 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
 
       // Guardar en localStorage para modo demo/offline
       const token = localStorage.getItem('token')
-      if (token === 'token-gasper' || token === 'token-admin') {
+      if (token === 'demo-token' || token === 'demo-token-admin') {
         const incidenciasLocales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]')
         incidenciasLocales.push(nuevaIncidencia)
         localStorage.setItem('incidenciasLocales', JSON.stringify(incidenciasLocales))

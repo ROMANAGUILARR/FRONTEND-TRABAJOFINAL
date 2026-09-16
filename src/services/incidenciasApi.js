@@ -3,7 +3,7 @@ import { MOCK_PUNTOS, MOCK_INSIGNIAS, MOCK_USUARIOS, MOCK_INCIDENCIAS_POR_USUARI
 
 function esDemo() {
   const token = localStorage.getItem('token')
-  return token === 'token-gasper' || token === 'token-admin'
+  return token === 'demo-token' || token === 'demo-token-admin'
 }
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
