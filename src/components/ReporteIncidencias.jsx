@@ -111,10 +111,6 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
           </tbody>
         </table>
 
-        <div className="reporte-total">
-          Total de registros: {incidencias.length}
-        </div>
-
         {/* Resumen de insignias */}
         <div style={{ marginTop: '24px', marginBottom: '24px' }}>
           <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#111', margin: '0 0 16px' }}>
@@ -124,7 +120,7 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
           <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#333', margin: '0 0 14px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             Insignias
           </h4>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px', alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px', alignItems: 'stretch' }}>
             {(() => {
               const colores = [
                 { bg: '#e8f5e9', border: '#A5D6A7', icon: '#2E7D32' },
@@ -140,48 +136,41 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
                 return (
                   <div key={insignia.idInsignia} style={{
                     background: desbloqueada ? c.bg : '#f5f5f5',
-                    border: desbloqueada ? `2px solid ${c.border}` : '2px solid #e0e0e0',
-                    borderRadius: '14px', padding: '14px',
+                    border: desbloqueada ? `1px solid ${c.border}` : '1px solid #e0e0e0',
+                    borderRadius: '10px', padding: '10px',
                     position: 'relative', overflow: 'hidden',
                     display: 'flex', flexDirection: 'column',
                     height: '100%',
                   }}>
-                    {desbloqueada && (
-                      <div style={{
-                        position: 'absolute', top: '-20px', right: '-20px',
-                        width: '70px', height: '70px', borderRadius: '50%',
-                        background: c.icon, opacity: 0.10,
-                      }} />
-                    )}
-                    <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                         <span style={{
                           display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                          width: '38px', height: '38px', borderRadius: '10px', flexShrink: 0,
+                          width: '28px', height: '28px', borderRadius: '8px', flexShrink: 0,
                           background: desbloqueada ? c.icon : '#bdbdbd',
-                          color: '#fff', fontSize: '1rem',
+                          color: '#fff', fontSize: '0.75rem',
                         }}>
                           <i className={desbloqueada ? 'fa-solid fa-check' : 'fa-solid fa-lock'}></i>
                         </span>
                         <div style={{ minWidth: 0, flex: 1 }}>
-                          <strong style={{ fontSize: '0.95rem', fontWeight: 700, color: desbloqueada ? '#111' : '#999', display: 'block', lineHeight: 1.3 }}>
+                          <strong style={{ fontSize: '0.78rem', fontWeight: 700, color: desbloqueada ? '#111' : '#999', display: 'block', lineHeight: 1.2 }}>
                             {insignia.nombre}
                           </strong>
-                          <span style={{ fontSize: '0.78rem', color: desbloqueada ? c.icon : '#bbb', fontWeight: 600 }}>
-                            {desbloqueada ? 'Desbloqueada' : `${incidencias.length}/${insignia.requisitoIncidencias} incidencias`}
+                          <span style={{ fontSize: '0.65rem', color: desbloqueada ? c.icon : '#bbb', fontWeight: 600 }}>
+                            {desbloqueada ? 'Desbloqueada' : `${incidencias.length}/${insignia.requisitoIncidencias}`}
                           </span>
                         </div>
                       </div>
-                      <p style={{ margin: '0 0 10px', fontSize: '0.78rem', color: desbloqueada ? '#555' : '#bbb', lineHeight: 1.5, flex: 1 }}>
+                      <p style={{ margin: '0 0 6px', fontSize: '0.65rem', color: desbloqueada ? '#555' : '#bbb', lineHeight: 1.4, flex: 1 }}>
                         {insignia.descripcion}
                       </p>
                       <div style={{
-                        width: '100%', height: '5px', borderRadius: '3px',
+                        width: '100%', height: '4px', borderRadius: '2px',
                         background: desbloqueada ? `${c.icon}30` : '#e0e0e0',
                         overflow: 'hidden', flexShrink: 0,
                       }}>
                         <div style={{
-                          width: `${progreso * 100}%`, height: '100%', borderRadius: '3px',
+                          width: `${progreso * 100}%`, height: '100%', borderRadius: '2px',
                           background: desbloqueada ? c.icon : '#999',
                         }} />
                       </div>
