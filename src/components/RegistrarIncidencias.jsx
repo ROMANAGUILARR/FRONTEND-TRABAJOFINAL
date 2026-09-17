@@ -584,7 +584,6 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
           </div>
           <div className="registrar__actions">
             <button type="submit" className="registrar__btn registrar__btn--primary">
-              <i className="fa-solid fa-paper-plane"></i>
               Registrar incidencia
             </button>
             <button
@@ -593,7 +592,6 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
               onClick={handleGenerarIA}
               disabled={generandoIA}
             >
-              <i className="fa-solid fa-wand-magic-sparkles"></i>
               Generar descripción con IA
             </button>
           </div>
