@@ -32,6 +32,13 @@ function esDemo() {
 }
 
 function leerIncidenciasDemo() {
+  // Limpiar caché vieja si los datos han cambiado
+  const CACHE_VERSION = 'v2'
+  if (localStorage.getItem('cacheVersion') !== CACHE_VERSION) {
+    localStorage.removeItem('todasIncidenciasDemo')
+    localStorage.setItem('cacheVersion', CACHE_VERSION)
+  }
+
   // Si hay datos guardados en localStorage, usarlos
   const guardadas = localStorage.getItem('todasIncidenciasDemo')
   if (guardadas) return JSON.parse(guardadas)
