@@ -1,11 +1,15 @@
 import { useRef, useState, lazy, Suspense } from 'react'
 import {
+  describirFotosConIA,
+  esErrorTecnicoIA,
   subirFotosACloudinary,
   registrarIncidencia,
   obtenerPuntosUsuario
 } from '../services/incidenciasApi'
 import { useAuth } from '../hooks/useAuth'
-import { IconNube } from './icons'
+import { esRespuestaFotosNoVisibles, MENSAJE_FOTOS_NO_VISIBLES } from '../utils/iaDescripcion'
+import AIConfirmModal from './AIConfirmModal'
+import { IconIA, IconNube } from './icons'
 import './RegistrarIncidencias.css';
 import LocationPicker from './LocationPicker';
 import HelpModal from './HelpModal'
@@ -520,7 +524,7 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
                 rows={7}
                 value={listening ? transcript : descripcion}
                 onChange={handleDescripcionChange}
-                placeholder="Describa la incidencia ambiental"
+                placeholder="Ingrese su texto o genérelo con IA a partir de las fotos"
                 disabled={generandoIA}
                 className={`${descripcionEsErrorIA ? 'registrar__textarea--ia-error' : ''}${camposError.descripcion ? 'campo-error' : ''}`}
                 aria-invalid={descripcionEsErrorIA}
@@ -556,6 +560,20 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
               )}
             </div>
             <span style={{ color: '#ff7a00' }}>*Campo Obligatorio</span>
+            {generandoIA && (
+              <span className="registrar__ia-loading" role="status">
+                Analizando las fotos con IA...
+              </span>
+            )}
+            {errorTecnico && (
+              <div className="registrar__ia-tecnico" role="alert">
+                <strong>No se pudo conectar con la IA:</strong>
+                <p>{errorTecnico}</p>
+                <p className="registrar__ia-tecnico-hint">
+                  Verifica que el backend esté ejecutándose y que la API Key de Hugging Face esté configurada correctamente.
+                </p>
+              </div>
+            )}
           </div>
           <div className="registrar__field">
             <LocationPicker
@@ -568,8 +586,24 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
             <button type="submit" className="registrar__btn registrar__btn--primary">
               Registrar incidencia
             </button>
+            <button
+              type="button"
+              className="registrar__btn registrar__btn--ia"
+              onClick={handleGenerarIA}
+              disabled={generandoIA}
+            >
+              <IconIA />
+              Generar descripción con IA
+            </button>
           </div>
         </form>
+
+        {showAIModal && (
+          <AIConfirmModal
+            onConfirm={handleConfirmarIA}
+            onCancel={() => setShowAIModal(false)}
+          />
+        )}
 
         {showSuccessModal && (
           <Suspense fallback={<div>Cargando...</div>}>
