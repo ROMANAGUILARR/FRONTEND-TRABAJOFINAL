@@ -12,11 +12,23 @@ export default function BarraProgreso({ puntos }) {
     const nivelSiguiente = puntosCategoria.find(nivel => puntos < nivel.puntosNecesarios)
     const puntosBase = nivelActual?.puntosNecesarios ?? 0
     const puntajeMaximo = nivelSiguiente?.puntosNecesarios ?? maxPuntos
-    const progreso = Math.min(((puntos - puntosBase) / (puntajeMaximo - puntosBase)) * 100, 100)
+
+    // Si no hay siguiente nivel, barra al 100% (nivel máximo alcanzado)
+    // Si hay siguiente nivel, calcular progreso entre nivel actual y siguiente
+    let progreso
+    if (!nivelSiguiente) {
+        progreso = 100
+    } else if (puntajeMaximo === puntosBase) {
+        progreso = 100
+    } else {
+        progreso = Math.min(((puntos - puntosBase) / (puntajeMaximo - puntosBase)) * 100, 100)
+    }
+
     return (
         <div className="flex flex-col gap-1.5 w-full py-2">
             <div className="flex justify-between text-sm font-semibold">
                 <span>Te encuentras en la insignia: {nivelActual ? nivelActual.insignia : 'Sin insignia'}</span>
+                <span>{Math.round(progreso)}%</span>
             </div>
 
             {/* Barra */}
