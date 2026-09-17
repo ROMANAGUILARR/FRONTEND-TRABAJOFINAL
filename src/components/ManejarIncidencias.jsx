@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
+import { ESTADO_BADGE, ESTADO_LABEL, CATEGORIAS, formatearFecha } from '../utils/incidenciaConstants'
+import { MOCK_USUARIOS, MOCK_INCIDENCIAS_POR_USUARIO } from '../services/mockData'
 import './SeguimientoIncidencias.css'
 import './ManejarIncidencias.css'
 import './AIConfirmModal.css'
@@ -12,26 +14,17 @@ const ESTADOS = {
   RESUELTO: 'resolved'
 }
 
-const ESTADO_BADGE = {
-  PENDIENTE: 'admin-badge--pending',
-  EN_PROCESO: 'admin-badge--progress',
-  RESUELTO: 'admin-badge--resolved',
-}
-
-const ESTADO_LABEL = {
-  PENDIENTE: 'Pendiente',
-  EN_PROCESO: 'En Proceso',
-  RESUELTO: 'Resuelto',
-}
-
-const CATEGORIAS = [
-  'Acumulación y falta de recojo',
-  'Basura en vía pública',
-  'Contenedor dañado o lleno',
-  'Escombros o materiales de construcción',
-  'Residuos en parques o áreas verdes',
-  'Otro',
-]
+// Build reverse lookup: incident ID -> reporter name (for demo mode)
+const REPORTER_MAP = (() => {
+  const map = {}
+  MOCK_USUARIOS.forEach(usuario => {
+    const incidencias = MOCK_INCIDENCIAS_POR_USUARIO[usuario.idUsuario] || []
+    incidencias.forEach(inc => {
+      map[inc.id] = `${usuario.nombreCompleto} ${usuario.apellidoCompleto}`
+    })
+  })
+  return map
+})()
 
 function esDemo() {
   const token = localStorage.getItem('token')
@@ -151,10 +144,11 @@ export default function ManejarIncidencias() {
     setFormulario({ titulo: incidencia.titulo, descripcion: incidencia.descripcion, estado: incidencia.estado, direccionTexto: incidencia.direccionTexto || '' })
   }
 
-  const formatearFecha = (fechaString) => {
-    if (!fechaString) return ''
-    const fecha = new Date(fechaString)
-    return new Intl.DateTimeFormat('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(fecha).replace(/\//g, '-')
+  function obtenerReportadoPor(incidencia) {
+    if (esDemo()) {
+      return REPORTER_MAP[incidencia.idIncidencia] || '—'
+    }
+    return incidencia.nombreUsuario || '—'
   }
 
   const incidenciasFiltradas = incidencias.filter(incidencia => {
@@ -239,6 +233,7 @@ export default function ManejarIncidencias() {
                   <th>Categoría</th>
                   <th>Estado</th>
                   <th>Descripción</th>
+                  <th>Reportado por</th>
                   <th>Fecha</th>
                   <th>Ubicación</th>
                   <th>Acciones</th>
@@ -255,6 +250,7 @@ export default function ManejarIncidencias() {
                       </span>
                     </td>
                     <td className="admin-table__descripcion">{incidencia.descripcion}</td>
+                    <td>{obtenerReportadoPor(incidencia)}</td>
                     <td style={{ whiteSpace: 'nowrap' }}>{formatearFecha(incidencia.fecha)}</td>
                     <td>{incidencia.direccionTexto || 'No se sabe'}</td>
                     <td>

@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react'
 import { obtenerUsuarios, obtenerIncidenciasPorUsuario } from '../services/incidenciasApi'
+import { MOCK_INCIDENCIAS_POR_USUARIO } from '../services/mockData'
+import { ESTADO_BADGE, ESTADO_LABEL, formatearFecha } from '../utils/incidenciaConstants'
 import './ManejarIncidencias.css'
 import ReporteIncidencias from './ReporteIncidencias'
 
-const ESTADO_BADGE = {
-  PENDIENTE: 'admin-badge--pending',
-  EN_PROCESO: 'admin-badge--progress',
-  RESUELTO: 'admin-badge--resolved',
-}
+const ITEMS_POR_PAGINA = 10
 
-const ESTADO_LABEL = {
-  PENDIENTE: 'Pendiente',
-  EN_PROCESO: 'En Proceso',
-  RESUELTO: 'Resuelto',
+function esDemo() {
+  const token = localStorage.getItem('token')
+  return token === 'demo-token' || token === 'demo-token-admin'
 }
 
 export default function GestionarCiudadanos() {
@@ -26,6 +23,7 @@ export default function GestionarCiudadanos() {
   const [mostrandoReporte, setMostrandoReporte] = useState(false)
   const [usuarioReporte, setUsuarioReporte] = useState(null)
   const [incidenciasReporte, setIncidenciasReporte] = useState([])
+  const [paginaActual, setPaginaActual] = useState(1)
 
   useEffect(() => {
     async function cargarUsuarios() {
@@ -42,7 +40,12 @@ export default function GestionarCiudadanos() {
     cargarUsuarios()
   }, [])
 
-  async function verRegistros(usuario) {
+  // Reset page to 1 when filters change
+  useEffect(() => {
+    setPaginaActual(1)
+  }, [filtroRol, busqueda])
+
+  async function verResumen(usuario) {
     if (usuarioSeleccionado?.idUsuario === usuario.idUsuario) {
       setUsuarioSeleccionado(null)
       setIncidenciasUsuario([])
@@ -72,10 +75,11 @@ export default function GestionarCiudadanos() {
     setMostrandoReporte(true)
   }
 
-  const formatearFecha = (fechaString) => {
-    if (!fechaString) return ''
-    const fecha = new Date(fechaString)
-    return new Intl.DateTimeFormat('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(fecha).replace(/\//g, '-')
+  function obtenerConteoIncidencias(usuarioId) {
+    if (esDemo()) {
+      return (MOCK_INCIDENCIAS_POR_USUARIO[usuarioId] || []).length
+    }
+    return 0
   }
 
   const usuariosFiltrados = usuarios.filter(u => {
@@ -89,6 +93,13 @@ export default function GestionarCiudadanos() {
       (u.nombreUsuario || '').toLowerCase().includes(texto)
     return coincideRol && coincideBusqueda
   })
+
+  // Pagination
+  const totalPaginas = Math.ceil(usuariosFiltrados.length / ITEMS_POR_PAGINA)
+  const usuariosPaginados = usuariosFiltrados.slice(
+    (paginaActual - 1) * ITEMS_POR_PAGINA,
+    paginaActual * ITEMS_POR_PAGINA
+  )
 
   const totalCiudadanos = usuarios.filter(u => u.rol === 'CIUDADANO').length
   const totalAdmins = usuarios.filter(u => u.rol === 'ADMIN').length
@@ -153,96 +164,114 @@ export default function GestionarCiudadanos() {
           <p style={{ color: 'var(--color-text-secondary)' }}>No se encontraron usuarios.</p>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {usuariosFiltrados.map(usuario => {
-            const isSelected = usuarioSeleccionado?.idUsuario === usuario.idUsuario
-            return (
-              <div key={usuario.idUsuario}>
-                {/* Tarjeta de usuario */}
-                <div style={{
-                  background: 'var(--color-bg-white)', border: isSelected ? '2px solid var(--color-eco-primary, #2E7D32)' : '1px solid var(--color-border)',
-                  borderRadius: '12px', padding: '20px 24px', boxShadow: isSelected ? '0 4px 12px rgba(46,125,50,0.1)' : '0 2px 6px rgba(0,0,0,0.04)',
-                  display: 'flex', alignItems: 'center', gap: '20px',
-                }}>
-                  {/* Info */}
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                      <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--color-text)' }}>
-                        {usuario.nombreCompleto} {usuario.apellidoCompleto}
-                      </h3>
-                      <span className={`admin-badge ${usuario.rol === 'ADMIN' ? 'admin-badge--progress' : 'admin-badge--resolved'}`}>{usuario.rol}</span>
-                    </div>
-                    <div style={{ display: 'flex', gap: '20px', fontSize: '0.82rem', color: 'var(--color-text-secondary)', flexWrap: 'wrap' }}>
-                      <span>DNI: <strong style={{ color: 'var(--color-text)' }}>{usuario.dni}</strong></span>
-                      <span>Tel: <strong style={{ color: 'var(--color-text)' }}>{usuario.telefono}</strong></span>
-                      <span>Email: <strong style={{ color: 'var(--color-text)' }}>{usuario.correoElectronico}</strong></span>
-                      <span>Usuario: <strong style={{ color: 'var(--color-text)' }}>{usuario.nombreUsuario}</strong></span>
-                      <span>Puntos: <strong style={{ color: 'var(--color-eco-primary, #2E7D32)' }}>{usuario.puntos}</strong></span>
-                    </div>
-                  </div>
-
-                  {/* Botones de acción */}
-                  <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
-                  <button onClick={() => verRegistros(usuario)} className={`admin-btn ${isSelected ? 'admin-btn--primary' : ''}`} style={{
-                    background: isSelected ? undefined : '#E8F5E9',
-                    color: isSelected ? undefined : '#2E7D32',
-                    border: isSelected ? undefined : '1px solid #A5D6A7',
-                  }}>
-                    {isSelected ? 'Ocultar Registros' : 'Ver Registros'}
-                  </button>
-                  <button onClick={() => abrirReporte(usuario)} className="admin-btn admin-btn--edit">
-                    Reporte
-                  </button>
-                  </div>
-                </div>
-
-                {/* Panel de registros */}
-                {isSelected && (
-                  <div style={{
-                    background: 'var(--color-bg-white)', border: '2px solid var(--color-eco-primary, #2E7D32)',
-                    borderTop: 'none', borderRadius: '0 0 12px 12px', padding: '20px 24px',
-                    marginTop: '-1px', boxShadow: '0 4px 12px rgba(46,125,50,0.1)',
-                  }}>
-                    <h4 style={{ margin: '0 0 12px', color: 'var(--color-text)', fontSize: '0.95rem' }}>
-                      Registros de {usuario.nombreCompleto} {usuario.apellidoCompleto}
-                    </h4>
-                    {cargandoIncidencias ? (
-                      <p style={{ color: 'var(--color-text-secondary)' }}>Cargando registros...</p>
-                    ) : incidenciasUsuario.length === 0 ? (
-                      <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>Este usuario no tiene registros de incidencias.</p>
-                    ) : (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                        {incidenciasUsuario.map(inc => {
-                          const badgeClass = ESTADO_BADGE[inc.estado] || 'admin-badge--pending'
-                          const badgeLabel = ESTADO_LABEL[inc.estado] || inc.estado
-                          return (
-                          <div key={inc.id} style={{
-                            padding: '12px 16px', border: '1px solid var(--color-border)',
-                            borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '12px',
+        <>
+          <div className="admin-table-wrapper">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>DNI</th>
+                  <th>Email</th>
+                  <th>Rol</th>
+                  <th>Incidencias</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {usuariosPaginados.map((usuario, index) => {
+                  const isSelected = usuarioSeleccionado?.idUsuario === usuario.idUsuario
+                  const conteo = obtenerConteoIncidencias(usuario.idUsuario)
+                  return (
+                    <tr key={usuario.idUsuario}>
+                      <td>{(paginaActual - 1) * ITEMS_POR_PAGINA + index + 1}</td>
+                      <td style={{ fontWeight: 500 }}>{usuario.nombreCompleto} {usuario.apellidoCompleto}</td>
+                      <td>{usuario.dni}</td>
+                      <td>{usuario.correoElectronico}</td>
+                      <td>
+                        <span className={`admin-badge ${usuario.rol === 'ADMIN' ? 'admin-badge--progress' : 'admin-badge--resolved'}`}>
+                          {usuario.rol}
+                        </span>
+                      </td>
+                      <td style={{ textAlign: 'center' }}>{conteo}</td>
+                      <td>
+                        <div className="admin-table__acciones">
+                          <button onClick={() => verResumen(usuario)} className={`admin-btn ${isSelected ? 'admin-btn--primary' : ''}`} style={{
+                            background: isSelected ? undefined : '#E8F5E9',
+                            color: isSelected ? undefined : '#2E7D32',
+                            border: isSelected ? undefined : '1px solid #A5D6A7',
                           }}>
-                            <div style={{ flex: 1 }}>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-                                <strong style={{ fontSize: '0.9rem', color: 'var(--color-text)' }}>{inc.categoria}</strong>
-                                <span className={'admin-badge ' + badgeClass}>
-                                  {badgeLabel}
-                                </span>
-                              </div>
-                              <p style={{ margin: '0', fontSize: '0.82rem', color: 'var(--color-text-secondary)' }}>{inc.descripcion}</p>
-                              <span style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>
-                                {formatearFecha(inc.fecha)} — {inc.direccionTexto || 'Sin ubicación'}
-                              </span>
-                            </div>
-                          </div>
-                          )
-                        })}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
+                            {isSelected ? 'Ocultar' : 'Ver Resumen'}
+                          </button>
+                          <button onClick={() => abrirReporte(usuario)} className="admin-btn admin-btn--edit">
+                            Reporte
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Paginación */}
+          {totalPaginas > 1 && (
+            <div className="admin-paginacion">
+              <button
+                className="admin-paginacion-btn"
+                onClick={() => setPaginaActual(p => Math.max(1, p - 1))}
+                disabled={paginaActual === 1}
+              >
+                Anterior
+              </button>
+              <span className="admin-paginacion-info">
+                Página {paginaActual} de {totalPaginas}
+              </span>
+              <button
+                className="admin-paginacion-btn"
+                onClick={() => setPaginaActual(p => Math.min(totalPaginas, p + 1))}
+                disabled={paginaActual === totalPaginas}
+              >
+                Siguiente
+              </button>
+            </div>
+          )}
+
+          {/* Panel de resumen */}
+          {usuarioSeleccionado && (
+            <div style={{
+              background: 'var(--color-bg-white)', border: '2px solid var(--color-eco-primary, #2E7D32)',
+              borderRadius: '12px', padding: '20px 24px', marginTop: '16px',
+              boxShadow: '0 4px 12px rgba(46,125,50,0.1)',
+            }}>
+              <h4 style={{ margin: '0 0 12px', color: 'var(--color-text)', fontSize: '0.95rem' }}>
+                Resumen de {usuarioSeleccionado.nombreCompleto} {usuarioSeleccionado.apellidoCompleto}
+              </h4>
+              {cargandoIncidencias ? (
+                <p style={{ color: 'var(--color-text-secondary)' }}>Cargando resumen...</p>
+              ) : (
+                (() => {
+                  const total = incidenciasUsuario.length
+                  if (total === 0) {
+                    return <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>Este usuario no tiene registros de incidencias.</p>
+                  }
+                  const pendientes = incidenciasUsuario.filter(inc => inc.estado === 'PENDIENTE').length
+                  const enProceso = incidenciasUsuario.filter(inc => inc.estado === 'EN_PROCESO').length
+                  const resueltas = incidenciasUsuario.filter(inc => inc.estado === 'RESUELTO').length
+                  return (
+                    <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--color-text)' }}>
+                      <strong>{total}</strong> incidencia{total !== 1 ? 's' : ''}: {' '}
+                      <span className="admin-badge admin-badge--pending">{pendientes} Pendiente{pendientes !== 1 ? 's' : ''}</span>{' '}
+                      <span className="admin-badge admin-badge--progress">{enProceso} En Proceso</span>{' '}
+                      <span className="admin-badge admin-badge--resolved">{resueltas} Resuelta{resueltas !== 1 ? 's' : ''}</span>
+                    </p>
+                  )
+                })()
+              )}
+            </div>
+          )}
+        </>
       )}
       </>
       )}
