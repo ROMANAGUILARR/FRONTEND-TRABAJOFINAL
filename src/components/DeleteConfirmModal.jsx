@@ -14,11 +14,11 @@ export default function DeleteConfirmModal({ onConfirm, onCancel }) {
           Esta acción no se puede deshacer. La incidencia será eliminada permanentemente.
         </p>
         <div className="ai-modal__actions">
+          <button type="button" className="ai-modal__btn" style={{ background: '#C62828', color: '#fff' }} onClick={onConfirm}>
+            Confirmar
+          </button>
           <button type="button" className="ai-modal__btn ai-modal__btn--no" onClick={onCancel}>
             Cancelar
-          </button>
-          <button type="button" className="ai-modal__btn" style={{ background: '#C62828', color: '#fff' }} onClick={onConfirm}>
-            Eliminar
           </button>
         </div>
       </div>

@@ -209,7 +209,7 @@ export default function ManejarIncidencias() {
         <input
           type="text" placeholder="Buscar por fecha, título o ubicación..."
           value={busqueda} onChange={e => setBusqueda(e.target.value)}
-          className="admin-input" style={{ maxWidth: '350px' }}
+          className="admin-input" style={{ flex: 1, minWidth: '300px' }}
         />
         <div style={{ display: 'flex', gap: '6px' }}>
           {[{ key: 'todos', label: 'Todos', color: '#37474F' }, { key: 'pending', label: 'Pendientes', color: '#E65100' }, { key: 'in-progress', label: 'En Proceso', color: '#1565C0' }, { key: 'resolved', label: 'Resueltos', color: '#2E7D32' }].map(f => (

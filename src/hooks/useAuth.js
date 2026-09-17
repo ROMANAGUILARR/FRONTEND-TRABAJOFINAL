@@ -52,12 +52,12 @@ export function AuthProvider({ children }) {
       const demoRol = 'CIUDADANO';
       const demoPermisos = { canRegister: true, canTrack: true, canAccessEducation: true, isAdmin: false };
       localStorage.setItem('token', 'demo-token');
-      localStorage.setItem('nombreUsuario', 'GASPER');
+      localStorage.setItem('nombreUsuario', 'Itzair Roman');
       localStorage.setItem('puntos', String(MOCK_PUNTOS));
       localStorage.setItem('rol', demoRol);
       localStorage.setItem('permissions', JSON.stringify(demoPermisos));
       setIsAuthenticated(true);
-      setUser({ nombreUsuario: 'GASPER', puntos: MOCK_PUNTOS, rol: demoRol });
+      setUser({ nombreUsuario: 'Itzair Roman', puntos: MOCK_PUNTOS, rol: demoRol });
       setPermissions(demoPermisos);
       return { success: true, rol: demoRol };
     }
@@ -67,12 +67,12 @@ export function AuthProvider({ children }) {
       const demoRol = 'ADMIN';
       const demoPermisos = { canRegister: false, canTrack: false, canAccessEducation: false, isAdmin: true };
       localStorage.setItem('token', 'demo-token-admin');
-      localStorage.setItem('nombreUsuario', 'Admin Demo');
+      localStorage.setItem('nombreUsuario', 'Ernesto');
       localStorage.setItem('puntos', '0');
       localStorage.setItem('rol', demoRol);
       localStorage.setItem('permissions', JSON.stringify(demoPermisos));
       setIsAuthenticated(true);
-      setUser({ nombreUsuario: 'Admin Demo', puntos: 0, rol: demoRol });
+      setUser({ nombreUsuario: 'Ernesto', puntos: 0, rol: demoRol });
       setPermissions(demoPermisos);
       return { success: true, rol: demoRol };
     }
