@@ -234,7 +234,6 @@ export default function ManejarIncidencias() {
                   <th>Estado</th>
                   <th>Descripción</th>
                   <th>Reportado por</th>
-                  <th>Fecha</th>
                   <th>Ubicación</th>
                   <th>Acciones</th>
                 </tr>
@@ -249,9 +248,8 @@ export default function ManejarIncidencias() {
                         {ESTADO_LABEL[incidencia.estado] || incidencia.estado}
                       </span>
                     </td>
-                    <td className="admin-table__descripcion">{incidencia.descripcion}</td>
+                    <td style={{ maxWidth: '250px', whiteSpace: 'normal', wordBreak: 'break-word' }}>{incidencia.descripcion}</td>
                     <td>{obtenerReportadoPor(incidencia)}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>{formatearFecha(incidencia.fecha)}</td>
                     <td>{incidencia.direccionTexto || 'No se sabe'}</td>
                     <td>
                       <div className="admin-table__acciones">

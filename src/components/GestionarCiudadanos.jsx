@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { obtenerUsuarios, obtenerIncidenciasPorUsuario } from '../services/incidenciasApi'
-import { MOCK_INCIDENCIAS_POR_USUARIO } from '../services/mockData'
+import { MOCK_INCIDENCIAS_POR_USUARIO, MOCK_INSIGNIAS } from '../services/mockData'
 import { ESTADO_BADGE, ESTADO_LABEL, formatearFecha } from '../utils/incidenciaConstants'
 import './ManejarIncidencias.css'
 import ReporteIncidencias from './ReporteIncidencias'
@@ -245,30 +245,40 @@ export default function GestionarCiudadanos() {
               borderRadius: '12px', padding: '20px 24px', marginTop: '16px',
               boxShadow: '0 4px 12px rgba(46,125,50,0.1)',
             }}>
-              <h4 style={{ margin: '0 0 12px', color: 'var(--color-text)', fontSize: '0.95rem' }}>
+              <h4 style={{ margin: '0 0 16px', color: 'var(--color-text)', fontSize: '0.95rem' }}>
                 Resumen de {usuarioSeleccionado.nombreCompleto} {usuarioSeleccionado.apellidoCompleto}
               </h4>
-              {cargandoIncidencias ? (
-                <p style={{ color: 'var(--color-text-secondary)' }}>Cargando resumen...</p>
-              ) : (
-                (() => {
-                  const total = incidenciasUsuario.length
-                  if (total === 0) {
-                    return <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>Este usuario no tiene registros de incidencias.</p>
-                  }
-                  const pendientes = incidenciasUsuario.filter(inc => inc.estado === 'PENDIENTE').length
-                  const enProceso = incidenciasUsuario.filter(inc => inc.estado === 'EN_PROCESO').length
-                  const resueltas = incidenciasUsuario.filter(inc => inc.estado === 'RESUELTO').length
-                  return (
-                    <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--color-text)' }}>
-                      <strong>{total}</strong> incidencia{total !== 1 ? 's' : ''}: {' '}
-                      <span className="admin-badge admin-badge--pending">{pendientes} Pendiente{pendientes !== 1 ? 's' : ''}</span>{' '}
-                      <span className="admin-badge admin-badge--progress">{enProceso} En Proceso</span>{' '}
-                      <span className="admin-badge admin-badge--resolved">{resueltas} Resuelta{resueltas !== 1 ? 's' : ''}</span>
+
+              {/* Puntos */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+                <span style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--color-eco-primary, #2E7D32)' }}>
+                  {usuarioSeleccionado.puntos ?? 0}
+                </span>
+                <span style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)' }}>puntos acumulados</span>
+              </div>
+
+              {/* Insignias */}
+              <h5 style={{ margin: '0 0 12px', color: 'var(--color-text)', fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Insignias
+              </h5>
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                {MOCK_INSIGNIAS.map(insignia => (
+                  <div key={insignia.idInsignia} style={{
+                    background: insignia.desbloqueada ? 'var(--color-accent-green-light, #e8f5e9)' : 'var(--color-bg, #f5f5f5)',
+                    border: insignia.desbloqueada ? '1px solid #A5D6A7' : '1px solid var(--color-border)',
+                    borderRadius: '10px', padding: '12px 16px', minWidth: '180px', flex: '1',
+                    opacity: insignia.desbloqueada ? 1 : 0.5,
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                      <span style={{ fontSize: '1.2rem' }}>{insignia.desbloqueada ? '🏅' : '🔒'}</span>
+                      <strong style={{ fontSize: '0.85rem', color: 'var(--color-text)' }}>{insignia.nombre}</strong>
+                    </div>
+                    <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>
+                      {insignia.descripcion}
                     </p>
-                  )
-                })()
-              )}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </>
