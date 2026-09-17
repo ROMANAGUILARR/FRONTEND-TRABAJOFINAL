@@ -14,16 +14,6 @@ export default function AIConfirmModal({ onConfirm, onCancel }) {
         textAlign: 'center',
         position: 'relative',
       }} onClick={e => e.stopPropagation()}>
-        {/* Icono */}
-        <div style={{
-          width: '64px', height: '64px', borderRadius: '50%',
-          background: 'linear-gradient(135deg, #e8f5e9, #c8e6c9)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          margin: '0 auto 16px',
-        }}>
-          <i className="fa-solid fa-wand-magic-sparkles" style={{ fontSize: '1.5rem', color: '#2E7D32' }}></i>
-        </div>
-
         {/* Título principal */}
         <h3 style={{
           margin: '0 0 12px', fontSize: '1.1rem', fontWeight: 700,

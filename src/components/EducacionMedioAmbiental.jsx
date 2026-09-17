@@ -190,7 +190,22 @@ export default function EducacionMedioAmbiental() {
           <span className={`registrar__contador2 ${caracteresRestantes < 50 ? 'registrar__contador2--alerta' : ''}`}>
             {caracteresRestantes} caracteres restantes
           </span>
+          <button type="submit" className="educacion_buttonOR">Obtener recomendaciones</button>
         </form>
+        {cargando && <p>Generando recomendaciones...</p>}
+        {error && <p className="educacion__error">{error}</p>}
+        {recomendaciones.length > 0 && (
+          <div className="espacio_recomendaciones">
+            <h2 className="reco_titulo">Recomendaciones</h2>
+            <ul className="educacion__recomendaciones">
+              {recomendaciones.map((rec, index) => (
+                <li key={index} className="educacion__recomendacion-item">
+                  {rec}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
       <div className="educacion__header">
         <h2 className="educacion__title">Educación Medio Ambiental</h2>
