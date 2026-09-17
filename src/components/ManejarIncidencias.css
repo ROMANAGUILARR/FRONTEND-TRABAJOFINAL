@@ -4,21 +4,22 @@
   border: none;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.85rem !important;
-  font-family: inherit;
+  font-size: 0.82rem !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 6px;
   transition: all 0.2s;
   text-decoration: none;
   line-height: 1.4;
   -webkit-appearance: button;
   appearance: auto;
-  letter-spacing: normal;
+  letter-spacing: 0.01em;
   text-indent: 0;
   text-shadow: none;
-  text-transform: none;
+  text-transform: uppercase;
   visibility: visible;
   word-spacing: normal;
 }
