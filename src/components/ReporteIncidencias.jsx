@@ -31,27 +31,51 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
 
   async function descargarPDF() {
     const elemento = reporteRef.current
-    const canvas = await html2canvas(elemento, { scale: 1.5, useCORS: true, scrollY: -window.scrollY, windowWidth: elemento.scrollWidth, windowHeight: elemento.scrollHeight })
-    const imgData = canvas.toDataURL('image/png')
     const pdf = new jsPDF('p', 'mm', 'a4')
     const pdfWidth = pdf.internal.pageSize.getWidth()
     const pdfHeight = pdf.internal.pageSize.getHeight()
-    const imgWidth = pdfWidth
-    const imgHeight = (canvas.height * pdfWidth) / canvas.width
 
-    let heightLeft = imgHeight
-    let position = 0
+    // Capturar el contenido como canvas
+    const canvas = await html2canvas(elemento, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      width: elemento.scrollWidth,
+      height: elemento.scrollHeight,
+    })
 
-    // Primera página
-    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
-    heightLeft -= pdfHeight
+    const imgData = canvas.toDataURL('image/png')
+    const imgWidth = pdfWidth - 20 // Margen de 10mm cada lado
+    const imgHeight = (canvas.height * imgWidth) / canvas.width
 
-    // Páginas adicionales si el contenido es más largo
-    while (heightLeft > 0) {
-      position = position - pdfHeight
-      pdf.addPage()
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
-      heightLeft -= pdfHeight
+    // Si cabe en una página
+    if (imgHeight <= pdfHeight - 20) {
+      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight)
+    } else {
+      // Multipágina: cortar la imagen en secciones
+      const pageContentHeight = pdfHeight - 20 // Altura usable por página
+      const totalPages = Math.ceil(imgHeight / pageContentHeight)
+
+      for (let page = 0; page < totalPages; page++) {
+        if (page > 0) pdf.addPage()
+
+        // Crear un canvas recortado para esta página
+        const sourceY = (page * pageContentHeight * canvas.width) / imgWidth
+        const sourceHeight = Math.min(
+          (pageContentHeight * canvas.width) / imgWidth,
+          canvas.height - sourceY
+        )
+
+        const pageCanvas = document.createElement('canvas')
+        pageCanvas.width = canvas.width
+        pageCanvas.height = sourceHeight
+        const ctx = pageCanvas.getContext('2d')
+        ctx.drawImage(canvas, 0, -sourceY)
+
+        const pageImgData = pageCanvas.toDataURL('image/png')
+        const pageImgHeight = (sourceHeight * imgWidth) / canvas.width
+        pdf.addImage(pageImgData, 'PNG', 10, 10, imgWidth, pageImgHeight)
+      }
     }
 
     pdf.save(`Reporte_${usuario.nombreCompleto}_${usuario.apellidoCompleto}.pdf`)
