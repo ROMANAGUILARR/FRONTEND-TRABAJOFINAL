@@ -128,6 +128,8 @@
   gap: 4px;
   transition: transform 0.2s, box-shadow 0.2s;
   border-left: 4px solid #2E7D32;
+  position: relative;
+  overflow: hidden;
 }
 
 .admin-metric-card:hover {
@@ -145,6 +147,15 @@
   font-size: 0.88rem;
   color: var(--color-text-secondary);
   font-weight: 500;
+}
+
+.admin-metric-card__icon {
+  font-size: 1.8rem;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.6;
 }
 
 .admin-metric-card--total {
