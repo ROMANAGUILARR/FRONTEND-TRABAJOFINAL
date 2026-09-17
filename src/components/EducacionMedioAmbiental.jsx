@@ -145,52 +145,8 @@ export default function EducacionMedioAmbiental() {
           </div>
         </div>
         <p className="educacion__subtitle">
-          Recibe consejos que te enseñen a manejar correctamente residuos sólidos de un tipo específico
+          Aprende a manejar correctamente residuos sólidos de un tipo específico
         </p>
-        <form onSubmit={handleSubmit} className="educacion__form">
-          <label className="educacion__label">Selecciona un tipo de residuo sólido <span style={{ color: '#ff7a00' }}>*</span>:</label>
-          <select
-            className="educacion__dropdown"
-            name="tipoMaterial"
-            value={tipoMaterial}
-            onChange={(e) => { setTipoMaterial(e.target.value) }}
-          >
-            <option value="">--Selecione alguna opción--</option>
-            {CATEGORIAS2.map(categoria => (
-              <option key={categoria} value={categoria}>{categoria}</option>
-            ))}
-          </select>
-          <label className="educacion__label">Especifica las recomendaciones que deseas en base a la categoría:</label>
-          <textarea className="educacion__textarea" name="contexto" value={listening ? transcript : contextoExtra} maxLength={MAX_CONTEXTO} onChange={handleContextoChange}></textarea>
-          {browserSupportsSpeechRecognition && (
-            <div className="registrar__voz2">
-              <button
-                type="button"
-                className={`registrar__btn2--voz ${listening ? 'registrar__btn2--voz--activo' : ''}`}
-                onClick={() => {
-                  if (listening) {
-                    SpeechRecognition.stopListening();
-                    if (transcript) {
-                      setContextoExtra(transcript);
-                      setCaracteresRestantes(MAX_CONTEXTO - transcript.length);
-                    }
-                  } else {
-                    resetTranscript();
-                    SpeechRecognition.startListening({ language: 'es-PE', continuous: true });
-                  }
-                }}
-              >
-                {listening ? '⏹️ Detener grabación' : '🗣️ Dictar descripción'}
-              </button>
-              {listening && (
-                <span className="registrar__voz-estado">Escuchando...</span>
-              )}
-            </div>
-          )}
-          <span className={`registrar__contador2 ${caracteresRestantes < 50 ? 'registrar__contador2--alerta' : ''}`}>
-            {caracteresRestantes} caracteres restantes
-          </span>
-        </form>
       </div>
       <div className="educacion__header">
         <h2 className="educacion__title">Educación Medio Ambiental</h2>
