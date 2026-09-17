@@ -288,6 +288,7 @@ export default function GestionarCiudadanos() {
                         borderRadius: '14px', padding: '16px',
                         position: 'relative', overflow: 'hidden',
                         display: 'flex', flexDirection: 'column',
+                        height: '100%',
                       }}>
                         {desbloqueada && (
                           <div style={{
