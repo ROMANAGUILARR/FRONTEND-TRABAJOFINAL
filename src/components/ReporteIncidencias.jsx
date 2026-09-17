@@ -31,12 +31,29 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
 
   async function descargarPDF() {
     const elemento = reporteRef.current
-    const canvas = await html2canvas(elemento, { scale: 2, useCORS: true })
+    const canvas = await html2canvas(elemento, { scale: 2, useCORS: true, scrollY: -window.scrollY, windowWidth: elemento.scrollWidth, windowHeight: elemento.scrollHeight })
     const imgData = canvas.toDataURL('image/png')
     const pdf = new jsPDF('p', 'mm', 'a4')
     const pdfWidth = pdf.internal.pageSize.getWidth()
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
+    const pdfHeight = pdf.internal.pageSize.getHeight()
+    const imgWidth = pdfWidth
+    const imgHeight = (canvas.height * pdfWidth) / canvas.width
+
+    let heightLeft = imgHeight
+    let position = 0
+
+    // Primera página
+    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
+    heightLeft -= pdfHeight
+
+    // Páginas adicionales si el contenido es más largo
+    while (heightLeft > 0) {
+      position = position - pdfHeight
+      pdf.addPage()
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
+      heightLeft -= pdfHeight
+    }
+
     pdf.save(`Reporte_${usuario.nombreCompleto}_${usuario.apellidoCompleto}.pdf`)
   }
 
