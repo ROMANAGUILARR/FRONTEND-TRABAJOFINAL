@@ -30,15 +30,23 @@
 }
 
 .admin-btn--edit {
-  background: #E3F2FD !important;
-  color: #1565C0 !important;
-  border: 1px solid #90CAF9 !important;
+  background: #1565C0 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.admin-btn--edit:hover {
+  background: #0D47A1 !important;
 }
 
 .admin-btn--delete {
-  background: #FFEBEE !important;
-  color: #C62828 !important;
-  border: 1px solid #EF9A9A !important;
+  background: #C62828 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.admin-btn--delete:hover {
+  background: #B71C1C !important;
 }
 
 .admin-btn--cancel {
@@ -91,6 +99,7 @@
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.4;
+  white-space: nowrap;
 }
 
 .admin-badge--pending {
