@@ -202,11 +202,6 @@ export default function LandingPage() {
                 </>
               )}
             </div>
-            {!isAuthenticated && (
-              <button className="lp-demo-link" onClick={handleDemo}>
-                Ver módulos en modo demo →
-              </button>
-            )}
           </div>
 
           {/* Stats panel derecho */}
@@ -318,9 +313,6 @@ export default function LandingPage() {
             <div className="lp-cta-btns">
               <Button variant="primary" size="lg" onClick={() => navigate('/registrarse')}>
                 Registrarse Gratis
-              </Button>
-              <Button variant="secondary" size="lg" onClick={handleDemo}>
-                Probar Demo
               </Button>
             </div>
           )}
