@@ -31,7 +31,7 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
 
   async function descargarPDF() {
     const elemento = reporteRef.current
-    const canvas = await html2canvas(elemento, { scale: 2, useCORS: true, scrollY: -window.scrollY, windowWidth: elemento.scrollWidth, windowHeight: elemento.scrollHeight })
+    const canvas = await html2canvas(elemento, { scale: 1.5, useCORS: true, scrollY: -window.scrollY, windowWidth: elemento.scrollWidth, windowHeight: elemento.scrollHeight })
     const imgData = canvas.toDataURL('image/png')
     const pdf = new jsPDF('p', 'mm', 'a4')
     const pdfWidth = pdf.internal.pageSize.getWidth()
