@@ -117,40 +117,78 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
 
         {/* Resumen de insignias */}
         <div style={{ marginTop: '24px', marginBottom: '24px' }}>
-          <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#2E7D32', margin: '0 0 12px', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '2px solid #2E7D32', paddingBottom: '6px' }}>
-            Resumen de Participacion
+          <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#111', margin: '0 0 16px' }}>
+            Resumen de {usuario.nombreCompleto} {usuario.apellidoCompleto}: {' '}
+            <span style={{ color: '#2E7D32', fontWeight: 800 }}>{incidencias.length * 10}</span> puntos acumulados
           </h3>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-            <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#2E7D32' }}>{(incidencias.length * 10)}</span>
-            <span style={{ fontSize: '0.9rem', color: '#555' }}>puntos acumulados ({incidencias.length} registros x 10 pts)</span>
-          </div>
-          <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#333', margin: '0 0 10px', textTransform: 'uppercase' }}>Insignias Obtenidas</h4>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px' }}>
-            {MOCK_INSIGNIAS.map((insignia) => {
-              const desbloqueada = incidencias.length >= insignia.requisitoIncidencias
-              return (
-                <div key={insignia.idInsignia} style={{
-                  border: desbloqueada ? '1px solid #A5D6A7' : '1px solid #ddd',
-                  borderRadius: '8px', padding: '10px 12px',
-                  background: desbloqueada ? '#e8f5e9' : '#f9f9f9',
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <span style={{
-                      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                      width: '22px', height: '22px', borderRadius: '50%',
-                      background: desbloqueada ? '#2E7D32' : '#bdbdbd',
-                      color: '#fff', fontSize: '0.6rem',
-                    }}>
-                      <i className={desbloqueada ? 'fa-solid fa-check' : 'fa-solid fa-lock'}></i>
-                    </span>
-                    <strong style={{ fontSize: '0.82rem', color: desbloqueada ? '#111' : '#999' }}>{insignia.nombre}</strong>
+          <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#333', margin: '0 0 14px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            Insignias
+          </h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px', alignItems: 'start' }}>
+            {(() => {
+              const colores = [
+                { bg: '#e8f5e9', border: '#A5D6A7', icon: '#2E7D32' },
+                { bg: '#E3F2FD', border: '#90CAF9', icon: '#1565C0' },
+                { bg: '#FFF3E0', border: '#FFCC80', icon: '#E65100' },
+                { bg: '#F3E5F5', border: '#CE93D8', icon: '#7B1FA2' },
+                { bg: '#E0F2F1', border: '#80CBC4', icon: '#00695C' },
+              ]
+              return MOCK_INSIGNIAS.map((insignia, idx) => {
+                const desbloqueada = incidencias.length >= insignia.requisitoIncidencias
+                const progreso = Math.min(incidencias.length / insignia.requisitoIncidencias, 1)
+                const c = colores[idx % colores.length]
+                return (
+                  <div key={insignia.idInsignia} style={{
+                    background: desbloqueada ? c.bg : '#f5f5f5',
+                    border: desbloqueada ? `2px solid ${c.border}` : '2px solid #e0e0e0',
+                    borderRadius: '14px', padding: '14px',
+                    position: 'relative', overflow: 'hidden',
+                    display: 'flex', flexDirection: 'column',
+                  }}>
+                    {desbloqueada && (
+                      <div style={{
+                        position: 'absolute', top: '-20px', right: '-20px',
+                        width: '70px', height: '70px', borderRadius: '50%',
+                        background: c.icon, opacity: 0.10,
+                      }} />
+                    )}
+                    <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                        <span style={{
+                          display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                          width: '38px', height: '38px', borderRadius: '10px', flexShrink: 0,
+                          background: desbloqueada ? c.icon : '#bdbdbd',
+                          color: '#fff', fontSize: '1rem',
+                        }}>
+                          <i className={desbloqueada ? 'fa-solid fa-check' : 'fa-solid fa-lock'}></i>
+                        </span>
+                        <div style={{ minWidth: 0, flex: 1 }}>
+                          <strong style={{ fontSize: '0.95rem', fontWeight: 700, color: desbloqueada ? '#111' : '#999', display: 'block', lineHeight: 1.3 }}>
+                            {insignia.nombre}
+                          </strong>
+                          <span style={{ fontSize: '0.78rem', color: desbloqueada ? c.icon : '#bbb', fontWeight: 600 }}>
+                            {desbloqueada ? 'Desbloqueada' : `${incidencias.length}/${insignia.requisitoIncidencias} incidencias`}
+                          </span>
+                        </div>
+                      </div>
+                      <p style={{ margin: '0 0 10px', fontSize: '0.78rem', color: desbloqueada ? '#555' : '#bbb', lineHeight: 1.5, flex: 1 }}>
+                        {insignia.descripcion}
+                      </p>
+                      <div style={{
+                        width: '100%', height: '5px', borderRadius: '3px',
+                        background: desbloqueada ? `${c.icon}30` : '#e0e0e0',
+                        overflow: 'hidden', flexShrink: 0,
+                      }}>
+                        <div style={{
+                          width: `${progreso * 100}%`, height: '100%', borderRadius: '3px',
+                          background: desbloqueada ? c.icon : '#999',
+                        }} />
+                      </div>
+                    </div>
                   </div>
-                  <p style={{ margin: 0, fontSize: '0.75rem', color: desbloqueada ? '#555' : '#bbb' }}>
-                    {desbloqueada ? insignia.descripcion : `Requiere ${insignia.requisitoIncidencias} incidencias (${incidencias.length}/${insignia.requisitoIncidencias})`}
-                  </p>
-                </div>
-              )
-            })}
+                )
+              })
+            })()}
           </div>
         </div>
 
