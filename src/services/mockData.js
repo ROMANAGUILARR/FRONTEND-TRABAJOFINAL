@@ -59,7 +59,7 @@ export const MOCK_RECOMENDACIONES_GENERICAS = [
 ]
 
 export const MOCK_USUARIOS = [
-  { idUsuario: 1, nombreCompleto: 'Itzair', apellidoCompleto: 'Roman', dni: '72844283', telefono: '987654321', correoElectronico: 'itzairplus@gmail.com', nombreUsuario: 'GASPER', puntos: 130, rol: 'CIUDADANO', fechaRegistro: '2026-02-10' },
+  { idUsuario: 1, nombreCompleto: 'Itzair', apellidoCompleto: 'Roman', dni: '72844283', telefono: '987654321', correoElectronico: 'itzairplus@gmail.com', nombreUsuario: 'GASPER', puntos: 100, rol: 'CIUDADANO', fechaRegistro: '2026-02-10' },
   { idUsuario: 2, nombreCompleto: 'Carlos', apellidoCompleto: 'Rodriguez Perez', dni: '72345678', telefono: '987123456', correoElectronico: 'carlos.rodriguez@email.com', nombreUsuario: 'carlos_rp', puntos: 20, rol: 'CIUDADANO', fechaRegistro: '2026-04-20' },
   { idUsuario: 3, nombreCompleto: 'Ana', apellidoCompleto: 'Martinez Silva', dni: '73456789', telefono: '986543210', correoElectronico: 'ana.martinez@email.com', nombreUsuario: 'ana_ms', puntos: 50, rol: 'CIUDADANO', fechaRegistro: '2026-02-10' },
   { idUsuario: 4, nombreCompleto: 'Luis', apellidoCompleto: 'Fernandez Torres', dni: '74567890', telefono: '985432109', correoElectronico: 'luis.fernandez@email.com', nombreUsuario: 'luis_ft', puntos: 10, rol: 'CIUDADANO', fechaRegistro: '2026-06-05' },
@@ -81,9 +81,6 @@ export const MOCK_INCIDENCIAS_POR_USUARIO = {
     { id: 8, categoria: 'Contaminacion del aire', descripcion: 'Humo negro proveniente de fabrica textil', estado: 'EN_PROCESO', fecha: '2026-09-17', direccionTexto: 'Zona Industrial' },
     { id: 9, categoria: 'Quema de residuos', descripcion: 'Quema de hojas secas en via publica', estado: 'PENDIENTE', fecha: '2026-09-18', direccionTexto: 'Jr. Las Palmeras' },
     { id: 10, categoria: 'Acumulacion de basura', descripcion: 'Residuos abandonados en terreno', estado: 'PENDIENTE', fecha: '2026-09-19', direccionTexto: 'Av. Argentina' },
-    { id: 11, categoria: 'Contaminacion del agua', descripcion: 'Agua turbia en acequia del barrio', estado: 'EN_PROCESO', fecha: '2026-09-20', direccionTexto: 'Jr. Los Pinos' },
-    { id: 12, categoria: 'Arbol caido', descripcion: 'Arbol caido sobre vehiculo estacionado', estado: 'RESUELTO', fecha: '2026-09-21', direccionTexto: 'Calle Los Olivos' },
-    { id: 13, categoria: 'Falta de papelera', descripcion: 'Sin papeleras en cuadra completa', estado: 'PENDIENTE', fecha: '2026-09-22', direccionTexto: 'Jr. Bolivar' },
   ],
   2: [
     { id: 17, categoria: 'Arbol caido', descripcion: 'Arbol bloquea la vereda despues del temporal', estado: 'RESUELTO', fecha: '2026-09-08', direccionTexto: 'Av. Grau 321' },

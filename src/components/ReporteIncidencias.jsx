@@ -186,7 +186,7 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '60px', paddingTop: '8px' }}>
           <div style={{ textAlign: 'center', minWidth: '200px' }}>
             <div style={{ borderTop: '1px solid #333', marginBottom: '4px' }}></div>
-            <span style={{ fontSize: '0.8rem', color: '#555' }}>Firma del Solicitante</span>
+            <span style={{ fontSize: '0.8rem', color: '#555' }}>Firma del Usuario</span>
           </div>
           <div style={{ textAlign: 'center', minWidth: '200px' }}>
             <div style={{ borderTop: '1px solid #333', marginBottom: '4px' }}></div>
