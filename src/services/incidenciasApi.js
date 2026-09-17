@@ -185,7 +185,7 @@ export async function registrarIncidencia(categoria, descripcion, urlsFotos, arc
 }
 
 export async function obtenerPuntosUsuario() {
-  if (esDemo()) return 0
+  if (esDemo()) return MOCK_PUNTOS
 
   const token = localStorage.getItem("token");
   console.log('Token puntos:', token)
@@ -208,9 +208,12 @@ export async function obtenerPuntosUsuario() {
 
 export async function obtenerInsigniasUsuario() {
   if (esDemo()) {
-    localStorage.removeItem('insigniasDesbloqueadas')
-    localStorage.removeItem('puntos')
-    return MOCK_INSIGNIAS.map(ins => ({ ...ins, desbloqueada: false }))
+    const incidencias = MOCK_INCIDENCIAS_POR_USUARIO[1] || []
+    const totalIncidencias = incidencias.length
+    return MOCK_INSIGNIAS.map(ins => ({
+      ...ins,
+      desbloqueada: totalIncidencias >= ins.requisitoIncidencias
+    }))
   }
 
   const token = localStorage.getItem("token");
