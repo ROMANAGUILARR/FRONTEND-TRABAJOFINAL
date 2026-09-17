@@ -144,6 +144,7 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
                     borderRadius: '14px', padding: '14px',
                     position: 'relative', overflow: 'hidden',
                     display: 'flex', flexDirection: 'column',
+                    height: '100%',
                   }}>
                     {desbloqueada && (
                       <div style={{
