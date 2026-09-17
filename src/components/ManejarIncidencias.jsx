@@ -185,22 +185,22 @@ export default function ManejarIncidencias() {
         <div className="admin-metric-card admin-metric-card--total">
           <span className="admin-metric-card__numero">{totalIncidencias}</span>
           <span className="admin-metric-card__label">Total Incidencias</span>
-          <span className="admin-metric-card__icon">📊</span>
+          <i className="fa-solid fa-chart-bar admin-metric-card__icon"></i>
         </div>
         <div className="admin-metric-card admin-metric-card--pending">
           <span className="admin-metric-card__numero">{pendientesCount}</span>
           <span className="admin-metric-card__label">Pendientes</span>
-          <span className="admin-metric-card__icon">⏳</span>
+          <i className="fa-solid fa-clock admin-metric-card__icon"></i>
         </div>
         <div className="admin-metric-card admin-metric-card--progress">
           <span className="admin-metric-card__numero">{enProcesoCount}</span>
           <span className="admin-metric-card__label">En Proceso</span>
-          <span className="admin-metric-card__icon">🔧</span>
+          <i className="fa-solid fa-wrench admin-metric-card__icon"></i>
         </div>
         <div className="admin-metric-card admin-metric-card--resolved">
           <span className="admin-metric-card__numero">{resueltosCount}</span>
           <span className="admin-metric-card__label">Resueltos</span>
-          <span className="admin-metric-card__icon">✅</span>
+          <i className="fa-solid fa-circle-check admin-metric-card__icon"></i>
         </div>
       </div>
 

@@ -123,22 +123,22 @@ export default function GestionarCiudadanos() {
       </p>
 
       {/* Métricas */}
-      <div style={{ display: 'flex', gap: '16px', marginBottom: '20px', flexWrap: 'wrap' }}>
-        {[
-          { label: 'Total Usuarios', value: usuarios.length, accent: '#2E7D32' },
-          { label: 'Ciudadanos', value: totalCiudadanos, accent: '#1565C0' },
-          { label: 'Administradores', value: totalAdmins, accent: '#E65100' },
-        ].map(m => (
-          <div key={m.label} style={{
-            background: 'var(--color-bg-white)', border: '1px solid var(--color-border)',
-            borderLeft: `4px solid ${m.accent}`, borderRadius: '12px',
-            padding: '16px 24px', flex: '1', minWidth: '150px',
-            boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
-          }}>
-            <span style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>{m.label}</span>
-            <p style={{ fontSize: '1.8rem', fontWeight: 700, color: m.accent, margin: '4px 0 0' }}>{m.value}</p>
-          </div>
-        ))}
+      <div className="admin-metrics">
+        <div className="admin-metric-card" style={{ borderLeftColor: '#2E7D32' }}>
+          <span className="admin-metric-card__numero" style={{ color: '#2E7D32' }}>{usuarios.length}</span>
+          <span className="admin-metric-card__label">Total Usuarios</span>
+          <i className="fa-solid fa-users admin-metric-card__icon"></i>
+        </div>
+        <div className="admin-metric-card" style={{ borderLeftColor: '#1565C0' }}>
+          <span className="admin-metric-card__numero" style={{ color: '#1565C0' }}>{totalCiudadanos}</span>
+          <span className="admin-metric-card__label">Ciudadanos</span>
+          <i className="fa-solid fa-user admin-metric-card__icon"></i>
+        </div>
+        <div className="admin-metric-card" style={{ borderLeftColor: '#E65100' }}>
+          <span className="admin-metric-card__numero" style={{ color: '#E65100' }}>{totalAdmins}</span>
+          <span className="admin-metric-card__label">Administradores</span>
+          <i className="fa-solid fa-user-shield admin-metric-card__icon"></i>
+        </div>
       </div>
 
       {/* Buscador y filtros */}
@@ -255,7 +255,7 @@ export default function GestionarCiudadanos() {
                 <h4 style={{ margin: 0, color: 'var(--color-text)', fontSize: '1rem', fontWeight: 700 }}>
                   Resumen de {usuarioSeleccionado.nombreCompleto} {usuarioSeleccionado.apellidoCompleto}:
                 </h4>
-                <span style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-eco-primary, #2E7D32)' }}>
+                <span style={{ fontSize: '1.1rem', fontWeight: 700, color: '#111' }}>
                   {usuarioSeleccionado.puntos ?? 0} puntos acumulados
                 </span>
               </div>
@@ -280,9 +280,9 @@ export default function GestionarCiudadanos() {
                             display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                             width: '24px', height: '24px', borderRadius: '50%',
                             background: desbloqueada ? '#2E7D32' : '#bdbdbd',
-                            color: '#fff', fontSize: '0.7rem', fontWeight: 700,
+                            color: '#fff', fontSize: '0.7rem',
                           }}>
-                            {desbloqueada ? 'OK' : 'X'}
+                            <i className={desbloqueada ? 'fa-solid fa-check' : 'fa-solid fa-xmark'}></i>
                           </span>
                           <strong style={{ fontSize: '0.85rem', color: desbloqueada ? 'var(--color-text)' : '#9e9e9e' }}>{insignia.nombre}</strong>
                         </div>
@@ -290,7 +290,7 @@ export default function GestionarCiudadanos() {
                           {insignia.descripcion}
                         </p>
                         {!desbloqueada && (
-                          <p style={{ margin: '4px 0 0', fontSize: '0.72rem', color: '#bdbdbd', fontStyle: 'italic' }}>
+                          <p style={{ margin: '4px 0 0', fontSize: '0.72rem', color: '#bdbdbd' }}>
                             Requiere {insignia.requisitoIncidencias} incidencias ({numIncidencias}/{insignia.requisitoIncidencias})
                           </p>
                         )}
