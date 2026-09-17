@@ -267,15 +267,15 @@ export default function GestionarCiudadanos() {
               <h5 style={{ margin: '0 0 16px', color: 'var(--color-text)', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                 Insignias
               </h5>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '14px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '14px', alignItems: 'start' }}>
                 {(() => {
                   const numIncidencias = (MOCK_INCIDENCIAS_POR_USUARIO[usuarioSeleccionado.idUsuario] || []).length
                   const colores = [
-                    { bg: '#e8f5e9', bgDark: '#1a3a2a', border: '#A5D6A7', borderDark: '#2E7D32', icon: '#2E7D32' },
-                    { bg: '#E3F2FD', bgDark: '#1a2a3a', border: '#90CAF9', borderDark: '#1565C0', icon: '#1565C0' },
-                    { bg: '#FFF3E0', bgDark: '#3a2a1a', border: '#FFCC80', borderDark: '#E65100', icon: '#E65100' },
-                    { bg: '#F3E5F5', bgDark: '#2a1a3a', border: '#CE93D8', borderDark: '#7B1FA2', icon: '#7B1FA2' },
-                    { bg: '#E0F2F1', bgDark: '#1a3a3a', border: '#80CBC4', borderDark: '#00695C', icon: '#00695C' },
+                    { bg: '#e8f5e9', border: '#A5D6A7', icon: '#2E7D32' },
+                    { bg: '#E3F2FD', border: '#90CAF9', icon: '#1565C0' },
+                    { bg: '#FFF3E0', border: '#FFCC80', icon: '#E65100' },
+                    { bg: '#F3E5F5', border: '#CE93D8', icon: '#7B1FA2' },
+                    { bg: '#E0F2F1', border: '#80CBC4', icon: '#00695C' },
                   ]
                   return MOCK_INSIGNIAS.map((insignia, idx) => {
                     const desbloqueada = numIncidencias >= insignia.requisitoIncidencias
@@ -287,8 +287,8 @@ export default function GestionarCiudadanos() {
                         border: desbloqueada ? `2px solid ${c.border}` : '2px solid var(--color-border, #e0e0e0)',
                         borderRadius: '14px', padding: '16px',
                         position: 'relative', overflow: 'hidden',
+                        display: 'flex', flexDirection: 'column',
                       }}>
-                        {/* Fondo decorativo */}
                         {desbloqueada && (
                           <div style={{
                             position: 'absolute', top: '-20px', right: '-20px',
@@ -296,8 +296,8 @@ export default function GestionarCiudadanos() {
                             background: c.icon, opacity: 0.12,
                           }} />
                         )}
-                        <div style={{ position: 'relative', zIndex: 1 }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+                        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
                             <span style={{
                               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                               width: '42px', height: '42px', borderRadius: '10px', flexShrink: 0,
@@ -306,7 +306,7 @@ export default function GestionarCiudadanos() {
                             }}>
                               <i className={desbloqueada ? 'fa-solid fa-check' : 'fa-solid fa-lock'}></i>
                             </span>
-                            <div style={{ minWidth: 0 }}>
+                            <div style={{ minWidth: 0, flex: 1 }}>
                               <strong style={{ fontSize: '1.05rem', fontWeight: 700, color: desbloqueada ? '#111' : 'var(--color-text-secondary, #9e9e9e)', display: 'block', lineHeight: 1.3 }}>
                                 {insignia.nombre}
                               </strong>
@@ -315,14 +315,13 @@ export default function GestionarCiudadanos() {
                               </span>
                             </div>
                           </div>
-                          <p style={{ margin: '0 0 10px', fontSize: '0.82rem', color: desbloqueada ? 'var(--color-text-secondary)' : 'var(--color-border, #bdbdbd)', lineHeight: 1.4 }}>
+                          <p style={{ margin: '0 0 12px', fontSize: '0.82rem', color: desbloqueada ? 'var(--color-text-secondary)' : 'var(--color-border, #bdbdbd)', lineHeight: 1.5, flex: 1 }}>
                             {insignia.descripcion}
                           </p>
-                          {/* Barra de progreso */}
                           <div style={{
                             width: '100%', height: '6px', borderRadius: '3px',
                             background: desbloqueada ? `${c.icon}30` : 'var(--color-border, #e0e0e0)',
-                            overflow: 'hidden',
+                            overflow: 'hidden', flexShrink: 0,
                           }}>
                             <div style={{
                               width: `${progreso * 100}%`, height: '100%', borderRadius: '3px',
