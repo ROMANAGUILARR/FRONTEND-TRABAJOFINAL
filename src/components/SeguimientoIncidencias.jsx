@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from 'react'
+import { MOCK_INCIDENCIAS_POR_USUARIO } from '../services/mockData'
 
 const ITEMS_POR_PAGINA = 10
 import './SeguimientoIncidencias.css'
@@ -67,11 +68,24 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
   }, [filtroEstado, busqueda])
 
   function cargarDatosDemo() {
-    localStorage.removeItem('incidenciasLocales')
-    localStorage.removeItem('todasIncidenciasDemo')
-    localStorage.removeItem('insigniasDesbloqueadas')
-    setMetricas({ total: 0, enProceso: 0, pendientes: 0, resueltos: 0 })
-    setIncidencias([])
+    const incidenciasMock = (MOCK_INCIDENCIAS_POR_USUARIO[1] || []).map(inc => ({
+      ...inc,
+      idIncidencia: inc.id,
+      titulo: inc.categoria,
+    }))
+    const incidenciasLocales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]').map(inc => ({
+      ...inc,
+      idIncidencia: inc.id || `local-${Date.now()}`,
+      titulo: inc.categoria || inc.titulo,
+    }))
+    const todasIncidencias = [...incidenciasMock, ...incidenciasLocales]
+    setIncidencias(todasIncidencias)
+
+    const total = todasIncidencias.length
+    const enProceso = todasIncidencias.filter(i => i.estado === 'EN_PROCESO').length
+    const pendientes = todasIncidencias.filter(i => i.estado === 'PENDIENTE' || i.estado === 'Pendiente').length
+    const resueltos = todasIncidencias.filter(i => i.estado === 'RESUELTO').length
+    setMetricas({ total, enProceso, pendientes, resueltos })
   }
 
   useEffect(() => {
@@ -79,6 +93,14 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
     if (token === 'demo-token' || token === 'demo-token-admin') {
       cargarDatosDemo()
     }
+    function handleNuevaIncidencia() {
+      const token = localStorage.getItem('token')
+      if (token === 'demo-token' || token === 'demo-token-admin') {
+        cargarDatosDemo()
+      }
+    }
+    window.addEventListener('incidencia-registrada', handleNuevaIncidencia)
+    return () => window.removeEventListener('incidencia-registrada', handleNuevaIncidencia)
   }, [])
 
   useEffect(() => {
@@ -86,7 +108,6 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
       try {
         const token = localStorage.getItem('token')
         if (token === 'demo-token' || token === 'demo-token-admin') {
-          cargarDatosDemo()
           return
         }
         const response = await fetch(`${API_BASE}/incidencias/metricas`, {
@@ -110,7 +131,6 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
       try {
         const token = localStorage.getItem('token')
         if (token === 'demo-token' || token === 'demo-token-admin') {
-          cargarDatosDemo()
           return
         }
         const response = await fetch(`${API_BASE}/incidencias/seguir`, {

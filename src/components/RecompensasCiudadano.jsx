@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { obtenerInsigniasUsuario, obtenerPuntosUsuario } from '../services/incidenciasApi'
+import { MOCK_INSIGNIAS, MOCK_INCIDENCIAS_POR_USUARIO } from '../services/mockData'
 import { useAuth } from '../hooks/useAuth'
 import primerInsignia from '../assets/PRIMER INSIGNIA.png'
 import segundaInsignia from '../assets/SEGUNDA INSIGNIA.png'
@@ -15,14 +16,6 @@ const IMAGENES_INSIGNIAS = {
   1: primerInsignia, 2: segundaInsignia, 3: tercerInsignia,
   4: cuartaInsignia, 5: quintaInsignia
 }
-
-const MOCK_INSIGNIAS = [
-  { idInsignia: 1, nombre: 'Primer reporte', descripcion: 'Has registrado tu primera incidencia y comenzado a transformar tu comunidad.', requisitoIncidencias: 1, recompensa: 'Bono de S/20 en tu billetera digital.', desbloqueada: false },
-  { idInsignia: 2, nombre: 'Reportero activo', descripcion: 'Has registrado 5 incidencias. Tu compromiso es notable.', requisitoIncidencias: 5, recompensa: 'Bono de S/50 + recarga de 10 GB moviles.', desbloqueada: false },
-  { idInsignia: 3, nombre: 'Guardian del barrio', descripcion: 'Has registrado 10 incidencias. Eres un referente ambiental.', requisitoIncidencias: 10, recompensa: 'Vale de S/100 en canasta familiar.', desbloqueada: false },
-  { idInsignia: 4, nombre: 'EcoHeroe', descripcion: 'Has registrado 15 incidencias. Tu dedicacion es inspiradora.', requisitoIncidencias: 15, recompensa: 'Vale de S/200 + kit ecologico.', desbloqueada: false },
-  { idInsignia: 5, nombre: 'Embajador EcoSolido', descripcion: 'Has registrado 20 incidencias. Eres un embajador del cambio.', requisitoIncidencias: 20, recompensa: 'Vale de S/500 + kit + certificado.', desbloqueada: false },
-]
 
 const fs = (base) => `calc(${base}rem * var(--font-scale, 1))`
 
@@ -69,7 +62,12 @@ export default function RecompensasCiudadano() {
         setInsignias(data)
       } catch (err) {
         console.warn('Usando datos locales:', err.message)
-        setInsignias(MOCK_INSIGNIAS)
+        const incidencias = MOCK_INCIDENCIAS_POR_USUARIO[1] || []
+        const total = incidencias.length
+        setInsignias(MOCK_INSIGNIAS.map(ins => ({
+          ...ins,
+          desbloqueada: total >= ins.requisitoIncidencias
+        })))
       } finally {
         setCargando(false)
       }
