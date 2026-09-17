@@ -59,41 +59,56 @@ export const MOCK_RECOMENDACIONES_GENERICAS = [
 ]
 
 export const MOCK_USUARIOS = [
-  { idUsuario: 1, nombreCompleto: 'Maria', apellidoCompleto: 'Garcia Lopez', dni: '71234567', telefono: '987654321', correoElectronico: 'maria.garcia@email.com', nombreUsuario: 'maria_gl', puntos: 45, rol: 'CIUDADANO', fechaRegistro: '2026-03-15' },
+  { idUsuario: 1, nombreCompleto: 'Itzair', apellidoCompleto: 'Roman', dni: '72844283', telefono: '987654321', correoElectronico: 'itzairplus@gmail.com', nombreUsuario: 'GASPER', puntos: 120, rol: 'CIUDADANO', fechaRegistro: '2026-02-10' },
   { idUsuario: 2, nombreCompleto: 'Carlos', apellidoCompleto: 'Rodriguez Perez', dni: '72345678', telefono: '987123456', correoElectronico: 'carlos.rodriguez@email.com', nombreUsuario: 'carlos_rp', puntos: 30, rol: 'CIUDADANO', fechaRegistro: '2026-04-20' },
   { idUsuario: 3, nombreCompleto: 'Ana', apellidoCompleto: 'Martinez Silva', dni: '73456789', telefono: '986543210', correoElectronico: 'ana.martinez@email.com', nombreUsuario: 'ana_ms', puntos: 60, rol: 'CIUDADANO', fechaRegistro: '2026-02-10' },
   { idUsuario: 4, nombreCompleto: 'Luis', apellidoCompleto: 'Fernandez Torres', dni: '74567890', telefono: '985432109', correoElectronico: 'luis.fernandez@email.com', nombreUsuario: 'luis_ft', puntos: 15, rol: 'CIUDADANO', fechaRegistro: '2026-06-05' },
-  { idUsuario: 5, nombreCompleto: 'Sofia', apellidoCompleto: 'Lopez Ramirez', dni: '75678901', telefono: '984321098', correoElectronico: 'sofia.lopez@email.com', nombreUsuario: 'sofia_lr', puntos: 30, rol: 'CIUDADANO', fechaRegistro: '2026-05-12' },
+  { idUsuario: 5, nombreCompleto: 'Sofia', apellidoCompleto: 'Lopez Ramirez', dni: '75678901', telefono: '984321098', correoElectronico: 'sofia.lopez@email.com', nombreUsuario: 'sofia_lr', puntos: 45, rol: 'CIUDADANO', fechaRegistro: '2026-05-12' },
   { idUsuario: 6, nombreCompleto: 'Pedro', apellidoCompleto: 'Sanchez Diaz', dni: '76789012', telefono: '983210987', correoElectronico: 'pedro.sanchez@email.com', nombreUsuario: 'pedro_sd', puntos: 0, rol: 'CIUDADANO', fechaRegistro: '2026-08-01' },
   { idUsuario: 7, nombreCompleto: 'Laura', apellidoCompleto: 'Gomez Herrera', dni: '77890123', telefono: '982109876', correoElectronico: 'laura.gomez@email.com', nombreUsuario: 'laura_gh', puntos: 15, rol: 'CIUDADANO', fechaRegistro: '2026-07-18' },
-  { idUsuario: 8, nombreCompleto: 'Admin', apellidoCompleto: 'EcoSolido', dni: '12345678', telefono: '999888777', correoElectronico: 'admin@ecosolido.com', nombreUsuario: 'admin', puntos: 0, rol: 'ADMIN', fechaRegistro: '2026-01-01' },
+  { idUsuario: 8, nombreCompleto: 'Ernesto', apellidoCompleto: 'Gutierrez', dni: '45123456', telefono: '999888777', correoElectronico: 'admin@ecosolido.com', nombreUsuario: 'admin', puntos: 0, rol: 'ADMIN', fechaRegistro: '2026-01-01' },
 ]
 
 export const MOCK_INCIDENCIAS_POR_USUARIO = {
   1: [
-    { id: 1, categoria: 'Acumulacion de basura', descripcion: 'Basura acumulada en la esquina de Av. Principal', estado: 'RESUELTO', fecha: '2026-09-10', direccionTexto: 'Av. Principal 123' },
-    { id: 2, categoria: 'Contaminacion del agua', descripcion: 'Vertido de aguas residuales en el canal', estado: 'EN_PROCESO', fecha: '2026-09-12', direccionTexto: 'Jr. San Martin 456' },
-    { id: 3, categoria: 'Quema de residuos', descripcion: 'Quema ilegal de basura en terreno baldio', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Calle Los Cedros 789' },
+    { id: 1, categoria: 'Acumulacion de basura', descripcion: 'Basura acumulada en la esquina de Av. Principal con Jr. Los Olivos', estado: 'RESUELTO', fecha: '2026-09-10', direccionTexto: 'Av. Principal 123' },
+    { id: 2, categoria: 'Contaminacion del agua', descripcion: 'Vertido de aguas residuales en el canal del barrio San Martin', estado: 'EN_PROCESO', fecha: '2026-09-11', direccionTexto: 'Jr. San Martin 456' },
+    { id: 3, categoria: 'Quema de residuos', descripcion: 'Quema ilegal de basura en terreno baldio cerca del colegio', estado: 'PENDIENTE', fecha: '2026-09-12', direccionTexto: 'Calle Los Cedros 789' },
+    { id: 4, categoria: 'Arbol caido', descripcion: 'Arbol caido bloquea la vereda despues de temporal', estado: 'RESUELTO', fecha: '2026-09-13', direccionTexto: 'Av. Grau 321' },
+    { id: 5, categoria: 'Derrame de petroleo', descripcion: 'Pequeno derrame de aceite en la pista principal', estado: 'EN_PROCESO', fecha: '2026-09-14', direccionTexto: 'Panamericana Sur km 15' },
+    { id: 6, categoria: 'Falta de papelera', descripcion: 'No hay papeleras en el parque del barrio Las Flores', estado: 'PENDIENTE', fecha: '2026-09-15', direccionTexto: 'Parque Las Flores' },
+    { id: 7, categoria: 'Acumulacion de basura', descripcion: 'Basura acumulada frente al mercado municipal', estado: 'RESUELTO', fecha: '2026-09-16', direccionTexto: 'Mercado Municipal' },
+    { id: 8, categoria: 'Contaminacion del aire', descripcion: 'Humo negro proveniente de fabrica textil', estado: 'EN_PROCESO', fecha: '2026-09-17', direccionTexto: 'Zona Industrial' },
+    { id: 9, categoria: 'Quema de residuos', descripcion: 'Quema de hojas secas en via publica', estado: 'PENDIENTE', fecha: '2026-09-18', direccionTexto: 'Jr. Las Palmeras' },
+    { id: 10, categoria: 'Acumulacion de basura', descripcion: 'Residuos abandonados en terreno', estado: 'PENDIENTE', fecha: '2026-09-19', direccionTexto: 'Av. Argentina' },
+    { id: 11, categoria: 'Contaminacion del agua', descripcion: 'Agua turbia en acequia del barrio', estado: 'EN_PROCESO', fecha: '2026-09-20', direccionTexto: 'Jr. Los Pinos' },
+    { id: 12, categoria: 'Arbol caido', descripcion: 'Arbol caido sobre vehiculo estacionado', estado: 'RESUELTO', fecha: '2026-09-21', direccionTexto: 'Calle Los Olivos' },
+    { id: 13, categoria: 'Falta de papelera', descripcion: 'Sin papeleras en cuadra completa', estado: 'PENDIENTE', fecha: '2026-09-22', direccionTexto: 'Jr. Bolivar' },
+    { id: 14, categoria: 'Acumulacion de basura', descripcion: 'Basura en parque central', estado: 'RESUELTO', fecha: '2026-09-23', direccionTexto: 'Parque Central' },
+    { id: 15, categoria: 'Contaminacion del agua', descripcion: 'Aceite en desague del mercado', estado: 'EN_PROCESO', fecha: '2026-09-24', direccionTexto: 'Mercado Mayorista' },
+    { id: 16, categoria: 'Derrame de petroleo', descripcion: 'Derrame menor en estacion de servicio', estado: 'PENDIENTE', fecha: '2026-09-25', direccionTexto: 'Av. Venezuela' },
   ],
   2: [
-    { id: 4, categoria: 'Arbol caido', descripcion: 'Arbol bloquea la vereda despues del temporal', estado: 'RESUELTO', fecha: '2026-09-08', direccionTexto: 'Av. Grau 321' },
-    { id: 5, categoria: 'Falta de papelera', descripcion: 'No hay papeleras en el parque del barrio', estado: 'PENDIENTE', fecha: '2026-09-11', direccionTexto: 'Parque Las Flores' },
+    { id: 17, categoria: 'Arbol caido', descripcion: 'Arbol bloquea la vereda despues del temporal', estado: 'RESUELTO', fecha: '2026-09-08', direccionTexto: 'Av. Grau 321' },
+    { id: 18, categoria: 'Falta de papelera', descripcion: 'No hay papeleras en el parque del barrio', estado: 'PENDIENTE', fecha: '2026-09-11', direccionTexto: 'Parque Las Flores' },
   ],
   3: [
-    { id: 6, categoria: 'Derrame de petroleo', descripcion: 'Derrame de aceite en la pista principal', estado: 'EN_PROCESO', fecha: '2026-09-07', direccionTexto: 'Panamericana Sur km 15' },
-    { id: 7, categoria: 'Acumulacion de basura', descripcion: 'Basura frente al mercado municipal', estado: 'RESUELTO', fecha: '2026-09-09', direccionTexto: 'Mercado Municipal' },
-    { id: 8, categoria: 'Contaminacion del aire', descripcion: 'Humo negro de fabrica textil', estado: 'EN_PROCESO', fecha: '2026-09-13', direccionTexto: 'Zona Industrial' },
-    { id: 9, categoria: 'Quema de residuos', descripcion: 'Quema de hojas secas en via publica', estado: 'PENDIENTE', fecha: '2026-09-15', direccionTexto: 'Jr. Las Palmeras' },
+    { id: 19, categoria: 'Derrame de petroleo', descripcion: 'Derrame de aceite en la pista principal', estado: 'EN_PROCESO', fecha: '2026-09-07', direccionTexto: 'Panamericana Sur km 15' },
+    { id: 20, categoria: 'Acumulacion de basura', descripcion: 'Basura frente al mercado municipal', estado: 'RESUELTO', fecha: '2026-09-09', direccionTexto: 'Mercado Municipal' },
+    { id: 21, categoria: 'Contaminacion del aire', descripcion: 'Humo negro de fabrica textil', estado: 'EN_PROCESO', fecha: '2026-09-13', direccionTexto: 'Zona Industrial' },
+    { id: 22, categoria: 'Quema de residuos', descripcion: 'Quema de hojas secas en via publica', estado: 'PENDIENTE', fecha: '2026-09-15', direccionTexto: 'Jr. Las Palmeras' },
+    { id: 23, categoria: 'Acumulacion de basura', descripcion: 'Residuos en parque central', estado: 'RESUELTO', fecha: '2026-09-16', direccionTexto: 'Parque Central' },
   ],
   4: [
-    { id: 10, categoria: 'Acumulacion de basura', descripcion: 'Residuos abandonados en terreno', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Av. Argentina' },
+    { id: 24, categoria: 'Acumulacion de basura', descripcion: 'Residuos abandonados en terreno', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Av. Argentina' },
   ],
   5: [
-    { id: 11, categoria: 'Contaminacion del agua', descripcion: 'Agua turbia en acequia del barrio', estado: 'EN_PROCESO', fecha: '2026-09-10', direccionTexto: 'Jr. Los Pinos' },
-    { id: 12, categoria: 'Arbol caido', descripcion: 'Arbol caido sobre vehiculo estacionado', estado: 'RESUELTO', fecha: '2026-09-12', direccionTexto: 'Calle Los Olivos' },
+    { id: 25, categoria: 'Contaminacion del agua', descripcion: 'Agua turbia en acequia del barrio', estado: 'EN_PROCESO', fecha: '2026-09-10', direccionTexto: 'Jr. Los Pinos' },
+    { id: 26, categoria: 'Arbol caido', descripcion: 'Arbol caido sobre vehiculo estacionado', estado: 'RESUELTO', fecha: '2026-09-12', direccionTexto: 'Calle Los Olivos' },
+    { id: 27, categoria: 'Falta de papelera', descripcion: 'Sin papeleras en parque', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Parque Las Flores' },
   ],
   6: [],
   7: [
-    { id: 13, categoria: 'Falta de papelera', descripcion: 'Sin papeleras en cuadra completa', estado: 'PENDIENTE', fecha: '2026-09-13', direccionTexto: 'Jr. Bolivar' },
+    { id: 28, categoria: 'Falta de papelera', descripcion: 'Sin papeleras en cuadra completa', estado: 'PENDIENTE', fecha: '2026-09-13', direccionTexto: 'Jr. Bolivar' },
   ],
 }
