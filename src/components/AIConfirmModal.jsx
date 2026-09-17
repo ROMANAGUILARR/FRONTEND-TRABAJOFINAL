@@ -9,7 +9,7 @@ export default function AIConfirmModal({ onConfirm, onCancel }) {
       <div style={{
         background: 'var(--color-bg-white, #fff)',
         borderRadius: '16px', padding: '32px',
-        maxWidth: '420px', width: '100%',
+        maxWidth: '440px', width: '100%',
         boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
         textAlign: 'center',
         position: 'relative',
@@ -24,13 +24,21 @@ export default function AIConfirmModal({ onConfirm, onCancel }) {
           <i className="fa-solid fa-wand-magic-sparkles" style={{ fontSize: '1.5rem', color: '#2E7D32' }}></i>
         </div>
 
-        {/* Título */}
+        {/* Título principal */}
         <h3 style={{
-          margin: '0 0 8px', fontSize: '1.15rem', fontWeight: 700,
+          margin: '0 0 12px', fontSize: '1.1rem', fontWeight: 700,
           color: 'var(--color-text, #111)',
         }}>
-          ¿Generar descripción con IA?
+          Confirmación de generación de texto por IA
         </h3>
+
+        {/* Subtítulo */}
+        <p style={{
+          margin: '0 0 4px', fontSize: '1rem',
+          color: 'var(--color-text, #111)', fontWeight: 600,
+        }}>
+          ¿Estás seguro de hacer esto?
+        </p>
 
         {/* Descripción */}
         <p style={{
@@ -38,7 +46,7 @@ export default function AIConfirmModal({ onConfirm, onCancel }) {
           color: 'var(--color-text-secondary, #555)',
           lineHeight: 1.5,
         }}>
-          Se analizarán las fotos subidas y se generará automáticamente una descripción de la incidencia ambiental.
+          Recuerda que solo va a describir las fotos que has enviado.
         </p>
 
         {/* Botones */}
@@ -48,30 +56,28 @@ export default function AIConfirmModal({ onConfirm, onCancel }) {
             style={{
               background: '#2E7D32', color: '#fff',
               border: 'none', borderRadius: '10px',
-              padding: '12px 28px', fontSize: '0.9rem',
+              padding: '12px 32px', fontSize: '0.9rem',
               fontWeight: 600, cursor: 'pointer',
-              display: 'inline-flex', alignItems: 'center', gap: '8px',
               transition: 'all 0.2s',
             }}
             onMouseOver={e => e.currentTarget.style.background = '#1b5e20'}
             onMouseOut={e => e.currentTarget.style.background = '#2E7D32'}
           >
-            <i className="fa-solid fa-check"></i>
-            Sí, generar
+            Sí
           </button>
           <button
             onClick={onCancel}
             style={{
               background: 'var(--color-bg, #f5f5f5)', color: 'var(--color-text, #333)',
               border: '1px solid var(--color-border, #ddd)', borderRadius: '10px',
-              padding: '12px 28px', fontSize: '0.9rem',
+              padding: '12px 32px', fontSize: '0.9rem',
               fontWeight: 600, cursor: 'pointer',
               transition: 'all 0.2s',
             }}
             onMouseOver={e => e.currentTarget.style.background = 'var(--color-border, #e0e0e0)'}
             onMouseOut={e => e.currentTarget.style.background = 'var(--color-bg, #f5f5f5)'}
           >
-            Cancelar
+            No
           </button>
         </div>
       </div>
