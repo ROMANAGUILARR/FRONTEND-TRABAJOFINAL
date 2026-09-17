@@ -115,16 +115,7 @@ export default function EducacionMedioAmbiental() {
       setError('Debe seleccionar un tipo de material.')
       return
     }
-    setCargando(true)
-    setError('')
-    try {
-      const resultado = await generarRecomendaciones(tipoMaterial, contextoExtra)
-      setRecomendaciones(resultado)
-    } catch (err) {
-      setError(err.message ?? 'Error al generar recomendaciones.')
-    } finally {
-      setCargando(false)
-    }
+    setError('Esta funcionalidad requiere el backend activo con IA configurada.')
   }
   return (
     <main className="educacion" style={{ '--font-scale': tamañoLetra }}>
@@ -145,8 +136,54 @@ export default function EducacionMedioAmbiental() {
           </div>
         </div>
         <p className="educacion__subtitle">
-          Aprende a manejar correctamente residuos sólidos de un tipo específico
+          Recibe consejos que te enseñen a manejar correctamente residuos sólidos de un tipo específico
         </p>
+        <form onSubmit={handleSubmit} className="educacion__form">
+          <label className="educacion__label">Selecciona un tipo de residuo sólido <span style={{ color: '#ff7a00' }}>*</span>:</label>
+          <select
+            className="educacion__dropdown"
+            name="tipoMaterial"
+            value={tipoMaterial}
+            onChange={(e) => { setTipoMaterial(e.target.value) }}
+          >
+            <option value="">--Selecione alguna opción--</option>
+            {CATEGORIAS2.map(categoria => (
+              <option key={categoria} value={categoria}>{categoria}</option>
+            ))}
+          </select>
+          <label className="educacion__label">Especifica las recomendaciones que deseas en base a la categoría:</label>
+          <textarea className="educacion__textarea" name="contexto" value={listening ? transcript : contextoExtra} maxLength={MAX_CONTEXTO} onChange={handleContextoChange}></textarea>
+          {browserSupportsSpeechRecognition && (
+            <div className="registrar__voz2">
+              <button
+                type="button"
+                className={`registrar__btn2--voz ${listening ? 'registrar__btn2--voz--activo' : ''}`}
+                onClick={() => {
+                  if (listening) {
+                    SpeechRecognition.stopListening();
+                    if (transcript) {
+                      setContextoExtra(transcript);
+                      setCaracteresRestantes(MAX_CONTEXTO - transcript.length);
+                    }
+                  } else {
+                    resetTranscript();
+                    SpeechRecognition.startListening({ language: 'es-PE', continuous: true });
+                  }
+                }}
+              >
+                {listening ? '⏹️ Detener grabación' : '🗣️ Dictar descripción'}
+              </button>
+              {listening && (
+                <span className="registrar__voz-estado">Escuchando...</span>
+              )}
+            </div>
+          )}
+          <span className={`registrar__contador2 ${caracteresRestantes < 50 ? 'registrar__contador2--alerta' : ''}`}>
+            {caracteresRestantes} caracteres restantes
+          </span>
+          <button type="submit" className="educacion_buttonOR">Obtener recomendaciones</button>
+        </form>
+        {error && <p className="educacion__error">{error}</p>}
       </div>
       <div className="educacion__header">
         <h2 className="educacion__title">Educación Medio Ambiental</h2>
