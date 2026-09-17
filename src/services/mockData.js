@@ -9,44 +9,44 @@ export const MOCK_INSIGNIAS = [
 ]
 
 export const MOCK_METRICAS = {
-  total: 8,
-  enProceso: 3,
-  pendientes: 2,
-  resueltos: 3,
+  total: 28,
+  enProceso: 8,
+  pendientes: 10,
+  resueltos: 10,
 }
 
 export const MOCK_INCIDENCIAS = [
-  { id: 1, categoria: 'Acumulacion de basura', descripcion: 'Acumulacion de residuos en la esquina de Av. Principal con Jr. Los Olivos', estado: 'RESUELTO', fecha: '2026-09-10', direccionTexto: 'Av. Principal 123' },
-  { id: 2, categoria: 'Contaminacion del agua', descripcion: 'Vertido de aguas residuales en el canal del barrio San Martin', estado: 'EN_PROCESO', fecha: '2026-09-11', direccionTexto: 'Jr. San Martin 456' },
-  { id: 3, categoria: 'Quema de residuos', descripcion: 'Quema ilegal de basura en terreno baldio cerca del colegio', estado: 'PENDIENTE', fecha: '2026-09-12', direccionTexto: 'Calle Los Cedros 789' },
+  { id: 1, categoria: 'Acumulacion de basura', descripcion: 'Basura acumulada en la esquina de Av. Principal', estado: 'RESUELTO', fecha: '2026-09-10', direccionTexto: 'Av. Principal 123' },
+  { id: 2, categoria: 'Contaminacion del agua', descripcion: 'Vertido de aguas residuales en el canal', estado: 'EN_PROCESO', fecha: '2026-09-11', direccionTexto: 'Jr. San Martin 456' },
+  { id: 3, categoria: 'Quema de residuos', descripcion: 'Quema ilegal de basura en terreno baldio', estado: 'PENDIENTE', fecha: '2026-09-12', direccionTexto: 'Calle Los Cedros 789' },
   { id: 4, categoria: 'Arbol caido', descripcion: 'Arbol caido bloquea la vereda despues de temporal', estado: 'RESUELTO', fecha: '2026-09-12', direccionTexto: 'Av. Grau 321' },
   { id: 5, categoria: 'Derrame de petroleo', descripcion: 'Pequeno derrame de aceite en la pista principal', estado: 'EN_PROCESO', fecha: '2026-09-13', direccionTexto: 'Panamericana Sur km 15' },
   { id: 6, categoria: 'Falta de papelera', descripcion: 'No hay papeleras en el parque del barrio Las Flores', estado: 'PENDIENTE', fecha: '2026-09-13', direccionTexto: 'Parque Las Flores' },
-  { id: 7, categoria: 'Acumulacion de basura', descripcion: 'Basura acumulada frente al mercado municipal', estado: 'RESUELTO', fecha: '2026-09-14', direccionTexto: 'Mercado Municipal' },
+  { id: 7, categoria: 'Acumulacion de basura', descripcion: 'Basura frente al mercado municipal', estado: 'RESUELTO', fecha: '2026-09-14', direccionTexto: 'Mercado Municipal' },
   { id: 8, categoria: 'Contaminacion del aire', descripcion: 'Humo negro proveniente de fabrica textil', estado: 'EN_PROCESO', fecha: '2026-09-14', direccionTexto: 'Zona Industrial' },
 ]
 
 export const MOCK_RECOMENDACIONES = {
-  'Orgánicos': [
-    'Separa los residuos orgánicos (cáscaras, restos de comida, huesos) en un balde con tapa para evitar malos olores y plagas.',
-    'Composta los residuos orgánicos de tu cocina: alterna capas de restos húmedos con hojas secas. En 2-3 meses tendrás abono natural.',
-    'No mezcles residuos orgánicos con plásticos o vidrio, ya que contamina el material y dificulta su procesamiento.',
-    'Usa las cáscaras de huevo y café como fertilizante directo para tus plantas, aportan calcio y nitrógeno.',
-    'Si no puedes composter, deposita los orgánicos en el contenedor verde indicado por tu municipalidad.',
+  'Organicos': [
+    'Separa los residuos organicos (carcascaras, restos de comida, huesos) en un balde con tapa para evitar malos olores y plagas.',
+    'Composta los residuos organicos de tu cocina: alterna capas de restos humedos con hojas secas. En 2-3 meses tendras abono natural.',
+    'No mezcles residuos organicos con plasticos o vidrio, ya que contamina el material y dificulta su procesamiento.',
+    'Usa las carcascaras de huevo y cafe como fertilizante directo para tus plantas, aportan calcio y nitrogeno.',
+    'Si no puedes composter, deposita los organicos en el contenedor verde indicado por tu municipalidad.',
   ],
-  'Inorgánicos no aprovechables': [
-    'Los pañales, toallas higiénicas y colillas de cigarro van en el contenedor gris, nunca en el de reciclaje.',
-    'Las pilas y baterías contienen metales pesados tóxicos. Llévalas a puntos de recolección especiales, no las tires a la basura común.',
+  'Inorganicos no aprovechables': [
+    'Los panales, toallas higienicas y colillas de cigarro van en el contenedor gris, nunca en el de reciclaje.',
+    'Las pilas y baterias contienen metales pesados toxicos. Llevalas a puntos de recoleccion especiales, no las tires a la basura comun.',
     'Los residuos sanitarios como guantes y mascarillas deben ir en una bolsa cerrada antes de depositarlos en el contenedor.',
-    'Los medicamentos vencidos no se deben botar al desagüe. Llévalos a las farmacias que tienen programas de recolección.',
-    'La cerámica rota y los espejos no se reciclan. Envuélvelos en papel antes de desecharlos para evitar cortes al personal de limpieza.',
+    'Los medicamentos vencidos no se deben botar al desague. Llevalos a las farmacias que tienen programas de recoleccion.',
+    'La ceramica rota y los espejos no se reciclan. Envueltolos en papel antes de desecharlos para evitar cortes al personal de limpieza.',
   ],
-  'Inorgánicos aprovechables': [
-    'Lava los envases de plástico y latas antes de depositarlos en el contenedor de reciclaje para evitar contaminación cruzada.',
-    'Aplasta las botellas y cajas de cartón para que ocupen menos espacio en el contenedor y faciliten el transporte.',
-    'El papel y cartón limpios se reciclan, pero si están mojados o con grasa van al contenedor de no aprovechables.',
-    'El vidrio se puede reciclar infinitas veces sin perder calidad. Separa por colores si es posible (transparente, verde, ámbar).',
-    'Las bolsas plásticas se pueden llevar a supermercados que tienen puntos de recolección específicos para su reciclaje.',
+  'Inorganicos aprovechables': [
+    'Lava los envases de plasticos y latas antes de depositarlos en el contenedor de reciclaje para evitar contaminacion cruzada.',
+    'Aplasta las botellas y cajas de carton para que ocupen menos espacio en el contenedor y faciliten el transporte.',
+    'El papel y carton limpios se reciclan, pero si estan mojados o con grasa van al contenedor de no aprovechables.',
+    'El vidrio se puede reciclar infinitas veces sin perder calidad. Separa por colores si es posible (transparente, verde, ambar).',
+    'Las bolsas plasticas se pueden llevar a supermercados que tienen puntos de recoleccion especificos para su reciclaje.',
   ],
 }
 
@@ -54,18 +54,18 @@ export const MOCK_RECOMENDACIONES_GENERICAS = [
   'Separa siempre tus residuos antes de depositarlos en los contenedores correspondientes.',
   'Reduce el consumo de productos con empaques innecesarios.',
   'Reutiliza envases y bolsas siempre que sea posible antes de desecharlos.',
-  'Consulta el calendario de recolección de tu municipalidad.',
+  'Consulta el calendario de recoleccion de tu municipalidad.',
   'Participa en las jornadas de limpieza comunitaria de tu barrio.',
 ]
 
 export const MOCK_USUARIOS = [
-  { idUsuario: 1, nombreCompleto: 'Itzair', apellidoCompleto: 'Roman', dni: '72844283', telefono: '987654321', correoElectronico: 'itzairplus@gmail.com', nombreUsuario: 'GASPER', puntos: 120, rol: 'CIUDADANO', fechaRegistro: '2026-02-10' },
-  { idUsuario: 2, nombreCompleto: 'Carlos', apellidoCompleto: 'Rodriguez Perez', dni: '72345678', telefono: '987123456', correoElectronico: 'carlos.rodriguez@email.com', nombreUsuario: 'carlos_rp', puntos: 30, rol: 'CIUDADANO', fechaRegistro: '2026-04-20' },
-  { idUsuario: 3, nombreCompleto: 'Ana', apellidoCompleto: 'Martinez Silva', dni: '73456789', telefono: '986543210', correoElectronico: 'ana.martinez@email.com', nombreUsuario: 'ana_ms', puntos: 60, rol: 'CIUDADANO', fechaRegistro: '2026-02-10' },
-  { idUsuario: 4, nombreCompleto: 'Luis', apellidoCompleto: 'Fernandez Torres', dni: '74567890', telefono: '985432109', correoElectronico: 'luis.fernandez@email.com', nombreUsuario: 'luis_ft', puntos: 15, rol: 'CIUDADANO', fechaRegistro: '2026-06-05' },
-  { idUsuario: 5, nombreCompleto: 'Sofia', apellidoCompleto: 'Lopez Ramirez', dni: '75678901', telefono: '984321098', correoElectronico: 'sofia.lopez@email.com', nombreUsuario: 'sofia_lr', puntos: 45, rol: 'CIUDADANO', fechaRegistro: '2026-05-12' },
+  { idUsuario: 1, nombreCompleto: 'Itzair', apellidoCompleto: 'Roman', dni: '72844283', telefono: '987654321', correoElectronico: 'itzairplus@gmail.com', nombreUsuario: 'GASPER', puntos: 160, rol: 'CIUDADANO', fechaRegistro: '2026-02-10' },
+  { idUsuario: 2, nombreCompleto: 'Carlos', apellidoCompleto: 'Rodriguez Perez', dni: '72345678', telefono: '987123456', correoElectronico: 'carlos.rodriguez@email.com', nombreUsuario: 'carlos_rp', puntos: 20, rol: 'CIUDADANO', fechaRegistro: '2026-04-20' },
+  { idUsuario: 3, nombreCompleto: 'Ana', apellidoCompleto: 'Martinez Silva', dni: '73456789', telefono: '986543210', correoElectronico: 'ana.martinez@email.com', nombreUsuario: 'ana_ms', puntos: 50, rol: 'CIUDADANO', fechaRegistro: '2026-02-10' },
+  { idUsuario: 4, nombreCompleto: 'Luis', apellidoCompleto: 'Fernandez Torres', dni: '74567890', telefono: '985432109', correoElectronico: 'luis.fernandez@email.com', nombreUsuario: 'luis_ft', puntos: 10, rol: 'CIUDADANO', fechaRegistro: '2026-06-05' },
+  { idUsuario: 5, nombreCompleto: 'Sofia', apellidoCompleto: 'Lopez Ramirez', dni: '75678901', telefono: '984321098', correoElectronico: 'sofia.lopez@email.com', nombreUsuario: 'sofia_lr', puntos: 30, rol: 'CIUDADANO', fechaRegistro: '2026-05-12' },
   { idUsuario: 6, nombreCompleto: 'Pedro', apellidoCompleto: 'Sanchez Diaz', dni: '76789012', telefono: '983210987', correoElectronico: 'pedro.sanchez@email.com', nombreUsuario: 'pedro_sd', puntos: 0, rol: 'CIUDADANO', fechaRegistro: '2026-08-01' },
-  { idUsuario: 7, nombreCompleto: 'Laura', apellidoCompleto: 'Gomez Herrera', dni: '77890123', telefono: '982109876', correoElectronico: 'laura.gomez@email.com', nombreUsuario: 'laura_gh', puntos: 15, rol: 'CIUDADANO', fechaRegistro: '2026-07-18' },
+  { idUsuario: 7, nombreCompleto: 'Laura', apellidoCompleto: 'Gomez Herrera', dni: '77890123', telefono: '982109876', correoElectronico: 'laura.gomez@email.com', nombreUsuario: 'laura_gh', puntos: 10, rol: 'CIUDADANO', fechaRegistro: '2026-07-18' },
   { idUsuario: 8, nombreCompleto: 'Ernesto', apellidoCompleto: 'Gutierrez', dni: '45123456', telefono: '999888777', correoElectronico: 'admin@ecosolido.com', nombreUsuario: 'admin', puntos: 0, rol: 'ADMIN', fechaRegistro: '2026-01-01' },
 ]
 
@@ -100,7 +100,7 @@ export const MOCK_INCIDENCIAS_POR_USUARIO = {
     { id: 23, categoria: 'Acumulacion de basura', descripcion: 'Residuos en parque central', estado: 'RESUELTO', fecha: '2026-09-16', direccionTexto: 'Parque Central' },
   ],
   4: [
-    { id: 24, categoria: 'Acumulacion de basura', descripcion: 'Residuos abandonados en terreno', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Av. Argentina' },
+    { id: 24, categoria: 'Acumulacion de basura', descripcion: 'Residuos abandonados en terreno baldio', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Av. Argentina' },
   ],
   5: [
     { id: 25, categoria: 'Contaminacion del agua', descripcion: 'Agua turbia en acequia del barrio', estado: 'EN_PROCESO', fecha: '2026-09-10', direccionTexto: 'Jr. Los Pinos' },
@@ -109,6 +109,6 @@ export const MOCK_INCIDENCIAS_POR_USUARIO = {
   ],
   6: [],
   7: [
-    { id: 28, categoria: 'Falta de papelera', descripcion: 'Sin papeleras en cuadra completa', estado: 'PENDIENTE', fecha: '2026-09-13', direccionTexto: 'Jr. Bolivar' },
+    { id: 28, categoria: 'Falta de papelera', descripcion: 'Sin papeleras en cuadra completa del centro', estado: 'PENDIENTE', fecha: '2026-09-13', direccionTexto: 'Jr. Bolivar' },
   ],
 }
