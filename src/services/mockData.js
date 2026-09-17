@@ -83,26 +83,26 @@ export const MOCK_INCIDENCIAS_POR_USUARIO = {
     { id: 10, categoria: 'Acumulacion de basura', descripcion: 'Residuos abandonados en terreno', estado: 'PENDIENTE', fecha: '2026-09-19', direccionTexto: 'Av. Argentina' },
   ],
   2: [
-    { id: 17, categoria: 'Arbol caido', descripcion: 'Arbol bloquea la vereda despues del temporal', estado: 'RESUELTO', fecha: '2026-09-08', direccionTexto: 'Av. Grau 321' },
-    { id: 18, categoria: 'Falta de papelera', descripcion: 'No hay papeleras en el parque del barrio', estado: 'PENDIENTE', fecha: '2026-09-11', direccionTexto: 'Parque Las Flores' },
+    { id: 11, categoria: 'Arbol caido', descripcion: 'Arbol bloquea la vereda despues del temporal', estado: 'RESUELTO', fecha: '2026-09-08', direccionTexto: 'Av. Grau 321' },
+    { id: 12, categoria: 'Falta de papelera', descripcion: 'No hay papeleras en el parque del barrio', estado: 'PENDIENTE', fecha: '2026-09-11', direccionTexto: 'Parque Las Flores' },
   ],
   3: [
-    { id: 19, categoria: 'Derrame de petroleo', descripcion: 'Derrame de aceite en la pista principal', estado: 'EN_PROCESO', fecha: '2026-09-07', direccionTexto: 'Panamericana Sur km 15' },
-    { id: 20, categoria: 'Acumulacion de basura', descripcion: 'Basura frente al mercado municipal', estado: 'RESUELTO', fecha: '2026-09-09', direccionTexto: 'Mercado Municipal' },
-    { id: 21, categoria: 'Contaminacion del aire', descripcion: 'Humo negro de fabrica textil', estado: 'EN_PROCESO', fecha: '2026-09-13', direccionTexto: 'Zona Industrial' },
-    { id: 22, categoria: 'Quema de residuos', descripcion: 'Quema de hojas secas en via publica', estado: 'PENDIENTE', fecha: '2026-09-15', direccionTexto: 'Jr. Las Palmeras' },
-    { id: 23, categoria: 'Acumulacion de basura', descripcion: 'Residuos en parque central', estado: 'RESUELTO', fecha: '2026-09-16', direccionTexto: 'Parque Central' },
+    { id: 13, categoria: 'Derrame de petroleo', descripcion: 'Derrame de aceite en la pista principal', estado: 'EN_PROCESO', fecha: '2026-09-07', direccionTexto: 'Panamericana Sur km 15' },
+    { id: 14, categoria: 'Acumulacion de basura', descripcion: 'Basura frente al mercado municipal', estado: 'RESUELTO', fecha: '2026-09-09', direccionTexto: 'Mercado Municipal' },
+    { id: 15, categoria: 'Contaminacion del aire', descripcion: 'Humo negro de fabrica textil', estado: 'EN_PROCESO', fecha: '2026-09-13', direccionTexto: 'Zona Industrial' },
+    { id: 16, categoria: 'Quema de residuos', descripcion: 'Quema de hojas secas en via publica', estado: 'PENDIENTE', fecha: '2026-09-15', direccionTexto: 'Jr. Las Palmeras' },
+    { id: 17, categoria: 'Acumulacion de basura', descripcion: 'Residuos en parque central', estado: 'RESUELTO', fecha: '2026-09-16', direccionTexto: 'Parque Central' },
   ],
   4: [
-    { id: 24, categoria: 'Acumulacion de basura', descripcion: 'Residuos abandonados en terreno baldio', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Av. Argentina' },
+    { id: 18, categoria: 'Acumulacion de basura', descripcion: 'Residuos abandonados en terreno baldio', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Av. Argentina' },
   ],
   5: [
-    { id: 25, categoria: 'Contaminacion del agua', descripcion: 'Agua turbia en acequia del barrio', estado: 'EN_PROCESO', fecha: '2026-09-10', direccionTexto: 'Jr. Los Pinos' },
-    { id: 26, categoria: 'Arbol caido', descripcion: 'Arbol caido sobre vehiculo estacionado', estado: 'RESUELTO', fecha: '2026-09-12', direccionTexto: 'Calle Los Olivos' },
-    { id: 27, categoria: 'Falta de papelera', descripcion: 'Sin papeleras en parque', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Parque Las Flores' },
+    { id: 19, categoria: 'Contaminacion del agua', descripcion: 'Agua turbia en acequia del barrio', estado: 'EN_PROCESO', fecha: '2026-09-10', direccionTexto: 'Jr. Los Pinos' },
+    { id: 20, categoria: 'Arbol caido', descripcion: 'Arbol caido sobre vehiculo estacionado', estado: 'RESUELTO', fecha: '2026-09-12', direccionTexto: 'Calle Los Olivos' },
+    { id: 21, categoria: 'Falta de papelera', descripcion: 'Sin papeleras en parque', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Parque Las Flores' },
   ],
   6: [],
   7: [
-    { id: 28, categoria: 'Falta de papelera', descripcion: 'Sin papeleras en cuadra completa del centro', estado: 'PENDIENTE', fecha: '2026-09-13', direccionTexto: 'Jr. Bolivar' },
+    { id: 22, categoria: 'Falta de papelera', descripcion: 'Sin papeleras en cuadra completa del centro', estado: 'PENDIENTE', fecha: '2026-09-13', direccionTexto: 'Jr. Bolivar' },
   ],
 }
