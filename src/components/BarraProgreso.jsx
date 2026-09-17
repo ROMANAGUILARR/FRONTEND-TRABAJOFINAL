@@ -10,19 +10,9 @@ export default function BarraProgreso({ puntos }) {
     const maxPuntos = 200
     const nivelActual = [...puntosCategoria].reverse().find(nivel => puntos >= nivel.puntosNecesarios)
     const nivelSiguiente = puntosCategoria.find(nivel => puntos < nivel.puntosNecesarios)
-    const puntosBase = nivelActual?.puntosNecesarios ?? 0
-    const puntajeMaximo = nivelSiguiente?.puntosNecesarios ?? maxPuntos
 
-    // Si no hay siguiente nivel, barra al 100% (nivel máximo alcanzado)
-    // Si hay siguiente nivel, calcular progreso entre nivel actual y siguiente
-    let progreso
-    if (!nivelSiguiente) {
-        progreso = 100
-    } else if (puntajeMaximo === puntosBase) {
-        progreso = 100
-    } else {
-        progreso = Math.min(((puntos - puntosBase) / (puntajeMaximo - puntosBase)) * 100, 100)
-    }
+    // Progreso total como porcentaje del máximo (200 pts)
+    const progreso = Math.min((puntosNum / maxPuntos) * 100, 100)
 
     return (
         <div className="flex flex-col gap-1.5 w-full py-2">
@@ -48,7 +38,7 @@ export default function BarraProgreso({ puntos }) {
                 ) : nivelSiguiente ? (
                     <>
                         <span className="text-eco-text-secondary text-xs">
-                            Actualmente tienes {puntos} puntos. Necesitas {puntajeMaximo - puntos} para llegar a ser:{' '}
+                            Actualmente tienes {puntos} puntos. Necesitas {nivelSiguiente.puntosNecesarios - puntos} puntos para llegar a ser:{' '}
                         </span>
                         <span className="text-eco-text-secondary text-sm font-bold">
                             <strong>{nivelSiguiente.insignia}</strong>
