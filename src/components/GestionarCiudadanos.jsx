@@ -247,53 +247,92 @@ export default function GestionarCiudadanos() {
           {usuarioSeleccionado && (
             <div style={{
               background: 'var(--color-bg-white)', border: '2px solid var(--color-eco-primary, #2E7D32)',
-              borderRadius: '12px', padding: '20px 24px', marginTop: '16px',
-              boxShadow: '0 4px 12px rgba(46,125,50,0.1)',
+              borderRadius: '16px', padding: '24px 28px', marginTop: '16px',
+              boxShadow: '0 8px 24px rgba(46,125,50,0.12)',
             }}>
-              {/* Encabezado en una línea */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
-                <h4 style={{ margin: 0, color: 'var(--color-text)', fontSize: '1rem', fontWeight: 700 }}>
+              {/* Encabezado */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px', flexWrap: 'wrap' }}>
+                <h4 style={{ margin: 0, color: 'var(--color-text)', fontSize: '1.05rem', fontWeight: 700 }}>
                   Resumen de {usuarioSeleccionado.nombreCompleto} {usuarioSeleccionado.apellidoCompleto}:
                 </h4>
-                <span style={{ fontSize: '1.1rem', fontWeight: 700, color: '#111' }}>
-                  {usuarioSeleccionado.puntos ?? 0} puntos acumulados
+                <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#2E7D32' }}>
+                  {usuarioSeleccionado.puntos ?? 0}
+                </span>
+                <span style={{ fontSize: '0.95rem', fontWeight: 500, color: 'var(--color-text-secondary)' }}>
+                  puntos acumulados
                 </span>
               </div>
 
-              {/* Insignias - desbloqueo dinámico según cantidad de incidencias */}
-              <h5 style={{ margin: '0 0 12px', color: 'var(--color-text-secondary)', fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              {/* Insignias */}
+              <h5 style={{ margin: '0 0 16px', color: 'var(--color-text)', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                <i className="fa-solid fa-trophy" style={{ color: '#FF8F0F', marginRight: '8px' }}></i>
                 Insignias
               </h5>
-              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '14px' }}>
                 {(() => {
                   const numIncidencias = (MOCK_INCIDENCIAS_POR_USUARIO[usuarioSeleccionado.idUsuario] || []).length
-                  return MOCK_INSIGNIAS.map(insignia => {
+                  return MOCK_INSIGNIAS.map((insignia, idx) => {
                     const desbloqueada = numIncidencias >= insignia.requisitoIncidencias
+                    const progreso = Math.min(numIncidencias / insignia.requisitoIncidencias, 1)
+                    const colores = [
+                      { bg: '#e8f5e9', border: '#A5D6A7', icon: '#2E7D32' },
+                      { bg: '#E3F2FD', border: '#90CAF9', icon: '#1565C0' },
+                      { bg: '#FFF3E0', border: '#FFCC80', icon: '#E65100' },
+                      { bg: '#F3E5F5', border: '#CE93D8', icon: '#7B1FA2' },
+                      { bg: '#E0F2F1', border: '#80CBC4', icon: '#00695C' },
+                    ]
+                    const c = colores[idx % colores.length]
                     return (
                       <div key={insignia.idInsignia} style={{
-                        background: desbloqueada ? 'var(--color-accent-green-light, #e8f5e9)' : '#f0f0f0',
-                        border: desbloqueada ? '1px solid #A5D6A7' : '1px solid #d0d0d0',
-                        borderRadius: '10px', padding: '12px 16px', minWidth: '180px', flex: '1',
+                        background: desbloqueada ? c.bg : 'var(--color-bg, #fafafa)',
+                        border: desbloqueada ? `2px solid ${c.border}` : '2px solid var(--color-border, #e0e0e0)',
+                        borderRadius: '14px', padding: '16px',
+                        transition: 'transform 0.2s, box-shadow 0.2s',
+                        position: 'relative', overflow: 'hidden',
                       }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                          <span style={{
-                            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            width: '24px', height: '24px', borderRadius: '50%',
-                            background: desbloqueada ? '#2E7D32' : '#bdbdbd',
-                            color: '#fff', fontSize: '0.7rem',
-                          }}>
-                            <i className={desbloqueada ? 'fa-solid fa-check' : 'fa-solid fa-xmark'}></i>
-                          </span>
-                          <strong style={{ fontSize: '0.85rem', color: desbloqueada ? 'var(--color-text)' : '#9e9e9e' }}>{insignia.nombre}</strong>
-                        </div>
-                        <p style={{ margin: 0, fontSize: '0.78rem', color: desbloqueada ? 'var(--color-text-secondary)' : '#bdbdbd' }}>
-                          {insignia.descripcion}
-                        </p>
-                        {!desbloqueada && (
-                          <p style={{ margin: '4px 0 0', fontSize: '0.72rem', color: '#bdbdbd' }}>
-                            Requiere {insignia.requisitoIncidencias} incidencias ({numIncidencias}/{insignia.requisitoIncidencias})
-                          </p>
+                        {/* Fondo decorativo */}
+                        {desbloqueada && (
+                          <div style={{
+                            position: 'absolute', top: '-20px', right: '-20px',
+                            width: '80px', height: '80px', borderRadius: '50%',
+                            background: c.border, opacity: 0.15,
+                          }} />
                         )}
+                        <div style={{ position: 'relative', zIndex: 1 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                            <span style={{
+                              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                              width: '36px', height: '36px', borderRadius: '10px',
+                              background: desbloqueada ? c.icon : 'var(--color-border, #bdbdbd)',
+                              color: '#fff', fontSize: '0.9rem',
+                            }}>
+                              <i className={desbloqueada ? 'fa-solid fa-check' : 'fa-solid fa-lock'}></i>
+                            </span>
+                            <div>
+                              <strong style={{ fontSize: '0.9rem', color: desbloqueada ? 'var(--color-text)' : 'var(--color-text-secondary, #9e9e9e)', display: 'block' }}>
+                                {insignia.nombre}
+                              </strong>
+                              <span style={{ fontSize: '0.72rem', color: desbloqueada ? c.icon : 'var(--color-border, #bdbdbd)', fontWeight: 600 }}>
+                                {desbloqueada ? 'Desbloqueada' : `${numIncidencias}/${insignia.requisitoIncidencias} incidencias`}
+                              </span>
+                            </div>
+                          </div>
+                          <p style={{ margin: '0 0 10px', fontSize: '0.78rem', color: desbloqueada ? 'var(--color-text-secondary)' : 'var(--color-border, #bdbdbd)', lineHeight: 1.4 }}>
+                            {insignia.descripcion}
+                          </p>
+                          {/* Barra de progreso */}
+                          <div style={{
+                            width: '100%', height: '6px', borderRadius: '3px',
+                            background: desbloqueada ? `${c.border}40` : 'var(--color-border, #e0e0e0)',
+                            overflow: 'hidden',
+                          }}>
+                            <div style={{
+                              width: `${progreso * 100}%`, height: '100%', borderRadius: '3px',
+                              background: desbloqueada ? c.icon : 'var(--color-text-secondary, #9e9e9e)',
+                              transition: 'width 0.5s ease',
+                            }} />
+                          </div>
+                        </div>
                       </div>
                     )
                   })
