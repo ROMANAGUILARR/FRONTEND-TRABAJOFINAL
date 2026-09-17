@@ -3,6 +3,7 @@ import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import * as XLSX from 'xlsx'
 import logoEcoSolido from '../assets/LOGO ECOSOLIDO.png'
+import { MOCK_INSIGNIAS } from '../services/mockData'
 import './ReporteIncidencias.css'
 
 const ESTADO_BADGE = {
@@ -114,11 +115,54 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
           Total de registros: {incidencias.length}
         </div>
 
-        {/* Firma */}
-        <div className="reporte-firma">
-          <div className="reporte-firma-bloque">
-            <div className="reporte-firma-linea"></div>
-            <span className="reporte-firma-label">Firma del Solicitante</span>
+        {/* Resumen de insignias */}
+        <div style={{ marginTop: '24px', marginBottom: '24px' }}>
+          <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#2E7D32', margin: '0 0 12px', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '2px solid #2E7D32', paddingBottom: '6px' }}>
+            Resumen de Participacion
+          </h3>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+            <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#2E7D32' }}>{(incidencias.length * 10)}</span>
+            <span style={{ fontSize: '0.9rem', color: '#555' }}>puntos acumulados ({incidencias.length} registros x 10 pts)</span>
+          </div>
+          <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#333', margin: '0 0 10px', textTransform: 'uppercase' }}>Insignias Obtenidas</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px' }}>
+            {MOCK_INSIGNIAS.map((insignia) => {
+              const desbloqueada = incidencias.length >= insignia.requisitoIncidencias
+              return (
+                <div key={insignia.idInsignia} style={{
+                  border: desbloqueada ? '1px solid #A5D6A7' : '1px solid #ddd',
+                  borderRadius: '8px', padding: '10px 12px',
+                  background: desbloqueada ? '#e8f5e9' : '#f9f9f9',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                    <span style={{
+                      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                      width: '22px', height: '22px', borderRadius: '50%',
+                      background: desbloqueada ? '#2E7D32' : '#bdbdbd',
+                      color: '#fff', fontSize: '0.6rem',
+                    }}>
+                      <i className={desbloqueada ? 'fa-solid fa-check' : 'fa-solid fa-lock'}></i>
+                    </span>
+                    <strong style={{ fontSize: '0.82rem', color: desbloqueada ? '#111' : '#999' }}>{insignia.nombre}</strong>
+                  </div>
+                  <p style={{ margin: 0, fontSize: '0.75rem', color: desbloqueada ? '#555' : '#bbb' }}>
+                    {desbloqueada ? insignia.descripcion : `Requiere ${insignia.requisitoIncidencias} incidencias (${incidencias.length}/${insignia.requisitoIncidencias})`}
+                  </p>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Firmas */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '60px', paddingTop: '8px' }}>
+          <div style={{ textAlign: 'center', minWidth: '200px' }}>
+            <div style={{ borderTop: '1px solid #333', marginBottom: '4px' }}></div>
+            <span style={{ fontSize: '0.8rem', color: '#555' }}>Firma del Solicitante</span>
+          </div>
+          <div style={{ textAlign: 'center', minWidth: '200px' }}>
+            <div style={{ borderTop: '1px solid #333', marginBottom: '4px' }}></div>
+            <span style={{ fontSize: '0.8rem', color: '#555' }}>Firma del Jefe de Municipalidad</span>
           </div>
         </div>
       </div>
