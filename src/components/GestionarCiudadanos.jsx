@@ -149,13 +149,17 @@ export default function GestionarCiudadanos() {
           className="admin-input" style={{ flex: 1, minWidth: '250px' }}
         />
         <div style={{ display: 'flex', gap: '6px' }}>
-          {['TODOS', 'CIUDADANO', 'ADMIN'].map(rol => (
-            <button key={rol} onClick={() => setFiltroRol(rol)} className="admin-btn" style={{
-              background: filtroRol === rol ? 'var(--color-eco-primary, #2E7D32)' : 'var(--color-bg-white)',
-              color: filtroRol === rol ? '#fff' : 'var(--color-text)',
-              border: filtroRol === rol ? 'none' : '1px solid var(--color-border)',
+          {[
+            { key: 'TODOS', label: 'Todos', activeBg: '#37474F' },
+            { key: 'CIUDADANO', label: 'Ciudadanos', activeBg: '#1565C0' },
+            { key: 'ADMIN', label: 'Admins', activeBg: '#E65100' },
+          ].map(f => (
+            <button key={f.key} onClick={() => setFiltroRol(f.key)} className="admin-btn" style={{
+              background: filtroRol === f.key ? f.activeBg : 'var(--color-bg-white)',
+              color: filtroRol === f.key ? '#fff' : 'var(--color-text)',
+              border: filtroRol === f.key ? 'none' : '1px solid var(--color-border)',
             }}>
-              {rol === 'TODOS' ? 'Todos' : rol === 'CIUDADANO' ? 'Ciudadanos' : 'Admins'}
+              {f.label}
             </button>
           ))}
         </div>
@@ -303,10 +307,10 @@ export default function GestionarCiudadanos() {
                               <i className={desbloqueada ? 'fa-solid fa-check' : 'fa-solid fa-lock'}></i>
                             </span>
                             <div style={{ minWidth: 0 }}>
-                              <strong style={{ fontSize: '1rem', color: desbloqueada ? 'var(--color-text)' : 'var(--color-text-secondary, #9e9e9e)', display: 'block', lineHeight: 1.3 }}>
+                              <strong style={{ fontSize: '1.05rem', fontWeight: 700, color: desbloqueada ? '#111' : 'var(--color-text-secondary, #9e9e9e)', display: 'block', lineHeight: 1.3 }}>
                                 {insignia.nombre}
                               </strong>
-                              <span style={{ fontSize: '0.78rem', color: desbloqueada ? c.icon : 'var(--color-border, #bdbdbd)', fontWeight: 600 }}>
+                              <span style={{ fontSize: '0.82rem', color: desbloqueada ? c.icon : 'var(--color-border, #bdbdbd)', fontWeight: 600 }}>
                                 {desbloqueada ? 'Desbloqueada' : `${numIncidencias}/${insignia.requisitoIncidencias} incidencias`}
                               </span>
                             </div>
