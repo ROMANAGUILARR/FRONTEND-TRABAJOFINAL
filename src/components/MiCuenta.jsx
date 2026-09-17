@@ -1,22 +1,36 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { IconUsuario } from './icons'
-import Button from './ui/Button'
 import './MiCuenta.css'
 
-/**
- * Página "Mi Cuenta": muestra los datos del usuario autenticado
- * (nombre, rol, puntos) y permite cerrar sesión.
- */
 export default function MiCuenta() {
     const navigate = useNavigate()
     const { user } = useAuth()
 
     const esAdmin = user?.rol === 'ADMIN'
+    const nombreMostrar = (user?.nombreUsuario || localStorage.getItem('nombreUsuario') || '—').replace(' Demo', '')
 
     return (
         <div className="micuenta min-h-screen bg-eco-bg flex items-center justify-center p-5">
-            <div className="w-full max-w-[460px] bg-eco-bg-white rounded-lg shadow-lg p-10 max-md:p-6 max-sm:p-5">
+            <div className="w-full max-w-[460px] bg-eco-bg-white rounded-lg shadow-lg relative" style={{ padding: '40px 32px 32px' }}>
+                {/* Botón X para cerrar */}
+                <button
+                    onClick={() => navigate(-1)}
+                    style={{
+                        position: 'absolute', top: '12px', right: '12px',
+                        background: 'none', border: 'none', cursor: 'pointer',
+                        color: 'var(--color-text-secondary)', fontSize: '1.2rem',
+                        width: '32px', height: '32px', borderRadius: '50%',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        transition: 'background 0.2s',
+                    }}
+                    onMouseOver={e => e.currentTarget.style.background = 'var(--color-border)'}
+                    onMouseOut={e => e.currentTarget.style.background = 'none'}
+                    aria-label="Cerrar"
+                >
+                    <i className="fa-solid fa-xmark"></i>
+                </button>
+
                 {/* Encabezado */}
                 <div className="text-center mb-8">
                     <div className="micuenta__avatar">
@@ -32,31 +46,22 @@ export default function MiCuenta() {
                 <div className="micuenta__datos flex flex-col gap-3 mb-8">
                     <div className="micuenta__fila">
                         <span className="micuenta__etiqueta">Usuario</span>
-                        <span className="micuenta__valor">{user?.nombreUsuario || localStorage.getItem('nombreUsuario') || '—'}</span>
+                        <span className="micuenta__valor">{nombreMostrar}</span>
                     </div>
                     <div className="micuenta__fila">
                         <span className="micuenta__etiqueta">Rol</span>
                         <span className="micuenta__valor">
-                            {esAdmin ? 'Administrador' : 'Ciudadano'}
+                            <span className={`admin-badge ${esAdmin ? 'admin-badge--progress' : 'admin-badge--resolved'}`}>
+                                {esAdmin ? 'Administrador' : 'Ciudadano'}
+                            </span>
                         </span>
                     </div>
                     <div className="micuenta__fila">
                         <span className="micuenta__etiqueta">Puntos</span>
-                        <span className="micuenta__valor">⭐ {user?.puntos ?? localStorage.getItem('puntos') ?? 0} pts</span>
+                        <span className="micuenta__valor" style={{ color: '#2E7D32', fontWeight: 700 }}>
+                            {user?.puntos ?? localStorage.getItem('puntos') ?? 0} pts
+                        </span>
                     </div>
-                </div>
-
-                {/* Acciones */}
-                <div className="flex flex-col gap-3">
-                    <Button
-                        variant="secondary"
-                        size="lg"
-                        fullWidth
-                        onClick={() => navigate(-1)}
-                        className="micuenta__volver-btn"
-                    >
-                        Volver
-                    </Button>
                 </div>
             </div>
         </div>

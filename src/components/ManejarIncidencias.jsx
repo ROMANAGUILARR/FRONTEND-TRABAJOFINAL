@@ -175,7 +175,7 @@ export default function ManejarIncidencias() {
 
   return (
     <main style={{ flex: 1, padding: '24px', overflowY: 'auto', background: 'var(--color-bg)' }}>
-      <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text)', margin: '0 0 4px' }}>Gestionar Incidencias</h2>
+      <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text)', margin: '0 0 4px' }}>Panel de Control de Incidencias</h2>
       <p style={{ color: 'var(--color-text-secondary)', marginBottom: '20px', fontSize: '0.9rem' }}>
         Administra, edita y actualiza el estado de las incidencias registradas
       </p>
@@ -212,7 +212,7 @@ export default function ManejarIncidencias() {
           className="admin-input" style={{ maxWidth: '350px' }}
         />
         <div style={{ display: 'flex', gap: '6px' }}>
-          {[{ key: 'todos', label: 'Todos', color: 'var(--color-text)' }, { key: 'pending', label: 'Pendientes', color: '#E65100' }, { key: 'in-progress', label: 'En Proceso', color: '#1565C0' }, { key: 'resolved', label: 'Resueltos', color: '#2E7D32' }].map(f => (
+          {[{ key: 'todos', label: 'Todos', color: '#37474F' }, { key: 'pending', label: 'Pendientes', color: '#E65100' }, { key: 'in-progress', label: 'En Proceso', color: '#1565C0' }, { key: 'resolved', label: 'Resueltos', color: '#2E7D32' }].map(f => (
             <button key={f.key} onClick={() => setFiltroEstado(f.key)} className="admin-btn" style={{
               background: filtroEstado === f.key ? f.color : 'var(--color-bg-white)',
               color: filtroEstado === f.key ? '#fff' : 'var(--color-text)',
@@ -300,17 +300,17 @@ export default function ManejarIncidencias() {
       {editando && (
         <div className="admin-modal-overlay" onClick={() => setEditando(null)}>
           <div className="admin-modal" onClick={e => e.stopPropagation()}>
-            <h3 className="admin-modal__title">Editar Incidencia</h3>
+            <h3 className="admin-modal__title"><i className="fa-solid fa-pen-to-square" style={{ marginRight: '8px' }}></i>Editar Incidencia</h3>
             <div className="admin-modal__form-grid">
               <div>
-                <label className="admin-modal__label">Categoría</label>
+                <label className="admin-modal__label">Categoría:</label>
                 <select value={formulario.titulo} onChange={e => setFormulario(f => ({ ...f, titulo: e.target.value }))} className="admin-input">
                   <option value="">-- Selecciona --</option>
                   {CATEGORIAS.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
               <div>
-                <label className="admin-modal__label">Estado</label>
+                <label className="admin-modal__label">Estado:</label>
                 <select value={formulario.estado} onChange={e => setFormulario(f => ({ ...f, estado: e.target.value }))} className="admin-input">
                   <option value="PENDIENTE">Pendiente</option>
                   <option value="EN_PROCESO">En Proceso</option>
@@ -318,11 +318,11 @@ export default function ManejarIncidencias() {
                 </select>
               </div>
               <div className="admin-modal__full-width">
-                <label className="admin-modal__label">Descripción</label>
+                <label className="admin-modal__label">Descripción:</label>
                 <textarea value={formulario.descripcion} onChange={e => setFormulario(f => ({ ...f, descripcion: e.target.value }))} className="admin-input" style={{ minHeight: '80px', resize: 'vertical' }} />
               </div>
               <div className="admin-modal__full-width">
-                <label className="admin-modal__label">Dirección</label>
+                <label className="admin-modal__label">Dirección:</label>
                 <input value={formulario.direccionTexto} onChange={e => setFormulario(f => ({ ...f, direccionTexto: e.target.value }))} className="admin-input" />
               </div>
             </div>
