@@ -125,7 +125,7 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
             <span style={{ fontSize: '0.9rem', color: '#555' }}>puntos acumulados ({incidencias.length} registros x 10 pts)</span>
           </div>
           <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#333', margin: '0 0 10px', textTransform: 'uppercase' }}>Insignias Obtenidas</h4>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px' }}>
             {MOCK_INSIGNIAS.map((insignia) => {
               const desbloqueada = incidencias.length >= insignia.requisitoIncidencias
               return (
