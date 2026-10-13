@@ -572,6 +572,35 @@
 [data-theme="dark"] .metrica-card {
   background: var(--color-bg-white);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border-left-color: inherit;
+}
+
+[data-theme="dark"] .metrica-card--total .metrica-card__icon {
+  background: rgba(56, 142, 60, 0.15);
+}
+
+[data-theme="dark"] .metrica-card--proceso .metrica-card__icon {
+  background: rgba(255, 167, 38, 0.15);
+}
+
+[data-theme="dark"] .metrica-card--proceso .metrica-card__numero {
+  color: #FFA726;
+}
+
+[data-theme="dark"] .metrica-card--pendientes .metrica-card__icon {
+  background: rgba(239, 83, 80, 0.15);
+}
+
+[data-theme="dark"] .metrica-card--pendientes .metrica-card__numero {
+  color: #EF5350;
+}
+
+[data-theme="dark"] .metrica-card--resueltos .metrica-card__icon {
+  background: rgba(76, 175, 80, 0.15);
+}
+
+[data-theme="dark"] .metrica-card--resueltos .metrica-card__numero {
+  color: #81C784;
 }
 
 [data-theme="dark"] .metrica-card__label {
@@ -640,17 +669,17 @@
 }
 
 [data-theme="dark"] .estado--pending {
-  background: rgba(255, 152, 0, 0.2);
+  background: rgba(239, 108, 0, 0.15);
   color: #FFB74D;
 }
 
 [data-theme="dark"] .estado--progress {
-  background: rgba(33, 150, 243, 0.2);
+  background: rgba(33, 150, 243, 0.15);
   color: #64B5F6;
 }
 
 [data-theme="dark"] .estado--resolved {
-  background: rgba(76, 175, 80, 0.2);
+  background: rgba(76, 175, 80, 0.15);
   color: #81C784;
 }
 

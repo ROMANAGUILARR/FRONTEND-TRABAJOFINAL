@@ -105,19 +105,19 @@
 .admin-badge--pending {
   background: #FFF3E0;
   color: #E65100;
-  border: 1px solid #FF8F0F;
+  border: 1px solid #FFB74D;
 }
 
 .admin-badge--progress {
   background: #E3F2FD;
   color: #1565C0;
-  border: 1px solid #42A5F5;
+  border: 1px solid #64B5F6;
 }
 
 .admin-badge--resolved {
   background: #E8F5E9;
   color: #2E7D32;
-  border: 1px solid #4CAF50;
+  border: 1px solid #81C784;
 }
 
 /* ===== Métricas ===== */
@@ -413,11 +413,35 @@
 }
 
 [data-theme="dark"] .admin-table tr:nth-child(even) {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 [data-theme="dark"] .admin-table tr:hover {
-  background: rgba(46, 125, 50, 0.08);
+  background: rgba(76, 175, 80, 0.08);
+}
+
+[data-theme="dark"] .admin-badge--pending {
+  background: rgba(255, 152, 0, 0.15);
+  color: #FFB74D;
+  border-color: rgba(255, 152, 0, 0.3);
+}
+
+[data-theme="dark"] .admin-badge--progress {
+  background: rgba(33, 150, 243, 0.15);
+  color: #64B5F6;
+  border-color: rgba(33, 150, 243, 0.3);
+}
+
+[data-theme="dark"] .admin-badge--resolved {
+  background: rgba(76, 175, 80, 0.15);
+  color: #81C784;
+  border-color: rgba(76, 175, 80, 0.3);
+}
+
+[data-theme="dark"] .admin-card {
+  background: var(--color-bg-white);
+  border-color: var(--color-border);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
 [data-theme="dark"] .admin-modal-overlay {

@@ -3,17 +3,17 @@
 /* Mapeo de colores del proyecto a Tailwind */
 @theme {
   --color-eco-primary: #2E7D32;
-  --color-eco-primary-dark: #1b5e20;
-  --color-eco-text: #111111;
-  --color-eco-text-secondary: #37474F;
-  --color-eco-bg: #F5F4EF;
+  --color-eco-primary-dark: #1B5E20;
+  --color-eco-text: #1B2E21;
+  --color-eco-text-secondary: #4A6350;
+  --color-eco-bg: #F2F5F3;
   --color-eco-bg-white: #FFFFFF;
-  --color-eco-border: #BDBDBD;
-  --color-eco-danger: #FF746C;
-  --color-eco-warning: #FF8F0F;
+  --color-eco-border: #C8D4CB;
+  --color-eco-danger: #E53935;
+  --color-eco-warning: #EF6C00;
   --color-eco-success: #2E7D32;
-  --color-eco-gray: #37474F;
-  --color-eco-gray-dark: #263238;
+  --color-eco-gray: #455A64;
+  --color-eco-gray-dark: #37474F;
 }
 
 *,
@@ -24,35 +24,35 @@
 
 :root {
   /* Paleta de Colores EcoSolido - Sostenibilidad y Gestión Ambiental */
-  --color-text: #111111;
-  --color-text-secondary: #37474F;
-  --color-border: #BDBDBD;
+  --color-text: #1B2E21;
+  --color-text-secondary: #4A6350;
+  --color-border: #C8D4CB;
   --color-border-focus: #2E7D32;
-  --color-bg: #F5F4EF;
+  --color-bg: #F2F5F3;
   --color-bg-white: #FFFFFF;
   --color-sidebar-active: rgba(46, 125, 50, 0.15);
   --color-header-bg: #2E7D32;
   --color-sidebar-bg: #2E7D32;
 
   --color-btn-primary: #2E7D32;
-  --color-btn-primary-hover: #1b5e20;
+  --color-btn-primary-hover: #1B5E20;
 
   --color-btn-ia: #37474F;
   --color-btn-ia-hover: #263238;
 
   --color-btn-success: #2E7D32;
-  --color-btn-success-hover: #1b5e20;
-  --color-btn-danger: #FF746C;
-  --color-btn-danger-hover: #e66059;
-  --color-btn-warning: #FF8F0F;
-  --color-btn-secondary: #37474F;
-  --color-btn-secondary-hover: #263238;
+  --color-btn-success-hover: #1B5E20;
+  --color-btn-danger: #E53935;
+  --color-btn-danger-hover: #C62828;
+  --color-btn-warning: #EF6C00;
+  --color-btn-secondary: #455A64;
+  --color-btn-secondary-hover: #37474F;
 
-  --color-required: #FF746C;
-  --color-accent-green-light: #e8f5e9;
-  --color-accent-orange-light: #FFF3E0;
+  --color-required: #E53935;
+  --color-accent-green-light: #E8F5E9;
+  --color-accent-orange-light: #FFF8E1;
   --color-accent-blue-light: #ECEFF1;
-  --color-accent-red-light: #fef2f2;
+  --color-accent-red-light: #FFEBEE;
 
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
@@ -60,12 +60,12 @@
   --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, sans-serif;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 8px -1px rgba(0, 0, 0, 0.08),
+    0 2px 4px -1px rgba(0, 0, 0, 0.04);
 
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.1),
+    0 4px 8px -2px rgba(0, 0, 0, 0.06);
 
   --radius-sm: 4px;
   --radius-md: 8px;
@@ -74,47 +74,47 @@
 
 /* Tema oscuro */
 [data-theme="dark"] {
-  --color-text: #e5e7eb;
-  --color-text-secondary: #9ca3af;
-  --color-border: #374151;
-  --color-border-focus: #2E7D32;
-  --color-bg: #111827;
-  --color-bg-white: #1f2937;
-  --color-sidebar-active: rgba(46, 125, 50, 0.2);
+  --color-text: #E0E8E2;
+  --color-text-secondary: #8FA896;
+  --color-border: #2A3E30;
+  --color-border-focus: #4CAF50;
+  --color-bg: #0D1710;
+  --color-bg-white: #16231A;
+  --color-sidebar-active: rgba(76, 175, 80, 0.15);
 
   /* Tailwind theme colors - dark mode */
-  --color-eco-text: #e5e7eb;
-  --color-eco-text-secondary: #9ca3af;
-  --color-eco-bg: #111827;
-  --color-eco-bg-white: #1f2937;
-  --color-eco-border: #374151;
+  --color-eco-text: #E0E8E2;
+  --color-eco-text-secondary: #8FA896;
+  --color-eco-bg: #0D1710;
+  --color-eco-bg-white: #16231A;
+  --color-eco-border: #2A3E30;
 
-  --color-btn-primary: #2E7D32;
-  --color-btn-primary-hover: #1b5e20;
+  --color-btn-primary: #388E3C;
+  --color-btn-primary-hover: #4CAF50;
 
-  --color-btn-ia: #37474F;
-  --color-btn-ia-hover: #263238;
+  --color-btn-ia: #455A64;
+  --color-btn-ia-hover: #546E7A;
 
-  --color-btn-success: #2E7D32;
-  --color-btn-success-hover: #1b5e20;
-  --color-btn-danger: #FF746C;
-  --color-btn-danger-hover: #e66059;
-  --color-btn-warning: #FF8F0F;
-  --color-btn-secondary: #37474F;
-  --color-btn-secondary-hover: #263238;
+  --color-btn-success: #388E3C;
+  --color-btn-success-hover: #4CAF50;
+  --color-btn-danger: #EF5350;
+  --color-btn-danger-hover: #E53935;
+  --color-btn-warning: #FFA726;
+  --color-btn-secondary: #455A64;
+  --color-btn-secondary-hover: #546E7A;
 
-  --color-required: #FF746C;
-  --color-accent-green-light: #166534;
-  --color-accent-orange-light: #E65100;
-  --color-accent-blue-light: #37474F;
-  --color-accent-red-light: #7f1d1d;
+  --color-required: #EF5350;
+  --color-accent-green-light: #1B3322;
+  --color-accent-orange-light: #3E2A14;
+  --color-accent-blue-light: #1A2A30;
+  --color-accent-red-light: #2C1616;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4),
-    0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 8px -1px rgba(0, 0, 0, 0.45),
+    0 2px 4px -1px rgba(0, 0, 0, 0.35);
 
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4),
-    0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.5),
+    0 4px 8px -2px rgba(0, 0, 0, 0.4);
 }
 
 body {
