@@ -486,7 +486,7 @@
    MODO OSCURO (reforzando colores)
    ============================================ */
 [data-theme="dark"] {
-  --sidebar-bg: #14331A;
-  --sidebar-bg-hover: #1A4020;
-  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-bg: #111111;
+  --sidebar-bg-hover: #1E1E1E;
+  --sidebar-border: rgba(255, 255, 255, 0.06);
 }
