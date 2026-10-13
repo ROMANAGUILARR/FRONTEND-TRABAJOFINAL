@@ -508,13 +508,9 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
                   setCamposError(prev => ({ ...prev, categoria: false }))
                 }}
               >
-                <option value="" disabled>
-                  Seleccione una opción
-                </option>
+                <option value="">Seleccione una opción</option>
                 {CATEGORIAS.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
+                  <option key={cat} value={cat}>{cat}</option>
                 ))}
               </select>
             </div>
@@ -596,7 +592,6 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
               onClick={handleGenerarIA}
               disabled={generandoIA}
             >
-              <IconIA />
               Generar descripción con IA
             </button>
           </div>

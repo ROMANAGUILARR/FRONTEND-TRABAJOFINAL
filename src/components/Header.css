@@ -3,3 +3,14 @@
   width: 80px;
   height: 80px;
 }
+.header__username {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ===== Dark Mode ===== */
+[data-theme="dark"] .header__logo-img {
+  filter: brightness(0.95);
+}

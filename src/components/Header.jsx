@@ -15,9 +15,7 @@ const obtenerTemaInicial = () => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
 };
 export default function Header({ onMenuClick,onLogout }) {
-  const [temaOscuro, setTemaOscuro] = useState(() => {
-    obtenerTemaInicial()
-  })
+  const [temaOscuro, setTemaOscuro] = useState(obtenerTemaInicial)
   const navigate = useNavigate()
   const [showCerrarSModal, setShowCerrarSModal] = useState(false)
   const { logout, user } = useAuth();
@@ -61,7 +59,6 @@ export default function Header({ onMenuClick,onLogout }) {
 
   function handleConfirmarCierre() {
     logout();
-    onLogout();
     navigate('/login', { replace: true })
   }
 
@@ -99,9 +96,9 @@ export default function Header({ onMenuClick,onLogout }) {
           {temaOscuro ? <IconSol /> : <IconLuna />}
         </button>
 
-        <button type="button" className="flex items-center justify-center p-2 border-none bg-transparent text-white cursor-pointer opacity-90 transition-all duration-200 rounded-sm hover:opacity-100 hover:scale-105 active:scale-95 max-sm:p-1.5" aria-label="Perfil de usuario">
+        <button type="button" className="flex items-center justify-center p-2 border-none bg-transparent text-white cursor-pointer opacity-90 transition-all duration-200 rounded-sm hover:opacity-100 hover:scale-105 active:scale-95 max-sm:p-1.5" aria-label="Perfil de usuario" title="Mi cuenta" onClick={() => navigate('/cuenta')}>
           <IconUsuario />
-          <span className="header__username ml-2.5 max-sm:hidden">{nombreUsuario}</span>
+          <span className="header__username ml-2.5 max-sm:hidden">Cuenta</span>
           <span className="header__points ml-2 text-xs font-semibold text-yellow-400 bg-black/20 px-2 py-0.5 rounded-xl max-sm:text-[10px]">
             {puntos} pts
           </span>

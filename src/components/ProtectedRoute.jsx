@@ -26,7 +26,7 @@ export default function ProtectedRoute({ children, module, requireAdmin = false 
   }
 
   if (requireAdmin && !isAdmin()) {
-    return <Navigate to={user?.rol === 'ADMIN' ? '/dashboard' : '/registro'} replace />;
+    return <Navigate to={user?.rol === 'ADMIN' ? '/ciudadanos' : '/registro'} replace />;
   }
 
   if (module && !hasPermission(module)) {
@@ -59,9 +59,9 @@ export function PublicRoute({ children }) {
     );
   }
 
-  // Si ya está autenticado y viene de login, redirigir a home
-  if (isAuthenticated && location.pathname === '/login') {
-    return <Navigate to={user?.rol === 'ADMIN' ? '/dashboard' : '/registro'} replace />;
+  // Si ya está autenticado y viene de login o de la landing, redirigir a sus módulos
+  if (isAuthenticated && (location.pathname === '/login' || location.pathname === '/')) {
+    return <Navigate to={user?.rol === 'ADMIN' ? '/ciudadanos' : '/registro'} replace />;
   }
 
   return children;

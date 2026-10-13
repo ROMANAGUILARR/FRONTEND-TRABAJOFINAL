@@ -3,6 +3,7 @@ import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import * as XLSX from 'xlsx'
 import logoEcoSolido from '../assets/LOGO ECOSOLIDO.png'
+import { MOCK_INSIGNIAS } from '../services/mockData'
 import './ReporteIncidencias.css'
 
 const ESTADO_BADGE = {
@@ -30,132 +31,54 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
 
   async function descargarPDF() {
     const elemento = reporteRef.current
-    const canvas = await html2canvas(elemento, { scale: 2, useCORS: true })
-    const imgData = canvas.toDataURL('image/png')
     const pdf = new jsPDF('p', 'mm', 'a4')
     const pdfWidth = pdf.internal.pageSize.getWidth()
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
-    pdf.save(`Reporte_${usuario.nombreCompleto}_${usuario.apellidoCompleto}.pdf`)
-  }
+    const pdfHeight = pdf.internal.pageSize.getHeight()
 
-  async function imprimir() {
-    const pdf = new jsPDF('p', 'mm', 'a4')
-    const pageWidth = pdf.internal.pageSize.getWidth()
-    const margin = 20
-    let y = margin
-
-    // Logo
-    try {
-      pdf.addImage(logoEcoSolido, 'PNG', margin, y, 20, 20)
-    } catch {}
-    pdf.setFontSize(16)
-    pdf.setFont('helvetica', 'bold')
-    pdf.setTextColor(46, 125, 50)
-    pdf.text('Hoja de Recuento de Registro de Incidencias', margin + 25, y + 10)
-    pdf.setFontSize(9)
-    pdf.setFont('helvetica', 'normal')
-    pdf.setTextColor(100, 100, 100)
-    pdf.text('Sistema de Gestion Ambiental - EcoSolido', margin + 25, y + 16)
-    y += 28
-
-    // Línea verde
-    pdf.setDrawColor(46, 125, 50)
-    pdf.setLineWidth(0.8)
-    pdf.line(margin, y, pageWidth - margin, y)
-    y += 10
-
-    // Fecha
-    pdf.setFontSize(10)
-    pdf.setTextColor(50, 50, 50)
-    pdf.text('Fecha de solicitud: ' + fechaHoy, pageWidth - margin - 50, y)
-    y += 10
-
-    // Nombre
-    pdf.setFontSize(12)
-    pdf.setFont('helvetica', 'bold')
-    pdf.text('Nombre: ' + usuario.nombreCompleto + ' ' + usuario.apellidoCompleto, margin, y)
-    y += 12
-
-    // Tabla
-    const colWidths = [12, 70, 30, 45, 25]
-    const headers = ['#', 'Descripcion', 'Estado', 'Ubicacion', 'Fecha']
-
-    // Header
-    pdf.setFillColor(46, 125, 50)
-    pdf.rect(margin, y, colWidths.reduce((a, b) => a + b, 0), 8, 'F')
-    pdf.setFontSize(8)
-    pdf.setFont('helvetica', 'bold')
-    pdf.setTextColor(255, 255, 255)
-    let x = margin
-    headers.forEach((h, i) => {
-      pdf.text(h, x + 2, y + 5.5)
-      x += colWidths[i]
-    })
-    y += 8
-
-    // Filas
-    pdf.setFont('helvetica', 'normal')
-    pdf.setTextColor(50, 50, 50)
-    incidencias.forEach((inc, idx) => {
-      if (y > 260) { pdf.addPage(); y = margin }
-      const bg = idx % 2 === 0 ? [249, 249, 249] : [255, 255, 255]
-      pdf.setFillColor(...bg)
-      pdf.rect(margin, y, colWidths.reduce((a, b) => a + b, 0), 7, 'F')
-      pdf.setDrawColor(220, 220, 220)
-      pdf.line(margin, y + 7, pageWidth - margin, y + 7)
-      pdf.setFontSize(8)
-      x = margin
-      const vals = [
-        String(idx + 1),
-        (inc.descripcion || '').substring(0, 40),
-        ESTADO_LABEL[inc.estado] || inc.estado,
-        (inc.direccionTexto || 'No especificada').substring(0, 25),
-        formatearFecha(inc.fecha)
-      ]
-      vals.forEach((v, i) => {
-        pdf.text(v, x + 2, y + 5)
-        x += colWidths[i]
-      })
-      y += 7
+    // Capturar el contenido como canvas
+    const canvas = await html2canvas(elemento, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      width: elemento.scrollWidth,
+      height: elemento.scrollHeight,
     })
 
-    // Línea final
-    pdf.setDrawColor(46, 125, 50)
-    pdf.setLineWidth(0.8)
-    pdf.line(margin, y, pageWidth - margin, y)
-    y += 10
+    const imgData = canvas.toDataURL('image/png')
+    const imgWidth = pdfWidth - 20 // Margen de 10mm cada lado
+    const imgHeight = (canvas.height * imgWidth) / canvas.width
 
-    // Total
-    pdf.setFontSize(11)
-    pdf.setFont('helvetica', 'bold')
-    pdf.setTextColor(50, 50, 50)
-    pdf.text('Total de registros: ' + incidencias.length, margin, y)
-    y += 30
+    // Si cabe en una página
+    if (imgHeight <= pdfHeight - 20) {
+      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight)
+    } else {
+      // Multipágina: cortar la imagen en secciones
+      const pageContentHeight = pdfHeight - 20 // Altura usable por página
+      const totalPages = Math.ceil(imgHeight / pageContentHeight)
 
-    // Firmas
-    pdf.setFont('helvetica', 'normal')
-    pdf.setFontSize(9)
-    pdf.setTextColor(80, 80, 80)
-    pdf.line(margin + 10, y, margin + 70, y)
-    pdf.text('Firma del Solicitante', margin + 15, y + 5)
-    pdf.line(pageWidth - margin - 70, y, pageWidth - margin - 10, y)
-    pdf.text('Fecha: ' + fechaHoy, pageWidth - margin - 60, y + 5)
+      for (let page = 0; page < totalPages; page++) {
+        if (page > 0) pdf.addPage()
 
-    // Imprimir - usar iframe oculto (no requiere popup)
-    const blob = pdf.output('blob')
-    const url = URL.createObjectURL(blob)
-    const iframe = document.createElement('iframe')
-    iframe.style.display = 'none'
-    iframe.src = url
-    document.body.appendChild(iframe)
-    iframe.onload = () => {
-      iframe.contentWindow.print()
-      setTimeout(() => {
-        URL.revokeObjectURL(url)
-        document.body.removeChild(iframe)
-      }, 2000)
+        // Crear un canvas recortado para esta página
+        const sourceY = (page * pageContentHeight * canvas.width) / imgWidth
+        const sourceHeight = Math.min(
+          (pageContentHeight * canvas.width) / imgWidth,
+          canvas.height - sourceY
+        )
+
+        const pageCanvas = document.createElement('canvas')
+        pageCanvas.width = canvas.width
+        pageCanvas.height = sourceHeight
+        const ctx = pageCanvas.getContext('2d')
+        ctx.drawImage(canvas, 0, -sourceY)
+
+        const pageImgData = pageCanvas.toDataURL('image/png')
+        const pageImgHeight = (sourceHeight * imgWidth) / canvas.width
+        pdf.addImage(pageImgData, 'PNG', 10, 10, imgWidth, pageImgHeight)
+      }
     }
+
+    pdf.save(`Reporte_${usuario.nombreCompleto}_${usuario.apellidoCompleto}.pdf`)
   }
 
   function descargarExcel() {
@@ -174,22 +97,6 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
 
   return (
     <div className="reporte-print-area">
-      {/* Botones de acción (no se imprimen) */}
-      <div className="reporte-acciones">
-        <button onClick={onVolver} className="reporte-btn reporte-btn--volver">
-          Volver
-        </button>
-        <button onClick={descargarPDF} className="reporte-btn reporte-btn--pdf">
-          Descargar PDF
-        </button>
-        <button onClick={imprimir} className="reporte-btn reporte-btn--print">
-          Imprimir
-        </button>
-        <button onClick={descargarExcel} className="reporte-btn reporte-btn--excel">
-          Descargar Excel
-        </button>
-      </div>
-
       {/* Plantilla del reporte */}
       <div ref={reporteRef} className="reporte-container">
         {/* Encabezado */}
@@ -245,21 +152,101 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
           </tbody>
         </table>
 
-        <div className="reporte-total">
-          Total de registros: {incidencias.length}
+        {/* Resumen de insignias */}
+        <div style={{ marginTop: '24px', marginBottom: '24px' }}>
+          <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#111', margin: '0 0 16px' }}>
+            Resumen de {usuario.nombreCompleto} {usuario.apellidoCompleto}: {' '}
+            <span style={{ color: '#2E7D32', fontWeight: 800 }}>{incidencias.length * 10}</span> puntos acumulados
+          </h3>
+          <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#333', margin: '0 0 14px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            Insignias
+          </h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px', alignItems: 'stretch' }}>
+            {(() => {
+              const colores = [
+                { bg: '#e8f5e9', border: '#A5D6A7', icon: '#2E7D32' },
+                { bg: '#E3F2FD', border: '#90CAF9', icon: '#1565C0' },
+                { bg: '#FFF3E0', border: '#FFCC80', icon: '#E65100' },
+                { bg: '#F3E5F5', border: '#CE93D8', icon: '#7B1FA2' },
+                { bg: '#E0F2F1', border: '#80CBC4', icon: '#00695C' },
+              ]
+              return MOCK_INSIGNIAS.map((insignia, idx) => {
+                const desbloqueada = incidencias.length >= insignia.requisitoIncidencias
+                const progreso = Math.min(incidencias.length / insignia.requisitoIncidencias, 1)
+                const c = colores[idx % colores.length]
+                return (
+                  <div key={insignia.idInsignia} style={{
+                    background: desbloqueada ? c.bg : '#f5f5f5',
+                    border: desbloqueada ? `1px solid ${c.border}` : '1px solid #e0e0e0',
+                    borderRadius: '10px', padding: '10px',
+                    position: 'relative', overflow: 'hidden',
+                    display: 'flex', flexDirection: 'column',
+                    height: '100%',
+                  }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                        <span style={{
+                          display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                          width: '28px', height: '28px', borderRadius: '8px', flexShrink: 0,
+                          background: desbloqueada ? c.icon : '#bdbdbd',
+                          color: '#fff', fontSize: '0.75rem',
+                        }}>
+                          <i className={desbloqueada ? 'fa-solid fa-check' : 'fa-solid fa-lock'}></i>
+                        </span>
+                        <div style={{ minWidth: 0, flex: 1 }}>
+                          <strong style={{ fontSize: '0.78rem', fontWeight: 700, color: desbloqueada ? '#111' : '#999', display: 'block', lineHeight: 1.2 }}>
+                            {insignia.nombre}
+                          </strong>
+                          <span style={{ fontSize: '0.65rem', color: desbloqueada ? c.icon : '#bbb', fontWeight: 600 }}>
+                            {desbloqueada ? 'Desbloqueada' : `${incidencias.length}/${insignia.requisitoIncidencias}`}
+                          </span>
+                        </div>
+                      </div>
+                      <p style={{ margin: '0 0 6px', fontSize: '0.65rem', color: desbloqueada ? '#555' : '#bbb', lineHeight: 1.4, flex: 1 }}>
+                        {insignia.descripcion}
+                      </p>
+                      <div style={{
+                        width: '100%', height: '4px', borderRadius: '2px',
+                        background: desbloqueada ? `${c.icon}30` : '#e0e0e0',
+                        overflow: 'hidden', flexShrink: 0,
+                      }}>
+                        <div style={{
+                          width: `${progreso * 100}%`, height: '100%', borderRadius: '2px',
+                          background: desbloqueada ? c.icon : '#999',
+                        }} />
+                      </div>
+                    </div>
+                  </div>
+                )
+              })
+            })()}
+          </div>
         </div>
 
-        {/* Firma y fecha */}
-        <div className="reporte-firma">
-          <div className="reporte-firma-bloque">
-            <div className="reporte-firma-linea"></div>
-            <span className="reporte-firma-label">Firma del Solicitante</span>
+        {/* Firmas */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '60px', paddingTop: '8px' }}>
+          <div style={{ textAlign: 'center', minWidth: '200px' }}>
+            <div style={{ borderTop: '1px solid #333', marginBottom: '4px' }}></div>
+            <span style={{ fontSize: '0.8rem', color: '#555' }}>Firma del Usuario</span>
           </div>
-          <div className="reporte-firma-bloque">
-            <div className="reporte-firma-linea"></div>
-            <span className="reporte-firma-label">Fecha: {fechaHoy}</span>
+          <div style={{ textAlign: 'center', minWidth: '200px' }}>
+            <div style={{ borderTop: '1px solid #333', marginBottom: '4px' }}></div>
+            <span style={{ fontSize: '0.8rem', color: '#555' }}>Firma del Jefe de Municipalidad</span>
           </div>
         </div>
+      </div>
+
+      {/* Botones de acción (debajo de la plantilla) */}
+      <div className="reporte-acciones" style={{ marginTop: '24px', justifyContent: 'center', gap: '20px' }}>
+        <button onClick={onVolver} className="reporte-btn reporte-btn--volver">
+          Volver
+        </button>
+        <button onClick={descargarPDF} className="reporte-btn reporte-btn--pdf">
+          Descargar PDF
+        </button>
+        <button onClick={descargarExcel} className="reporte-btn reporte-btn--excel">
+          Descargar Excel
+        </button>
       </div>
     </div>
   )

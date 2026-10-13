@@ -166,7 +166,7 @@
 
 .restablecer__step {
   padding: 6px 12px;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--color-text-secondary);
   background: var(--color-bg);
@@ -237,7 +237,7 @@
   font-size: 1.1rem;
   font-weight: 500;
   color: var(--color-text);
-  font-style: italic;
+  font-style: normal;
 }
 
 /* Botón de volver */
@@ -380,4 +380,62 @@
     padding: 12px 20px;
     font-size: 0.95rem;
   }
+}
+
+/* ===== Dark Mode ===== */
+[data-theme="dark"] .restablecer__container {
+  background: var(--color-bg-white);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4),
+    0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .restablecer__field input {
+  background: var(--color-bg-white);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .restablecer__field input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .restabalecer_contra_toogle_pass {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .restablecer__toggle {
+  border-color: var(--color-btn-primary);
+}
+
+[data-theme="dark"] .restablecer__toggle-btn {
+  color: var(--color-btn-primary);
+}
+
+[data-theme="dark"] .restablecer__back {
+  background: var(--color-bg-white);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .restablecer__back:hover {
+  background: var(--color-border);
+  border-color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .restablecer__step {
+  background: var(--color-bg-white);
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .restablecer__question {
+  background: var(--color-accent-blue-light);
+  border-color: var(--color-btn-ia);
+}
+
+[data-theme="dark"] .restablecer__question p {
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .material-symbols-outlined {
+  color: var(--color-text);
 }

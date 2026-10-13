@@ -1,0 +1,84 @@
+/* ===== Mi Cuenta ===== */
+
+.micuenta__avatar {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: rgba(46, 125, 50, 0.1);
+    color: var(--eco-primary, #2e7d32);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.micuenta__avatar svg {
+    width: 40px;
+    height: 40px;
+}
+
+/* Filas de datos */
+.micuenta__datos {
+    border: 2px solid var(--color-border, #BDBDBD);
+    border-radius: 12px;
+    padding: 16px;
+    gap: 12px;
+}
+
+.micuenta__fila {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.micuenta__fila + .micuenta__fila {
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    padding-top: 12px;
+}
+
+.micuenta__etiqueta {
+    font-size: 0.9rem;
+    color: var(--eco-text-secondary, #555);
+    font-weight: 500;
+}
+
+.micuenta__valor {
+    font-size: 0.95rem;
+    color: var(--eco-text, #1a1a1a);
+    font-weight: 600;
+    text-align: right;
+    word-break: break-word;
+}
+
+/* Boton Volver (gris neutro) */
+.micuenta__volver-btn {
+    background: #9e9e9e !important;
+    color: #ffffff !important;
+    margin-top: 8px;
+}
+
+.micuenta__volver-btn:hover {
+    background: #757575 !important;
+}
+
+/* Dark mode */
+[data-theme="dark"] .micuenta__avatar {
+    background: rgba(46, 125, 50, 0.2);
+}
+
+[data-theme="dark"] .micuenta__datos {
+    border-color: #374151;
+}
+
+[data-theme="dark"] .micuenta__fila + .micuenta__fila {
+    border-top-color: #374151;
+}
+
+[data-theme="dark"] .micuenta__etiqueta {
+    color: #9ca3af;
+}
+
+[data-theme="dark"] .micuenta__valor {
+    color: #e5e7eb;
+}

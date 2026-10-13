@@ -104,7 +104,7 @@
 .help-modal__step p,
 .help-modal__faq p {
     margin: 4px 0 0;
-    font-size:  calc(0.7rem * var(--font-scale, 1));
+    font-size:  calc(0.85rem * var(--font-scale, 1));
     color: #555;
 }
 .registrar__help-btn:hover {
@@ -378,7 +378,7 @@
 .registrar__ia-loading {
   font-size: calc(0.95rem * var(--font-scale, 1));
   color: var(--color-btn-ia);
-  font-style: italic;
+  font-style: normal;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -535,7 +535,7 @@
   }
 
   .registrar__fotos-info {
-    font-size: calc(0.75rem * var(--font-scale, 1));
+    font-size: calc(0.85rem * var(--font-scale, 1));
     margin-bottom: 10px;
   }
 
@@ -571,7 +571,7 @@
   }
 
   .registrar__textarea-wrapper .registrar__contador {
-    font-size: calc(0.75rem * var(--font-scale, 1));
+    font-size: calc(0.85rem * var(--font-scale, 1));
     bottom: 8px;
     right: 10px;
   }
@@ -704,10 +704,82 @@
 .registrar__voz-estado {
     color: #e53e3e;
     font-size: calc(0.85rem * var(--font-scale, 1));
-    font-style: italic;
+    font-style: normal;
 }
 
 @keyframes pulsar {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.6; }
+}
+
+/* ===== Dark Mode ===== */
+[data-theme="dark"] .registrar {
+  background: var(--color-bg);
+}
+
+[data-theme="dark"] .help-modal {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .help-modal__section-title {
+  border-bottom-color: var(--color-border);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .help-modal__step p,
+[data-theme="dark"] .help-modal__faq p {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .foto-slot__btn {
+  background: var(--color-bg-white);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .foto-slot__btn:hover:not(:disabled) {
+  background: var(--color-accent-green-light);
+  border-color: var(--color-btn-primary);
+}
+
+[data-theme="dark"] .foto-slot__upload-area {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .foto-slot__upload-text {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .registrar__field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239ca3af' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  background-color: var(--color-bg-white);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .registrar__field textarea {
+  background: var(--color-bg-white);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .registrar__font-controls button {
+  background: var(--color-bg-white);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .registrar__btn--voz {
+  background: var(--color-bg-white) !important;
+  color: var(--color-btn-primary) !important;
+  border-color: var(--color-btn-primary) !important;
+}
+
+[data-theme="dark"] .registrar__btn--voz--activo {
+  background: var(--color-btn-primary) !important;
+  color: #fff !important;
+}
+
+[data-theme="dark"] .registrar__voz-estado {
+  color: #FF746C;
 }

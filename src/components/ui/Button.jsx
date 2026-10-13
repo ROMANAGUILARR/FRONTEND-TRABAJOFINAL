@@ -24,12 +24,17 @@ export default function Button({
   onClick,
   ...props
 }) {
+  const isLink = variant === 'link'
+  const baseClasses = isLink
+    ? 'inline-flex items-center justify-center gap-2 font-semibold rounded-md border-none cursor-pointer transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none'
+    : 'inline-flex items-center justify-center gap-2 font-semibold rounded-md border-none cursor-pointer transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none'
+
   return (
     <button
       type={type}
       disabled={disabled}
       onClick={onClick}
-      className={`inline-flex items-center justify-center gap-2 font-semibold rounded-md border-none cursor-pointer transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none ${variants[variant]} ${sizes[size]} ${fullWidth ? 'w-full' : ''} ${className}`}
+      className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${fullWidth ? 'w-full' : ''} ${className}`}
       {...props}
     >
       {children}

@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react'
 import { obtenerUsuarios, obtenerIncidenciasPorUsuario } from '../services/incidenciasApi'
+import { MOCK_INCIDENCIAS_POR_USUARIO, MOCK_INSIGNIAS } from '../services/mockData'
+import { ESTADO_BADGE, ESTADO_LABEL, formatearFecha } from '../utils/incidenciaConstants'
 import './ManejarIncidencias.css'
 import ReporteIncidencias from './ReporteIncidencias'
 
-const ESTADO_BADGE = {
-  PENDIENTE: 'admin-badge--pending',
-  EN_PROCESO: 'admin-badge--progress',
-  RESUELTO: 'admin-badge--resolved',
-}
+const ITEMS_POR_PAGINA = 10
 
-const ESTADO_LABEL = {
-  PENDIENTE: 'Pendiente',
-  EN_PROCESO: 'En Proceso',
-  RESUELTO: 'Resuelto',
+function esDemo() {
+  const token = localStorage.getItem('token')
+  return token === 'demo-token' || token === 'demo-token-admin'
 }
 
 export default function GestionarCiudadanos() {
@@ -26,6 +23,7 @@ export default function GestionarCiudadanos() {
   const [mostrandoReporte, setMostrandoReporte] = useState(false)
   const [usuarioReporte, setUsuarioReporte] = useState(null)
   const [incidenciasReporte, setIncidenciasReporte] = useState([])
+  const [paginaActual, setPaginaActual] = useState(1)
 
   useEffect(() => {
     async function cargarUsuarios() {
@@ -42,7 +40,12 @@ export default function GestionarCiudadanos() {
     cargarUsuarios()
   }, [])
 
-  async function verRegistros(usuario) {
+  // Reset page to 1 when filters change
+  useEffect(() => {
+    setPaginaActual(1)
+  }, [filtroRol, busqueda])
+
+  async function verResumen(usuario) {
     if (usuarioSeleccionado?.idUsuario === usuario.idUsuario) {
       setUsuarioSeleccionado(null)
       setIncidenciasUsuario([])
@@ -72,10 +75,11 @@ export default function GestionarCiudadanos() {
     setMostrandoReporte(true)
   }
 
-  const formatearFecha = (fechaString) => {
-    if (!fechaString) return ''
-    const fecha = new Date(fechaString)
-    return new Intl.DateTimeFormat('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(fecha).replace(/\//g, '-')
+  function obtenerConteoIncidencias(usuarioId) {
+    if (esDemo()) {
+      return (MOCK_INCIDENCIAS_POR_USUARIO[usuarioId] || []).length
+    }
+    return 0
   }
 
   const usuariosFiltrados = usuarios.filter(u => {
@@ -89,6 +93,13 @@ export default function GestionarCiudadanos() {
       (u.nombreUsuario || '').toLowerCase().includes(texto)
     return coincideRol && coincideBusqueda
   })
+
+  // Pagination
+  const totalPaginas = Math.ceil(usuariosFiltrados.length / ITEMS_POR_PAGINA)
+  const usuariosPaginados = usuariosFiltrados.slice(
+    (paginaActual - 1) * ITEMS_POR_PAGINA,
+    paginaActual * ITEMS_POR_PAGINA
+  )
 
   const totalCiudadanos = usuarios.filter(u => u.rol === 'CIUDADANO').length
   const totalAdmins = usuarios.filter(u => u.rol === 'ADMIN').length
@@ -112,17 +123,22 @@ export default function GestionarCiudadanos() {
       </p>
 
       {/* Métricas */}
-      <div style={{ display: 'flex', gap: '16px', marginBottom: '20px', flexWrap: 'wrap' }}>
-        {[
-          { label: 'Total Usuarios', value: usuarios.length, color: 'var(--color-text)' },
-          { label: 'Ciudadanos', value: totalCiudadanos, color: 'var(--color-eco-primary, #2E7D32)' },
-          { label: 'Administradores', value: totalAdmins, color: 'var(--color-text)' },
-        ].map(m => (
-          <div key={m.label} style={{ background: 'var(--color-bg-white)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '16px 24px', flex: '1', minWidth: '150px' }}>
-            <span style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>{m.label}</span>
-            <p style={{ fontSize: '1.8rem', fontWeight: 700, color: m.color, margin: '4px 0 0' }}>{m.value}</p>
-          </div>
-        ))}
+      <div className="admin-metrics">
+        <div className="admin-metric-card" style={{ borderLeftColor: '#2E7D32' }}>
+          <span className="admin-metric-card__numero" style={{ color: '#2E7D32' }}>{usuarios.length}</span>
+          <span className="admin-metric-card__label">Total Usuarios</span>
+          <i className="fa-solid fa-users admin-metric-card__icon"></i>
+        </div>
+        <div className="admin-metric-card" style={{ borderLeftColor: '#1565C0' }}>
+          <span className="admin-metric-card__numero" style={{ color: '#1565C0' }}>{totalCiudadanos}</span>
+          <span className="admin-metric-card__label">Ciudadanos</span>
+          <i className="fa-solid fa-user admin-metric-card__icon"></i>
+        </div>
+        <div className="admin-metric-card" style={{ borderLeftColor: '#E65100' }}>
+          <span className="admin-metric-card__numero" style={{ color: '#E65100' }}>{totalAdmins}</span>
+          <span className="admin-metric-card__label">Administradores</span>
+          <i className="fa-solid fa-user-shield admin-metric-card__icon"></i>
+        </div>
       </div>
 
       {/* Buscador y filtros */}
@@ -133,13 +149,17 @@ export default function GestionarCiudadanos() {
           className="admin-input" style={{ flex: 1, minWidth: '250px' }}
         />
         <div style={{ display: 'flex', gap: '6px' }}>
-          {['TODOS', 'CIUDADANO', 'ADMIN'].map(rol => (
-            <button key={rol} onClick={() => setFiltroRol(rol)} className="admin-btn" style={{
-              background: filtroRol === rol ? 'var(--color-eco-primary, #2E7D32)' : 'var(--color-bg-white)',
-              color: filtroRol === rol ? '#fff' : 'var(--color-text)',
-              border: filtroRol === rol ? 'none' : '1px solid var(--color-border)',
+          {[
+            { key: 'TODOS', label: 'Todos', activeBg: '#37474F' },
+            { key: 'CIUDADANO', label: 'Ciudadanos', activeBg: '#1565C0' },
+            { key: 'ADMIN', label: 'Admins', activeBg: '#E65100' },
+          ].map(f => (
+            <button key={f.key} onClick={() => setFiltroRol(f.key)} className="admin-btn" style={{
+              background: filtroRol === f.key ? f.activeBg : 'var(--color-bg-white)',
+              color: filtroRol === f.key ? '#fff' : 'var(--color-text)',
+              border: filtroRol === f.key ? 'none' : '1px solid var(--color-border)',
             }}>
-              {rol === 'TODOS' ? 'Todos' : rol === 'CIUDADANO' ? 'Ciudadanos' : 'Admins'}
+              {f.label}
             </button>
           ))}
         </div>
@@ -153,96 +173,172 @@ export default function GestionarCiudadanos() {
           <p style={{ color: 'var(--color-text-secondary)' }}>No se encontraron usuarios.</p>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {usuariosFiltrados.map(usuario => {
-            const isSelected = usuarioSeleccionado?.idUsuario === usuario.idUsuario
-            return (
-              <div key={usuario.idUsuario}>
-                {/* Tarjeta de usuario */}
-                <div style={{
-                  background: 'var(--color-bg-white)', border: isSelected ? '2px solid var(--color-eco-primary, #2E7D32)' : '1px solid var(--color-border)',
-                  borderRadius: '12px', padding: '20px 24px', boxShadow: isSelected ? '0 4px 12px rgba(46,125,50,0.1)' : '0 2px 6px rgba(0,0,0,0.04)',
-                  display: 'flex', alignItems: 'center', gap: '20px',
-                }}>
-                  {/* Info */}
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                      <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--color-text)' }}>
-                        {usuario.nombreCompleto} {usuario.apellidoCompleto}
-                      </h3>
-                      <span className={`admin-badge ${usuario.rol === 'ADMIN' ? 'admin-badge--progress' : 'admin-badge--resolved'}`}>{usuario.rol}</span>
-                    </div>
-                    <div style={{ display: 'flex', gap: '20px', fontSize: '0.82rem', color: 'var(--color-text-secondary)', flexWrap: 'wrap' }}>
-                      <span>DNI: <strong style={{ color: 'var(--color-text)' }}>{usuario.dni}</strong></span>
-                      <span>Tel: <strong style={{ color: 'var(--color-text)' }}>{usuario.telefono}</strong></span>
-                      <span>Email: <strong style={{ color: 'var(--color-text)' }}>{usuario.correoElectronico}</strong></span>
-                      <span>Usuario: <strong style={{ color: 'var(--color-text)' }}>{usuario.nombreUsuario}</strong></span>
-                      <span>Puntos: <strong style={{ color: 'var(--color-eco-primary, #2E7D32)' }}>{usuario.puntos}</strong></span>
-                    </div>
-                  </div>
+        <>
+          <div className="admin-table-wrapper">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>DNI</th>
+                  <th>Email</th>
+                  <th>Rol</th>
+                  <th>Incidencias</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {usuariosPaginados.map((usuario, index) => {
+                  const isSelected = usuarioSeleccionado?.idUsuario === usuario.idUsuario
+                  const conteo = obtenerConteoIncidencias(usuario.idUsuario)
+                  return (
+                    <tr key={usuario.idUsuario}>
+                      <td>{(paginaActual - 1) * ITEMS_POR_PAGINA + index + 1}</td>
+                      <td style={{ fontWeight: 500 }}>{usuario.nombreCompleto} {usuario.apellidoCompleto}</td>
+                      <td>{usuario.dni}</td>
+                      <td>{usuario.correoElectronico}</td>
+                      <td>
+                        <span className={`admin-badge ${usuario.rol === 'ADMIN' ? 'admin-badge--progress' : 'admin-badge--resolved'}`}>
+                          {usuario.rol}
+                        </span>
+                      </td>
+                      <td style={{ textAlign: 'center' }}>{conteo}</td>
+                      <td>
+                        <div className="admin-table__acciones">
+                          <button onClick={() => verResumen(usuario)} className="admin-btn admin-btn--primary">
+                            {isSelected ? 'Ocultar' : 'Ver Resumen'}
+                          </button>
+                          <button onClick={() => abrirReporte(usuario)} className="admin-btn admin-btn--edit">
+                            Reporte
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
 
-                  {/* Botones de acción */}
-                  <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
-                  <button onClick={() => verRegistros(usuario)} className={`admin-btn ${isSelected ? 'admin-btn--primary' : ''}`} style={{
-                    background: isSelected ? undefined : '#E8F5E9',
-                    color: isSelected ? undefined : '#2E7D32',
-                    border: isSelected ? undefined : '1px solid #A5D6A7',
-                  }}>
-                    {isSelected ? 'Ocultar Registros' : 'Ver Registros'}
-                  </button>
-                  <button onClick={() => abrirReporte(usuario)} className="admin-btn admin-btn--edit">
-                    Reporte
-                  </button>
-                  </div>
-                </div>
+          {/* Paginación */}
+          {totalPaginas > 1 && (
+            <div className="admin-paginacion">
+              <button
+                className="admin-paginacion-btn"
+                onClick={() => setPaginaActual(p => Math.max(1, p - 1))}
+                disabled={paginaActual === 1}
+              >
+                Anterior
+              </button>
+              <span className="admin-paginacion-info">
+                Página {paginaActual} de {totalPaginas}
+              </span>
+              <button
+                className="admin-paginacion-btn"
+                onClick={() => setPaginaActual(p => Math.min(totalPaginas, p + 1))}
+                disabled={paginaActual === totalPaginas}
+              >
+                Siguiente
+              </button>
+            </div>
+          )}
 
-                {/* Panel de registros */}
-                {isSelected && (
-                  <div style={{
-                    background: 'var(--color-bg-white)', border: '2px solid var(--color-eco-primary, #2E7D32)',
-                    borderTop: 'none', borderRadius: '0 0 12px 12px', padding: '20px 24px',
-                    marginTop: '-1px', boxShadow: '0 4px 12px rgba(46,125,50,0.1)',
-                  }}>
-                    <h4 style={{ margin: '0 0 12px', color: 'var(--color-text)', fontSize: '0.95rem' }}>
-                      Registros de {usuario.nombreCompleto} {usuario.apellidoCompleto}
-                    </h4>
-                    {cargandoIncidencias ? (
-                      <p style={{ color: 'var(--color-text-secondary)' }}>Cargando registros...</p>
-                    ) : incidenciasUsuario.length === 0 ? (
-                      <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>Este usuario no tiene registros de incidencias.</p>
-                    ) : (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                        {incidenciasUsuario.map(inc => {
-                          const badgeClass = ESTADO_BADGE[inc.estado] || 'admin-badge--pending'
-                          const badgeLabel = ESTADO_LABEL[inc.estado] || inc.estado
-                          return (
-                          <div key={inc.id} style={{
-                            padding: '12px 16px', border: '1px solid var(--color-border)',
-                            borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '12px',
-                          }}>
-                            <div style={{ flex: 1 }}>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-                                <strong style={{ fontSize: '0.9rem', color: 'var(--color-text)' }}>{inc.categoria}</strong>
-                                <span className={'admin-badge ' + badgeClass}>
-                                  {badgeLabel}
-                                </span>
-                              </div>
-                              <p style={{ margin: '0', fontSize: '0.82rem', color: 'var(--color-text-secondary)' }}>{inc.descripcion}</p>
-                              <span style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>
-                                {formatearFecha(inc.fecha)} — {inc.direccionTexto || 'Sin ubicación'}
+          {/* Panel de resumen */}
+          {usuarioSeleccionado && (
+            <div style={{
+              background: 'var(--color-bg-white)', border: '2px solid var(--color-eco-primary, #2E7D32)',
+              borderRadius: '16px', padding: '24px 28px', marginTop: '16px',
+              boxShadow: '0 8px 24px rgba(46,125,50,0.12)',
+            }}>
+              {/* Encabezado */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px', flexWrap: 'wrap' }}>
+                <h4 style={{ margin: 0, color: 'var(--color-text)', fontSize: '1.05rem', fontWeight: 700 }}>
+                  Resumen de {usuarioSeleccionado.nombreCompleto} {usuarioSeleccionado.apellidoCompleto}:
+                </h4>
+                <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#2E7D32' }}>
+                  {usuarioSeleccionado.puntos ?? 0}
+                </span>
+                <span style={{ fontSize: '0.95rem', fontWeight: 500, color: 'var(--color-text-secondary)' }}>
+                  puntos acumulados
+                </span>
+              </div>
+
+              {/* Insignias */}
+              <h5 style={{ margin: '0 0 16px', color: 'var(--color-text)', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                Insignias
+              </h5>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '14px', alignItems: 'stretch' }}>
+                {(() => {
+                  const numIncidencias = (MOCK_INCIDENCIAS_POR_USUARIO[usuarioSeleccionado.idUsuario] || []).length
+                  const colores = [
+                    { bg: '#e8f5e9', border: '#A5D6A7', icon: '#2E7D32' },
+                    { bg: '#E3F2FD', border: '#90CAF9', icon: '#1565C0' },
+                    { bg: '#FFF3E0', border: '#FFCC80', icon: '#E65100' },
+                    { bg: '#F3E5F5', border: '#CE93D8', icon: '#7B1FA2' },
+                    { bg: '#E0F2F1', border: '#80CBC4', icon: '#00695C' },
+                  ]
+                  return MOCK_INSIGNIAS.map((insignia, idx) => {
+                    const desbloqueada = numIncidencias >= insignia.requisitoIncidencias
+                    const progreso = Math.min(numIncidencias / insignia.requisitoIncidencias, 1)
+                    const c = colores[idx % colores.length]
+                    return (
+                      <div key={insignia.idInsignia} style={{
+                        background: desbloqueada ? c.bg : 'var(--color-bg, #fafafa)',
+                        border: desbloqueada ? `2px solid ${c.border}` : '2px solid var(--color-border, #e0e0e0)',
+                        borderRadius: '14px', padding: '16px',
+                        position: 'relative', overflow: 'hidden',
+                        display: 'flex', flexDirection: 'column',
+                        height: '100%',
+                      }}>
+                        {desbloqueada && (
+                          <div style={{
+                            position: 'absolute', top: '-20px', right: '-20px',
+                            width: '80px', height: '80px', borderRadius: '50%',
+                            background: c.icon, opacity: 0.12,
+                          }} />
+                        )}
+                        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
+                            <span style={{
+                              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                              width: '42px', height: '42px', borderRadius: '10px', flexShrink: 0,
+                              background: desbloqueada ? c.icon : 'var(--color-border, #bdbdbd)',
+                              color: '#fff', fontSize: '1.1rem',
+                            }}>
+                              <i className={desbloqueada ? 'fa-solid fa-check' : 'fa-solid fa-lock'}></i>
+                            </span>
+                            <div style={{ minWidth: 0, flex: 1 }}>
+                              <strong style={{ fontSize: '1.05rem', fontWeight: 700, color: desbloqueada ? '#111' : 'var(--color-text-secondary, #9e9e9e)', display: 'block', lineHeight: 1.3 }}>
+                                {insignia.nombre}
+                              </strong>
+                              <span style={{ fontSize: '0.82rem', color: desbloqueada ? c.icon : 'var(--color-border, #bdbdbd)', fontWeight: 600 }}>
+                                {desbloqueada ? 'Desbloqueada' : `${numIncidencias}/${insignia.requisitoIncidencias} incidencias`}
                               </span>
                             </div>
                           </div>
-                          )
-                        })}
+                          <p style={{ margin: '0 0 12px', fontSize: '0.82rem', color: desbloqueada ? 'var(--color-text-secondary)' : 'var(--color-border, #bdbdbd)', lineHeight: 1.5, flex: 1 }}>
+                            {insignia.descripcion}
+                          </p>
+                          <div style={{
+                            width: '100%', height: '6px', borderRadius: '3px',
+                            background: desbloqueada ? `${c.icon}30` : 'var(--color-border, #e0e0e0)',
+                            overflow: 'hidden', flexShrink: 0,
+                          }}>
+                            <div style={{
+                              width: `${progreso * 100}%`, height: '100%', borderRadius: '3px',
+                              background: desbloqueada ? c.icon : 'var(--color-text-secondary, #9e9e9e)',
+                              transition: 'width 0.5s ease',
+                            }} />
+                          </div>
+                        </div>
                       </div>
-                    )}
-                  </div>
-                )}
+                    )
+                  })
+                })()}
               </div>
-            )
-          })}
-        </div>
+            </div>
+          )}
+        </>
       )}
       </>
       )}

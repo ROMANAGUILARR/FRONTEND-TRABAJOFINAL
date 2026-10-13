@@ -148,7 +148,7 @@ textarea {
 
 .required-label {
   color: var(--color-required);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 500;
   margin-top: -4px;
 }

@@ -66,3 +66,18 @@
     margin: 4px 0 0;
     color: #555;
 }
+
+/* Dark mode */
+[data-theme="dark"] .help-modal {
+    background: #1f2937;
+    color: #e5e7eb;
+}
+
+[data-theme="dark"] .help-modal__section-title {
+    border-bottom-color: #374151;
+}
+
+[data-theme="dark"] .help-modal__step p,
+[data-theme="dark"] .help-modal__faq p {
+    color: #9ca3af;
+}

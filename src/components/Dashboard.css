@@ -13,3 +13,12 @@
     font-weight: 600;
     margin: 0;
 }
+
+/* ===== Dark Mode ===== */
+[data-theme="dark"] .titulo__dashboard {
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .texto__complementario {
+  color: var(--color-text-secondary);
+}
