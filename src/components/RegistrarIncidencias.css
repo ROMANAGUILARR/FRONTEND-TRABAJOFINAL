@@ -111,9 +111,9 @@
     opacity: 1;
 }
 [data-theme="dark"] .registrar__help-btn { 
-    color: white;
-    font-weight:500;            /* El texto se vuelve oscuro para contrastar */
-    border: 2px solid #ffffff;
+    color: var(--color-text);
+    font-weight:500;
+    border: 2px solid var(--color-border);
 }
 .registrar__form {
   display: flex;
