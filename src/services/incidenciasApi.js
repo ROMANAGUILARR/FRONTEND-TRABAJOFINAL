@@ -239,16 +239,25 @@ export function esErrorTecnicoIA(mensaje) {
   return (
     m.includes('hf_token') ||
     m.includes('hugging face') ||
+    m.includes('huggingface') ||
     m.includes('gemini') ||
+    m.includes('cloudinary') ||
+    m.includes('subir las fotos') ||
+    m.includes('no se pudo') ||
+    m.includes('no se proporcionaron') ||
     m.includes('backend') ||
     m.includes('puerto 8080') ||
     m.includes('502') ||
     m.includes('503') ||
     m.includes('403') ||
+    m.includes('401') ||
+    m.includes('sesion ha expirado') ||
     m.includes('sesión ha expirado') ||
     m.includes('error del servidor') ||
     m.includes('error inesperado') ||
-    m.includes('error de hugging')
+    m.includes('error de hugging') ||
+    m.includes('token') ||
+    m.includes('no configurado')
   )
 }
 
@@ -282,6 +291,40 @@ export async function obtenerIncidenciasPorUsuario(usuarioId) {
   }
 
   return response.json()
+}
+
+export async function actualizarIncidencia(idIncidencia, datos) {
+  const token = localStorage.getItem('token')
+  const response = await fetch(`${API_BASE}/incidencias/${idIncidencia}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(datos)
+  })
+
+  if (!response.ok) {
+    const cuerpo = await response.text()
+    throw new Error(extraerMensajeError(cuerpo, response.status))
+  }
+
+  return response.json()
+}
+
+export async function eliminarIncidencia(idIncidencia) {
+  const token = localStorage.getItem('token')
+  const response = await fetch(`${API_BASE}/incidencias/${idIncidencia}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': `Bearer ${token}` }
+  })
+
+  if (!response.ok && response.status !== 204) {
+    const cuerpo = await response.text()
+    throw new Error(extraerMensajeError(cuerpo, response.status))
+  }
+
+  return true
 }
 
 export { MENSAJE_FOTOS_NO_VISIBLES }

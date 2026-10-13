@@ -36,7 +36,7 @@ export default function Login({ onLogin }) {
                         EcoSolido
                     </h1>
                     <p className="m-0 text-sm text-eco-text-secondary leading-relaxed">
-                        Inicia sesion para gestionar incidencias
+                        Inicia sesión para gestionar incidencias
                     </p>
                 </div>
 
@@ -59,8 +59,8 @@ export default function Login({ onLogin }) {
                     />
 
                     <Input
-                        label="Contrasena"
-                        placeholder="Ingresa tu contrasena"
+                        label="Contraseña"
+                        placeholder="Ingresa tu contraseña"
                         value={contra}
                         onChange={(e) => setContra(e.target.value)}
                         required
@@ -70,20 +70,20 @@ export default function Login({ onLogin }) {
 
                     <div className="mt-2">
                         <Button type="submit" variant="primary" size="lg" fullWidth>
-                            Iniciar Sesion
+                            Iniciar sesión
                         </Button>
                     </div>
                 </form>
 
                 {/* Links */}
                 <div className="flex flex-col gap-3 text-center mt-6">
-                    <p className="m-0 text-sm text-eco-text-secondary">Aun no tienes cuenta?</p>
+                    <p className="m-0 text-sm text-eco-text-secondary">¿Aún no tienes cuenta?</p>
                     <Button variant="link" onClick={() => navigate("/registrarse")}>
-                        Registrate aqui
+                        Regístrate aquí
                     </Button>
-                    <p className="m-0 text-sm text-eco-text-secondary">Olvidaste tu contrasena?</p>
+                    <p className="m-0 text-sm text-eco-text-secondary">¿Olvidaste tu contraseña?</p>
                     <Button variant="link" onClick={() => navigate("/restablecer")}>
-                        Restablecer Contrasena
+                        Restablecer contraseña
                     </Button>
                 </div>
             </div>

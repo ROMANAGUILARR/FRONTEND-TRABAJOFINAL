@@ -7,7 +7,7 @@ export default function CerrarSesionModal({ onConfirm, onCancel }) {
       <div className="text-center">
         <div className="flex gap-3 justify-center">
           <Button variant="danger" size="md" onClick={onConfirm}>
-            Si, cerrar sesion
+            Si, cerrar sesión
           </Button>
           <Button variant="secondary" size="md" onClick={onCancel}>
             Cancelar

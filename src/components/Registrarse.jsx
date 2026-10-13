@@ -8,7 +8,7 @@ import './Registrarse.css'
 export default function Registrarse() {
     const navigate = useNavigate();
     const { login } = useAuth();
-    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8081'
+    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
     const [formData, setFormData] = useState({
         nombre: '', apellido: '', email: '', telefono: '', DNI: '',
         nombreUsuario: '', contrasena: '', confirmarContrasena: '',
@@ -28,11 +28,11 @@ export default function Registrarse() {
         setSuccess(null);
 
         if (formData.contrasena !== formData.confirmarContrasena) {
-            setError('Las contrasenas no coinciden');
+            setError('Las contraseñas no coinciden');
             return;
         }
         if (formData.contrasena.length < 6) {
-            setError('La contrasena debe tener al menos 6 caracteres');
+            setError('La contraseña debe tener al menos 6 caracteres');
             return;
         }
 
@@ -71,7 +71,7 @@ export default function Registrarse() {
                 setTimeout(() => navigate("/login"), 2000);
             }
         } catch (error) {
-            // Si el backend no está disponible, simular registro exitoso (modo demo)
+            // Si el backend no estÃ¡ disponible, simular registro exitoso (modo demo)
             if (error.message === 'Failed to fetch') {
                 setSuccess('Registro exitoso (modo demo)! Redirigiendo al login...');
                 setTimeout(() => navigate("/login"), 2000);
@@ -113,15 +113,15 @@ export default function Registrarse() {
                         <Input label="Apellido" name="apellido" placeholder="Tu apellido" value={formData.apellido} onChange={handleChange} required />
                     </div>
 
-                    <Input label="Correo electronico" name="email" type="email" placeholder="tu@email.com" value={formData.email} onChange={handleChange} required />
-                    <Input label="Telefono" name="telefono" type="tel" maxLength="9" placeholder="Tu numero de telefono" value={formData.telefono} onChange={handleChange} required />
+                    <Input label="Correo electrónico" name="email" type="email" placeholder="tu@email.com" value={formData.email} onChange={handleChange} required />
+                    <Input label="Telefono" name="telefono" type="tel" maxLength="9" placeholder="Tu número de teléfono" value={formData.telefono} onChange={handleChange} required />
                     <Input label="DNI" name="DNI" maxLength="8" placeholder="Establece el DNI" value={formData.DNI} onChange={handleChange} required />
                     <Input label="Nombre de usuario" name="nombreUsuario" placeholder="Elige un nombre de usuario" value={formData.nombreUsuario} onChange={handleChange} required />
                     <Input label="Pregunta de seguridad" name="pregunta" placeholder="Responda con 1 o 3 palabras" value={formData.pregunta} onChange={handleChange} required />
                     <Input label="Respuesta" name="respuesta" placeholder="Solo coloque la respuesta" value={formData.respuesta} onChange={handleChange} required />
 
-                    <Input label="Contrasena" name="contrasena" placeholder="Minimo 6 caracteres" value={formData.contrasena} onChange={handleChange} required showToggle />
-                    <Input label="Confirmar contrasena" name="confirmarContrasena" placeholder="Repite tu contrasena" value={formData.confirmarContrasena} onChange={handleChange} required showToggle />
+                    <Input label="Contraseña" name="contrasena" placeholder="Mínimo 6 caracteres" value={formData.contrasena} onChange={handleChange} required showToggle />
+                    <Input label="Confirmar contraseña" name="confirmarContrasena" placeholder="Repite tu contraseña" value={formData.confirmarContrasena} onChange={handleChange} required showToggle />
 
                     <span className="text-eco-warning text-xs font-medium">* Campo Obligatorio</span>
 
@@ -132,9 +132,9 @@ export default function Registrarse() {
 
                 {/* Link */}
                 <div className="flex flex-col gap-2 text-center mt-5">
-                    <p className="m-0 text-sm text-eco-text-secondary">Ya tienes cuenta?</p>
+                    <p className="m-0 text-sm text-eco-text-secondary">¿Ya tienes cuenta?</p>
                     <Button variant="link" onClick={() => navigate("/login")}>
-                        Inicia sesion aqui
+                        Inicia sesión aquí
                     </Button>
                 </div>
             </div>

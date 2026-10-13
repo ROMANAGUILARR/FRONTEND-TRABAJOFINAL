@@ -8,27 +8,27 @@ export default defineConfig({
   server: {
    proxy: {
        '/api': {
-         target: 'http://localhost:8081',
+         target: 'http://localhost:8080',
          changeOrigin: true,
          timeout: 5000,
        },
        '/incidencias': {
-         target: 'http://localhost:8081',
+         target: 'http://localhost:8080',
          changeOrigin: true,
          timeout: 5000,
        },
        '/usuario': {
-         target: 'http://localhost:8081',
+         target: 'http://localhost:8080',
          changeOrigin: true,
          timeout: 5000,
        },
        '/insignias': {
-         target: 'http://localhost:8081',
+         target: 'http://localhost:8080',
          changeOrigin: true,
          timeout: 5000,
        },
        '/educacion': {
-         target: 'http://localhost:8081',
+         target: 'http://localhost:8080',
          changeOrigin: true,
          timeout: 5000,
        },

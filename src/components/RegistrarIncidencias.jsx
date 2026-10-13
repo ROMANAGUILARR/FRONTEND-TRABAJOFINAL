@@ -351,6 +351,14 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
     }
   }
 
+
+  const fileToDataUrl = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+
   function handleGenerarIA() {
     if (!tieneFotos) {
       alert('Debes subir al menos una foto antes de generar la descripción con IA.')
@@ -372,10 +380,9 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
       const fotosComprimidas = await Promise.all(
         fotosSubidas.map((slot) => comprimirImagen(slot.file))
       )
-      const urls = await subirFotosACloudinary(fotosComprimidas)
-      setUrlsCloudinary(urls)
-
-      const texto = (await describirFotosConIA(urls)).trim()
+      // La IA recibe las imagenes en base64/data-URL (no requiere Cloudinary)
+      const dataUrls = await Promise.all(fotosComprimidas.map(fileToDataUrl))
+      const texto = (await describirFotosConIA(dataUrls)).trim()
 
       if (esRespuestaFotosNoVisibles(texto)) {
         mostrarMensajeFotosNoVisibles()

@@ -107,7 +107,7 @@ export default function Header({ onMenuClick,onLogout }) {
         <button
           type="button"
           className="flex items-center justify-center p-2 border-none bg-transparent text-white cursor-pointer opacity-90 transition-all duration-200 rounded-sm hover:opacity-100 hover:scale-105 active:scale-95 max-sm:p-1.5"
-          aria-label="Cerrar sesion"
+          aria-label="Cerrar sesión"
           onClick={handleCerrarSesion}
         >
           <IconSalir />
