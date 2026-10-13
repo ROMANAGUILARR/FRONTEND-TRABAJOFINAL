@@ -289,7 +289,7 @@
 }
 
 .sidebar__footer-text {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--sidebar-text-secondary);
   transition: opacity 0.2s;
   white-space: nowrap;

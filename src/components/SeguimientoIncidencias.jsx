@@ -1,8 +1,11 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
+import { MOCK_INCIDENCIAS_POR_USUARIO } from '../services/mockData'
+
+const ITEMS_POR_PAGINA = 10
 import './SeguimientoIncidencias.css'
 import HelpModal from './HelpModal'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
-import { MOCK_METRICAS, MOCK_INCIDENCIAS } from '../services/mockData'
+
 // Iconos SVG inline
 const IconTotal = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -56,27 +59,40 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
   const [incidencias, setIncidencias] = useState(INCIDENCIAS_FALSAS)
   const [showHelpModal, setShowHelpModal] = useState(false)
   const [incidenciaDetalle, setIncidenciaDetalle] = useState(null)
+  const [paginaActual, setPaginaActual] = useState(1)
   const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition()
 
+  // Reset page to 1 when filters change
+  useEffect(() => {
+    setPaginaActual(1)
+  }, [filtroEstado, busqueda])
+
   function cargarDatosDemo() {
-    const locales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]')
-    const todasInc = [...MOCK_INCIDENCIAS, ...locales.map((inc, i) => ({
-      id: 100 + i,
-      categoria: inc.categoria,
-      descripcion: inc.descripcion,
-      estado: 'PENDIENTE',
-      fecha: inc.fecha,
-      direccionTexto: inc.direccionTexto
-    }))]
-    const enProceso = MOCK_METRICAS.enProceso
-    const pendientes = MOCK_METRICAS.pendientes + locales.length
-    const resueltos = MOCK_METRICAS.resueltos
-    setMetricas({ total: MOCK_METRICAS.total + locales.length, enProceso, pendientes, resueltos })
-    setIncidencias(todasInc)
+    const incidenciasMock = (MOCK_INCIDENCIAS_POR_USUARIO[1] || []).map(inc => ({
+      ...inc,
+      idIncidencia: inc.id,
+      titulo: inc.categoria,
+    }))
+    const incidenciasLocales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]').map(inc => ({
+      ...inc,
+      idIncidencia: inc.id || `local-${Date.now()}`,
+      titulo: inc.categoria || inc.titulo,
+    }))
+    const todasIncidencias = [...incidenciasMock, ...incidenciasLocales]
+    setIncidencias(todasIncidencias)
+
+    const total = todasIncidencias.length
+    const enProceso = todasIncidencias.filter(i => i.estado === 'EN_PROCESO').length
+    const pendientes = todasIncidencias.filter(i => i.estado === 'PENDIENTE' || i.estado === 'Pendiente').length
+    const resueltos = todasIncidencias.filter(i => i.estado === 'RESUELTO').length
+    setMetricas({ total, enProceso, pendientes, resueltos })
   }
 
-  // Refrescar datos cuando se registra una incidencia en modo demo
   useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token === 'demo-token' || token === 'demo-token-admin') {
+      cargarDatosDemo()
+    }
     function handleNuevaIncidencia() {
       const token = localStorage.getItem('token')
       if (token === 'demo-token' || token === 'demo-token-admin') {
@@ -92,7 +108,6 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
       try {
         const token = localStorage.getItem('token')
         if (token === 'demo-token' || token === 'demo-token-admin') {
-          cargarDatosDemo()
           return
         }
         const response = await fetch(`${API_BASE}/incidencias/metricas`, {
@@ -116,7 +131,6 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
       try {
         const token = localStorage.getItem('token')
         if (token === 'demo-token' || token === 'demo-token-admin') {
-          cargarDatosDemo()
           return
         }
         const response = await fetch(`${API_BASE}/incidencias/seguir`, {
@@ -156,6 +170,13 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
       (incidencia.direccionTexto?.toLowerCase() ?? '').includes(busqueda.toLowerCase())
     return coincideEstado && coincideBusqueda
   })
+
+  const totalPaginas = Math.ceil(incidenciasFiltradas.length / ITEMS_POR_PAGINA)
+  const incidenciasPaginadas = incidenciasFiltradas.slice(
+    (paginaActual - 1) * ITEMS_POR_PAGINA,
+    paginaActual * ITEMS_POR_PAGINA
+  )
+
   return (
     <main className="seguimiento" style={{ '--font-scale': tamañoLetra }}>
       <div className="recomendaciones_header">
@@ -296,8 +317,9 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
             <p>No se encontraron incidencias que coincidan con los filtros.</p>
           </div>
         ) : (
+          <>
           <div className="seguimiento__tarjetas">
-            {incidenciasFiltradas.map(incidencia => (
+            {incidenciasPaginadas.map(incidencia => (
               <div key={incidencia.idIncidencia} className="incidencia-tarjeta">
                 <div className="incidencia-tarjeta__header">
                   <h3 className="incidencia-tarjeta__titulo">{incidencia.titulo}</h3>
@@ -324,6 +346,28 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
               </div>
             ))}
           </div>
+          {totalPaginas > 1 && (
+            <div className="seguimiento__paginacion">
+              <button
+                className="seguimiento__paginacion-btn"
+                onClick={() => setPaginaActual(p => Math.max(1, p - 1))}
+                disabled={paginaActual === 1}
+              >
+                Anterior
+              </button>
+              <span className="seguimiento__paginacion-info">
+                Página {paginaActual} de {totalPaginas}
+              </span>
+              <button
+                className="seguimiento__paginacion-btn"
+                onClick={() => setPaginaActual(p => Math.min(totalPaginas, p + 1))}
+                disabled={paginaActual === totalPaginas}
+              >
+                Siguiente
+              </button>
+            </div>
+          )}
+          </>
         )}
       </div>
       {showHelpModal && <HelpModal onClose={() => setShowHelpModal(false)} fontScale={tamañoLetra} />}

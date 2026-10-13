@@ -17,7 +17,7 @@ export default function Login({ onLogin }) {
         const result = await login(nombreUs, contra);
         if (result.success) {
             onLogin?.();
-            navigate(result.rol === 'ADMIN' ? '/dashboard' : '/registro');
+            navigate(result.rol === 'ADMIN' ? '/ciudadanos' : '/registro');
         } else {
             setError(result.error);
         }

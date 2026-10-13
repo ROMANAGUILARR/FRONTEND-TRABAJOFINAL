@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from './ui/Button'
 import Input from './ui/Input'
+import { useAuth } from '../hooks/useAuth'
 import './Registrarse.css'
 
 export default function Registrarse() {
     const navigate = useNavigate();
-    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
+    const { login } = useAuth();
+    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8081'
     const [formData, setFormData] = useState({
         nombre: '', apellido: '', email: '', telefono: '', DNI: '',
         nombreUsuario: '', contrasena: '', confirmarContrasena: '',
@@ -56,9 +58,25 @@ export default function Registrarse() {
                 throw new Error(errorText);
             }
 
-            setSuccess('Registro exitoso! Redirigiendo al login...');
-            setTimeout(() => navigate("/login"), 2000);
+            setSuccess('Registro exitoso! Ingresando al programa...');
+            // Auto-login: el usuario queda registrado e ingresa directo al programa
+            const resultadoLogin = await login(formData.nombreUsuario, formData.contrasena);
+            if (resultadoLogin.success) {
+                setTimeout(() => {
+                    navigate(resultadoLogin.rol === 'ADMIN' ? '/ciudadanos' : '/registro');
+                }, 1200);
+            } else {
+                // Si falla el auto-login, enviar al login manual
+                setSuccess('Registro exitoso! Redirigiendo al login...');
+                setTimeout(() => navigate("/login"), 2000);
+            }
         } catch (error) {
+            // Si el backend no está disponible, simular registro exitoso (modo demo)
+            if (error.message === 'Failed to fetch') {
+                setSuccess('Registro exitoso (modo demo)! Redirigiendo al login...');
+                setTimeout(() => navigate("/login"), 2000);
+                return;
+            }
             setError(error.message);
         }
     };
@@ -99,7 +117,7 @@ export default function Registrarse() {
                     <Input label="Telefono" name="telefono" type="tel" maxLength="9" placeholder="Tu numero de telefono" value={formData.telefono} onChange={handleChange} required />
                     <Input label="DNI" name="DNI" maxLength="8" placeholder="Establece el DNI" value={formData.DNI} onChange={handleChange} required />
                     <Input label="Nombre de usuario" name="nombreUsuario" placeholder="Elige un nombre de usuario" value={formData.nombreUsuario} onChange={handleChange} required />
-                    <Input label="Pregunta de seguridad" name="pregunta" placeholder="Respondible con 1 o 3 palabras" value={formData.pregunta} onChange={handleChange} required />
+                    <Input label="Pregunta de seguridad" name="pregunta" placeholder="Responda con 1 o 3 palabras" value={formData.pregunta} onChange={handleChange} required />
                     <Input label="Respuesta" name="respuesta" placeholder="Solo coloque la respuesta" value={formData.respuesta} onChange={handleChange} required />
 
                     <Input label="Contrasena" name="contrasena" placeholder="Minimo 6 caracteres" value={formData.contrasena} onChange={handleChange} required showToggle />

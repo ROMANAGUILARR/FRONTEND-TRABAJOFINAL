@@ -115,16 +115,7 @@ export default function EducacionMedioAmbiental() {
       setError('Debe seleccionar un tipo de material.')
       return
     }
-    setCargando(true)
-    setError('')
-    try {
-      const resultado = await generarRecomendaciones(tipoMaterial, contextoExtra)
-      setRecomendaciones(resultado)
-    } catch (err) {
-      setError(err.message ?? 'Error al generar recomendaciones.')
-    } finally {
-      setCargando(false)
-    }
+    setError('Esta funcionalidad requiere el backend activo con IA configurada.')
   }
   return (
     <main className="educacion" style={{ '--font-scale': tamañoLetra }}>
@@ -149,8 +140,13 @@ export default function EducacionMedioAmbiental() {
         </p>
         <form onSubmit={handleSubmit} className="educacion__form">
           <label className="educacion__label">Selecciona un tipo de residuo sólido <span style={{ color: '#ff7a00' }}>*</span>:</label>
-          <select className="educacion__dropdown" name="tipoMaterial" value={tipoMaterial} onChange={(e) => { setTipoMaterial(e.target.value) }}>
-            <option value="" disabled>--Selecione alguna opción--</option>
+          <select
+            className="educacion__dropdown"
+            name="tipoMaterial"
+            value={tipoMaterial}
+            onChange={(e) => { setTipoMaterial(e.target.value) }}
+          >
+            <option value="">--Selecione alguna opción--</option>
             {CATEGORIAS2.map(categoria => (
               <option key={categoria} value={categoria}>{categoria}</option>
             ))}
@@ -187,22 +183,7 @@ export default function EducacionMedioAmbiental() {
           </span>
           <button type="submit" className="educacion_buttonOR">Obtener recomendaciones</button>
         </form>
-        <span style={{ color: '#ff7a00', width: '100%', textAlign: '-webkit-left', fontSize: '0.8rem' }}>* Obligatorio a establecer</span>
-        {cargando && <p>Generando recomendaciones...</p>}
         {error && <p className="educacion__error">{error}</p>}
-        {recomendaciones.length > 0 && (<>
-          <div className="espacio_recomendaciones">
-            <h2 className="reco_titulo">Recomendaciones</h2>
-            <ul className="educacion__recomendaciones">
-              {recomendaciones.map((rec, index) => (
-                <li key={index} className="educacion__recomendacion-item">
-                  {rec}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </>
-        )}
       </div>
       <div className="educacion__header">
         <h2 className="educacion__title">Educación Medio Ambiental</h2>

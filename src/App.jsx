@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, useOutletCont
 import Header from './components/Header'
 import Sidebar from './components/Sidebar'
 import Login from './components/Login'
+import MiCuenta from './components/MiCuenta'
 import RegistrarIncidencias from './components/RegistrarIncidencias'
 import SeguimientoIncidencias from './components/SeguimientoIncidencias'
 import EducacionMedioAmbiental from './components/EducacionMedioAmbiental'
@@ -16,8 +17,6 @@ import ProtectedRoute, { PublicRoute } from './components/ProtectedRoute'
 import Dashboard from './components/Dashboard'
 import ManejarIncidencias from './components/ManejarIncidencias'
 import GestionarCiudadanos from './components/GestionarCiudadanos'
-import DefaultRedirect from './components/DefaultRedirect'
-
 // Componente de diseño para el layout principal (con Header y Sidebar)
 function MainLayout() {
   const [menuAbierto, setMenuAbierto] = useState(false)
@@ -70,6 +69,12 @@ function App() {
         } />
         <Route path="/registrarse" element={<Registrarse />} />
         <Route path="/restablecer" element={<RestablecerContra />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/cuenta" element={
+          <ProtectedRoute>
+            <MiCuenta />
+          </ProtectedRoute>
+        } />
         
         {/* Ruta del layout principal */}
         <Route element={<MainLayout />}>
@@ -108,11 +113,10 @@ function App() {
               <RecompensasCiudadano />
             </ProtectedRoute>
           } />
-        <Route index element={<DefaultRedirect />} />
         </Route>
         
-        {/* Redirigir rutas desconocidas */}
-        <Route path="*" element={<DefaultRedirect />} />
+        {/* Rutas desconocidas → login */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   )
