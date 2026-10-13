@@ -1,16 +1,22 @@
 import React, { useState, useEffect, useCallback, createContext, useContext } from 'react';
-import { MOCK_PUNTOS } from '../services/mockData';
 
 /**
  * Context para manejar la autenticación y permisos de forma global
  */
 const AuthContext = createContext(null);
 
+function permisosPorRol(rol) {
+  if (rol === 'ADMIN') {
+    return { canRegister: false, canTrack: false, canAccessEducation: false, isAdmin: true };
+  }
+  return { canRegister: true, canTrack: true, canAccessEducation: true, isAdmin: false };
+}
+
 /**
  * Provider que envuelve la aplicación y comparte el estado de autenticación
  */
 export function AuthProvider({ children }) {
-  const API_BASE = import.meta.env.VITE_API_URL|| 'http://localhost:8081';
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080';
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,52 +40,60 @@ export function AuthProvider({ children }) {
       if (savedPermissions) {
         setPermissions(JSON.parse(savedPermissions));
       } else {
-        setPermissions({
-          canRegister: true,
-          canTrack: true,
-          canAccessEducation: true,
-          isAdmin: false
-        });
+        setPermissions(permisosPorRol(rol));
       }
     }
     setIsLoading(false);
   }, []);
 
-  // Función de login
+  // Login real contra el backend (POST /usuario/autenticar → JWT)
   const login = useCallback(async (nombreUsuario, contrasena) => {
-    // Modo demo: entra sin backend
-    if (nombreUsuario === 'GASPER' && contrasena === 'Palacios10') {
-      const demoRol = 'CIUDADANO';
-      const demoPermisos = { canRegister: true, canTrack: true, canAccessEducation: true, isAdmin: false };
-      localStorage.setItem('token', 'demo-token');
-      localStorage.setItem('nombreUsuario', 'Itzair Roman');
-      localStorage.setItem('puntos', String(MOCK_PUNTOS));
-      localStorage.setItem('rol', demoRol);
-      localStorage.setItem('permissions', JSON.stringify(demoPermisos));
-      setIsAuthenticated(true);
-      setUser({ nombreUsuario: 'Itzair Roman', puntos: MOCK_PUNTOS, rol: demoRol });
-      setPermissions(demoPermisos);
-      return { success: true, rol: demoRol };
-    }
+    try {
+      const response = await fetch(`${API_BASE}/usuario/autenticar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombreUsuario, contrasena })
+      });
 
-    // Modo demo admin
-    if (nombreUsuario === 'admin' && contrasena === 'Palacios13579') {
-      const demoRol = 'ADMIN';
-      const demoPermisos = { canRegister: false, canTrack: false, canAccessEducation: false, isAdmin: true };
-      localStorage.setItem('token', 'demo-token-admin');
-      localStorage.setItem('nombreUsuario', 'Ernesto');
-      localStorage.setItem('puntos', '0');
-      localStorage.setItem('rol', demoRol);
-      localStorage.setItem('permissions', JSON.stringify(demoPermisos));
-      setIsAuthenticated(true);
-      setUser({ nombreUsuario: 'Ernesto', puntos: 0, rol: demoRol });
-      setPermissions(demoPermisos);
-      return { success: true, rol: demoRol };
-    }
+      if (!response.ok) {
+        let texto = await response.text();
+        try {
+          const data = JSON.parse(texto);
+          texto = data.message || data.error || texto;
+        } catch { /* texto plano */ }
+        if (response.status === 401) {
+          return { success: false, error: texto || 'Usuario o contraseña incorrectos' };
+        }
+        return {
+          success: false,
+          error: texto
+            ? `Error del servidor (${response.status}): ${texto}`
+            : `Error del servidor (${response.status}). Vuelve a intentarlo.`
+        };
+      }
 
-    // Si no es GASPER ni admin, rechazar
-    return { success: false, error: 'Usuario o contraseña incorrectos' };
-  }, []);
+      const data = await response.json();
+      const rol = data.rol || 'CIUDADANO';
+      const nuevosPermisos = permisosPorRol(rol);
+      const puntos = Number(data.puntos) || 0;
+
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('nombreUsuario', data.nombreUsuario);
+      localStorage.setItem('puntos', String(puntos));
+      localStorage.setItem('rol', rol);
+      localStorage.setItem('permissions', JSON.stringify(nuevosPermisos));
+
+      setIsAuthenticated(true);
+      setUser({ nombreUsuario: data.nombreUsuario, puntos, rol });
+      setPermissions(nuevosPermisos);
+      return { success: true, rol };
+    } catch {
+      return {
+        success: false,
+        error: `No se pudo conectar con ${API_BASE}. Verifica que el backend esté en ejecución y recarga la página.`
+      };
+    }
+  }, [API_BASE]);
 
   // Función de logout
   const logout = useCallback(() => {
@@ -88,7 +102,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('puntos');
     localStorage.removeItem('permissions');
     localStorage.removeItem('rol');
-    
+
     setIsAuthenticated(false);
     setUser(null);
     setPermissions({
@@ -100,21 +114,21 @@ export function AuthProvider({ children }) {
   }, []);
 
   // Verificar si tiene permiso para un módulo específico
- const hasPermission = useCallback((module) => {
-  if (!isAuthenticated || !user?.rol) return false;
+  const hasPermission = useCallback((module) => {
+    if (!isAuthenticated || !user?.rol) return false;
 
-  const modulePermissions = {
-    registro: ['CIUDADANO'],
-    seguimiento: ['CIUDADANO'],
-    educacion: ['CIUDADANO'],
-    insignias: ['CIUDADANO'],
-    ciudadanos: ['ADMIN'],
-    gestion: ['ADMIN'],
-    dashboard: ['ADMIN'],
-  };
+    const modulePermissions = {
+      registro: ['CIUDADANO'],
+      seguimiento: ['CIUDADANO'],
+      educacion: ['CIUDADANO'],
+      insignias: ['CIUDADANO'],
+      ciudadanos: ['ADMIN'],
+      gestion: ['ADMIN'],
+      dashboard: ['ADMIN'],
+    };
 
-  return modulePermissions[module]?.includes(user.rol) ?? false;
-}, [isAuthenticated, user]);
+    return modulePermissions[module]?.includes(user.rol) ?? false;
+  }, [isAuthenticated, user]);
 
   // Verificar si es administrador
   const isAdmin = useCallback(() => {
@@ -161,9 +175,9 @@ export function useAuth() {
  */
 export function useModulePermission(module) {
   const { isAuthenticated, hasPermission, isLoading } = useAuth();
-  
-  if (isLoading) return null; // Still loading
+
+  if (isLoading) return null;
   if (!isAuthenticated) return false;
-  
+
   return hasPermission(module);
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { ESTADO_BADGE, ESTADO_LABEL, CATEGORIAS, formatearFecha } from '../utils/incidenciaConstants'
 import { MOCK_USUARIOS, MOCK_INCIDENCIAS_POR_USUARIO } from '../services/mockData'
+import { actualizarIncidencia, eliminarIncidencia } from '../services/incidenciasApi'
 import './SeguimientoIncidencias.css'
 import './ManejarIncidencias.css'
 import './AIConfirmModal.css'
@@ -139,28 +140,57 @@ export default function ManejarIncidencias() {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [editando])
 
-  function handleEditar() {
+  async function handleEditar() {
     if (!formulario.titulo || !formulario.descripcion) { alert('Completa todos los campos obligatorios.'); return }
-    const actualizadas = incidencias.map(inc =>
-      inc.idIncidencia === editando.idIncidencia
-        ? { ...inc, titulo: formulario.titulo, descripcion: formulario.descripcion, estado: formulario.estado, direccionTexto: formulario.direccionTexto }
-        : inc
-    )
-    setIncidencias(actualizadas)
-    if (esDemo()) guardarIncidenciasDemo(actualizadas)
-    setEditando(null)
+    const payload = {
+      titulo: formulario.titulo,
+      descripcion: formulario.descripcion,
+      categoria: editando.categoria || 'Otro',
+      estado: formulario.estado,
+      direccionTexto: formulario.direccionTexto || editando.direccionTexto || '',
+      latitud: editando.latitud ?? null,
+      longitud: editando.longitud ?? null
+    }
+    try {
+      if (esDemo()) {
+        const actualizadas = incidencias.map(inc =>
+          inc.idIncidencia === editando.idIncidencia
+            ? { ...inc, titulo: formulario.titulo, descripcion: formulario.descripcion, estado: formulario.estado, direccionTexto: formulario.direccionTexto }
+            : inc
+        )
+        setIncidencias(actualizadas)
+        guardarIncidenciasDemo(actualizadas)
+      } else {
+        const actualizada = await actualizarIncidencia(editando.idIncidencia, payload)
+        setIncidencias(prev => prev.map(inc =>
+          inc.idIncidencia === editando.idIncidencia ? { ...inc, ...actualizada } : inc
+        ))
+      }
+      setEditando(null)
+    } catch (error) {
+      alert(error.message || 'No se pudo actualizar la incidencia')
+    }
   }
 
   function handleEliminar(id) {
     setIncidenciaAEliminar(id)
   }
 
-  function confirmarEliminar() {
+  async function confirmarEliminar() {
     const id = incidenciaAEliminar
     setIncidenciaAEliminar(null)
-    const actualizadas = incidencias.filter(inc => inc.idIncidencia !== id)
-    setIncidencias(actualizadas)
-    if (esDemo()) guardarIncidenciasDemo(actualizadas)
+    try {
+      if (esDemo()) {
+        const actualizadas = incidencias.filter(inc => inc.idIncidencia !== id)
+        setIncidencias(actualizadas)
+        guardarIncidenciasDemo(actualizadas)
+      } else {
+        await eliminarIncidencia(id)
+        setIncidencias(prev => prev.filter(inc => inc.idIncidencia !== id))
+      }
+    } catch (error) {
+      alert(error.message || 'No se pudo eliminar la incidencia')
+    }
   }
 
   function abrirEditar(incidencia) {
