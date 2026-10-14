@@ -19,6 +19,35 @@ const IMAGENES_INSIGNIAS = {
 
 const fs = (base) => `calc(${base}rem * var(--font-scale, 1))`
 
+// Misma estructura para insignias desbloqueadas y bloqueadas, asi todas miden igual
+function InsigniaCard({ insignia, desbloqueada }) {
+  return (
+    <Card
+      variant={desbloqueada ? 'unlocked' : 'locked'}
+      className={`insignia-card ${desbloqueada ? 'insignia-card--desbloqueada' : 'insignia-card--bloqueada'}`}
+    >
+      <h4 className="insignia-card__titulo" title={insignia.nombre}>{insignia.nombre}</h4>
+      <div className="insignia-card__imagen-wrapper">
+        <img
+          src={IMAGENES_INSIGNIAS[insignia.idInsignia]}
+          alt={insignia.nombre}
+          className="insignia-card__imagen"
+        />
+      </div>
+      <p className="insignia-card__descripcion">{insignia.descripcion}</p>
+      {!desbloqueada && (
+        <span className="insignia-card__estado">
+          Registra {insignia.requisitoIncidencias} incidencias para desbloquear
+        </span>
+      )}
+      <div className="insignia-card__recompensa">
+        <span className="insignia-card__recompensa-label">Recompensa</span>
+        <span className="insignia-card__recompensa-texto">{insignia.recompensa}</span>
+      </div>
+    </Card>
+  )
+}
+
 export default function RecompensasCiudadano() {
   const [insignias, setInsignias] = useState([])
   const [cargando, setCargando] = useState(true)
@@ -123,17 +152,9 @@ export default function RecompensasCiudadano() {
                 <p className="text-eco-text-secondary" style={{ fontSize: fs(1.1) }}>Aun no has desbloqueado insignias. Registra incidencias para comenzar a ganar.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="insignias-grid">
                 {desbloqueadas.map(insignia => (
-                  <Card key={insignia.idInsignia} variant="unlocked" className="text-center">
-                    <h4 className="font-bold text-eco-text mb-2" style={{ fontSize: fs(1.15) }}>{insignia.nombre}</h4>
-                    <img src={IMAGENES_INSIGNIAS[insignia.idInsignia]} alt={insignia.nombre} className="w-36 h-36 mx-auto mb-3" />
-                    <p className="text-eco-text-secondary mb-3" style={{ fontSize: fs(0.9) }}>{insignia.descripcion}</p>
-                    <div style={{ backgroundColor: '#2E7D32', borderRadius: '8px', padding: '12px', marginTop: 'auto' }}>
-                      <span style={{ color: '#ffffff', fontWeight: 700, display: 'block', marginBottom: '4px', fontSize: fs(0.85) }}>Recompensa</span>
-                      <span style={{ color: '#ffffff', fontWeight: 600, display: 'block', fontSize: fs(0.9) }}>{insignia.recompensa}</span>
-                    </div>
-                  </Card>
+                  <InsigniaCard key={insignia.idInsignia} insignia={insignia} desbloqueada />
                 ))}
               </div>
             )}
@@ -149,19 +170,9 @@ export default function RecompensasCiudadano() {
                 <p className="text-eco-success font-bold text-lg">Felicidades! Has desbloqueado todas las insignias.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="insignias-grid">
                 {pendientes.map(insignia => (
-                  <Card key={insignia.idInsignia} variant="locked" className="text-center">
-                    <h4 className="font-bold text-eco-text mb-2" style={{ fontSize: fs(1.15) }}>{insignia.nombre}</h4>
-                    <img src={IMAGENES_INSIGNIAS[insignia.idInsignia]} alt={insignia.nombre} className="w-36 h-36 mx-auto mb-3 grayscale opacity-60" />
-                    <p className="text-eco-text-secondary mb-2" style={{ fontSize: fs(0.85) }}>
-                      Registra <strong className="text-eco-primary">{insignia.requisitoIncidencias}</strong> incidencias para desbloquear.
-                    </p>
-                    <div style={{ backgroundColor: '#37474F', borderRadius: '8px', padding: '12px', marginTop: 'auto' }}>
-                      <span style={{ color: '#ffffff', fontWeight: 700, display: 'block', marginBottom: '4px', fontSize: fs(0.85) }}>Recompensa</span>
-                      <span style={{ color: '#ffffff', fontWeight: 600, display: 'block', fontSize: fs(0.9) }}>{insignia.recompensa}</span>
-                    </div>
-                  </Card>
+                  <InsigniaCard key={insignia.idInsignia} insignia={insignia} desbloqueada={false} />
                 ))}
               </div>
             )}
