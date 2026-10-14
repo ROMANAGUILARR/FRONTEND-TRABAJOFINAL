@@ -321,28 +321,34 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
           <div className="seguimiento__tarjetas">
             {incidenciasPaginadas.map(incidencia => (
               <div key={incidencia.idIncidencia} className="incidencia-tarjeta">
-                <div className="incidencia-tarjeta__header">
-                  <h3 className="incidencia-tarjeta__titulo">{incidencia.titulo}</h3>
-                  <span className={`incidencia-tarjeta__estado estado--${CLASES_ESTADO[ESTADOS[incidencia.estado]]}`}>
-                    {incidencia.estado}
-                  </span>
+                <div className="incidencia-tarjeta__imagen-wrapper">
+                  {incidencia.urlsImagenes && incidencia.urlsImagenes.length > 0 ? (
+                    <img
+                      src={incidencia.urlsImagenes[0]}
+                      alt={incidencia.titulo}
+                      className="incidencia-tarjeta__imagen"
+                    />
+                  ) : (
+                    <div className="incidencia-tarjeta__sin-imagen">Sin foto</div>
+                  )}
                 </div>
-                <p className="incidencia-tarjeta__fecha">Fecha: {formatearFecha(incidencia.fecha)} </p>
-                <p className="incidencia-tarjeta__descripcion">{incidencia.descripcion}</p>
-                {incidencia.urlsImagenes && incidencia.urlsImagenes.length > 0 && (
-                  <img
-                    src={incidencia.urlsImagenes[0]}
-                    alt={incidencia.titulo}
-                    className="incidencia-tarjeta__imagen"
-                  />
-                )}
-                <button
-                  type="button"
-                  className="incidencia-tarjeta__btn-detalle"
-                  onClick={() => setIncidenciaDetalle(incidencia)}
-                >
-                  Ver más detalles
-                </button>
+                <div className="incidencia-tarjeta__cuerpo">
+                  <div className="incidencia-tarjeta__header">
+                    <h3 className="incidencia-tarjeta__titulo" title={incidencia.titulo}>{incidencia.titulo}</h3>
+                    <span className={`incidencia-tarjeta__estado estado--${CLASES_ESTADO[ESTADOS[incidencia.estado]]}`}>
+                      {incidencia.estado}
+                    </span>
+                  </div>
+                  <p className="incidencia-tarjeta__fecha">Fecha: {formatearFecha(incidencia.fecha)}</p>
+                  <p className="incidencia-tarjeta__descripcion">{incidencia.descripcion}</p>
+                  <button
+                    type="button"
+                    className="incidencia-tarjeta__btn-detalle"
+                    onClick={() => setIncidenciaDetalle(incidencia)}
+                  >
+                    Ver más detalles
+                  </button>
+                </div>
               </div>
             ))}
           </div>
