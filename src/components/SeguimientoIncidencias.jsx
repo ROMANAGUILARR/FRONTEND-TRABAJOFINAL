@@ -48,6 +48,13 @@ const CLASES_ESTADO = {
   resolved: 'estado--resolved'
 }
 
+const FILTROS_ESTADO = [
+  { valor: 'todos', texto: 'Todos' },
+  { valor: 'pending', texto: 'Pendientes' },
+  { valor: 'in-progress', texto: 'En Proceso' },
+  { valor: 'resolved', texto: 'Resueltos' },
+]
+
 export default function SeguimientoIncidencias({ incidencias: propsIncidencias }) {
   const [filtroEstado, setFiltroEstado] = useState('todos')
   const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
@@ -284,30 +291,18 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
         </div>
 
         <div className="seguimiento__filtros">
-          <button
-            className={`seguimiento__filtro-btn ${filtroEstado === 'todos' ? 'seguimiento__filtro-btn--active' : ''}`}
-            onClick={() => setFiltroEstado('todos')}
-          >
-            Todos
-          </button>
-          <button
-            className={`seguimiento__filtro-btn ${filtroEstado === 'pending' ? 'seguimiento__filtro-btn--active' : ''}`}
-            onClick={() => setFiltroEstado('pending')}
-          >
-            Pendientes
-          </button>
-          <button
-            className={`seguimiento__filtro-btn ${filtroEstado === 'in-progress' ? 'seguimiento__filtro-btn--active' : ''}`}
-            onClick={() => setFiltroEstado('in-progress')}
-          >
-            En Proceso
-          </button>
-          <button
-            className={`seguimiento__filtro-btn ${filtroEstado === 'resolved' ? 'seguimiento__filtro-btn--active' : ''}`}
-            onClick={() => setFiltroEstado('resolved')}
-          >
-            Resueltos
-          </button>
+          {FILTROS_ESTADO.map(filtro => (
+            <button
+              key={filtro.valor}
+              type="button"
+              aria-pressed={filtroEstado === filtro.valor}
+              className={`seguimiento__filtro-btn seguimiento__filtro-btn--${filtro.valor} ${filtroEstado === filtro.valor ? 'seguimiento__filtro-btn--active' : ''}`}
+              onClick={() => setFiltroEstado(filtro.valor)}
+            >
+              {filtroEstado === filtro.valor && <span aria-hidden="true">✓ </span>}
+              {filtro.texto}
+            </button>
+          ))}
         </div>
       </div>
 

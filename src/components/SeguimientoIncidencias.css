@@ -669,11 +669,6 @@
   border-color: var(--color-border);
 }
 
-[data-theme="dark"] .seguimiento__filtro-btn {
-  background: var(--color-bg-white);
-  color: var(--color-text-secondary);
-  border-color: var(--color-border);
-}
 
 [data-theme="dark"] .seguimiento__lista {
   background: var(--color-bg-white);
@@ -800,4 +795,52 @@
   font-size: 0.85rem;
   color: var(--color-text-secondary);
   font-weight: 500;
+}
+/* Botones de filtro: cada uno con su color y el activo bien marcado */
+.seguimiento__filtro-btn {
+  --chip: #374151;
+  --chip-texto-activo: #ffffff;
+  background: var(--color-bg-white);
+  color: var(--chip);
+  border: 2px solid var(--chip);
+  font-weight: 600;
+}
+.seguimiento__filtro-btn--todos { --chip: #374151; }
+.seguimiento__filtro-btn--pending { --chip: #b45309; }
+.seguimiento__filtro-btn--in-progress { --chip: #1d4ed8; }
+.seguimiento__filtro-btn--resolved { --chip: #047857; }
+.seguimiento__filtro-btn:hover {
+  background: color-mix(in srgb, var(--chip) 12%, transparent);
+  color: var(--chip);
+  border-color: var(--chip);
+}
+.seguimiento__filtro-btn--active,
+.seguimiento__filtro-btn--active:hover {
+  background: var(--chip);
+  color: var(--chip-texto-activo);
+  border-color: var(--chip);
+  font-weight: 700;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--chip) 35%, transparent);
+  transform: translateY(-1px);
+}
+.seguimiento__filtro-btn:focus-visible {
+  outline: 3px solid var(--chip);
+  outline-offset: 2px;
+}
+[data-theme="dark"] .seguimiento__filtro-btn {
+  --chip: #d1d5db;
+  --chip-texto-activo: #111827;
+  background: transparent;
+  color: var(--chip);
+  border-color: var(--chip);
+}
+[data-theme="dark"] .seguimiento__filtro-btn--todos { --chip: #d1d5db; }
+[data-theme="dark"] .seguimiento__filtro-btn--pending { --chip: #fbbf24; }
+[data-theme="dark"] .seguimiento__filtro-btn--in-progress { --chip: #60a5fa; }
+[data-theme="dark"] .seguimiento__filtro-btn--resolved { --chip: #34d399; }
+[data-theme="dark"] .seguimiento__filtro-btn--active,
+[data-theme="dark"] .seguimiento__filtro-btn--active:hover {
+  background: var(--chip);
+  color: var(--chip-texto-activo);
+  border-color: var(--chip);
 }
