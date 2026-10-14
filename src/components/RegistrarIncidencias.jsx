@@ -386,15 +386,10 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
       }
     } catch (err) {
       const mensaje = err instanceof Error ? err.message : 'Error desconocido con la IA.'
-      if (esErrorTecnicoIA(mensaje)) {
-        setErrorTecnico(mensaje)
-        setDescripcion('')
-        setTitulo('')
-        limpiarEstadoErrorIA()
-      } else {
-        mostrarMensajeFotosNoVisibles()
-        setTitulo('')
-      }
+      setErrorTecnico(mensaje)
+      setDescripcion('')
+      setTitulo('')
+      limpiarEstadoErrorIA()
     } finally {
       setGenerandoIA(false)
     }
