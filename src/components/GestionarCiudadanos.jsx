@@ -278,7 +278,12 @@ export default function GestionarCiudadanos() {
               </h5>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '14px', alignItems: 'stretch' }}>
                 {(() => {
-                  const numIncidencias = (MOCK_INCIDENCIAS_POR_USUARIO[usuarioSeleccionado.idUsuario] || []).length
+                  // Incidencias reales del usuario (las cargadas al abrir el resumen o el total del backend)
+                  const numIncidencias = esDemo()
+                    ? (MOCK_INCIDENCIAS_POR_USUARIO[usuarioSeleccionado.idUsuario] || []).length
+                    : (cargandoIncidencias
+                        ? (usuarioSeleccionado.totalIncidencias ?? 0)
+                        : Math.max(incidenciasUsuario.length, usuarioSeleccionado.totalIncidencias ?? 0))
                   const colores = [
                     { bg: '#e8f5e9', border: '#A5D6A7', icon: '#2E7D32' },
                     { bg: '#E3F2FD', border: '#90CAF9', icon: '#1565C0' },
