@@ -24,6 +24,7 @@ export default function GestionarCiudadanos() {
   const [usuarioReporte, setUsuarioReporte] = useState(null)
   const [incidenciasReporte, setIncidenciasReporte] = useState([])
   const [paginaActual, setPaginaActual] = useState(1)
+  const [errorCarga, setErrorCarga] = useState('')
 
   useEffect(() => {
     async function cargarUsuarios() {
@@ -32,6 +33,7 @@ export default function GestionarCiudadanos() {
         setUsuarios(data)
       } catch (err) {
         console.error('Error al cargar usuarios:', err)
+        setErrorCarga('No se pudo cargar la lista de usuarios. Vuelve a iniciar sesión como administrador o recarga la página.')
         setUsuarios([])
       } finally {
         setCargando(false)
@@ -79,7 +81,7 @@ export default function GestionarCiudadanos() {
     if (esDemo()) {
       return (MOCK_INCIDENCIAS_POR_USUARIO[usuarioId] || []).length
     }
-    return 0
+    return usuarios.find(u => u.idUsuario === usuarioId)?.totalIncidencias ?? 0
   }
 
   const usuariosFiltrados = usuarios.filter(u => {
@@ -89,6 +91,7 @@ export default function GestionarCiudadanos() {
       (u.nombreCompleto || '').toLowerCase().includes(texto) ||
       (u.apellidoCompleto || '').toLowerCase().includes(texto) ||
       (u.dni || '').includes(texto) ||
+      (u.telefono || '').includes(texto) ||
       (u.correoElectronico || '').toLowerCase().includes(texto) ||
       (u.nombreUsuario || '').toLowerCase().includes(texto)
     return coincideRol && coincideBusqueda
@@ -144,7 +147,7 @@ export default function GestionarCiudadanos() {
       {/* Buscador y filtros */}
       <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
         <input
-          type="text" placeholder="Buscar por nombre, DNI, email o usuario..."
+          type="text" placeholder="Buscar por nombre, DNI, teléfono, email o usuario..."
           value={busqueda} onChange={e => setBusqueda(e.target.value)}
           className="admin-input" style={{ flex: 1, minWidth: '250px' }}
         />
@@ -168,6 +171,10 @@ export default function GestionarCiudadanos() {
       {/* Contenido */}
       {cargando ? (
         <p style={{ color: 'var(--color-text-secondary)', textAlign: 'center', padding: '40px' }}>Cargando usuarios...</p>
+      ) : errorCarga ? (
+        <div style={{ background: 'var(--color-bg-white)', border: '1px solid #c62828', borderRadius: '12px', padding: '24px', textAlign: 'center' }}>
+          <p style={{ color: '#c62828', margin: 0 }}>{errorCarga}</p>
+        </div>
       ) : usuariosFiltrados.length === 0 ? (
         <div style={{ background: 'var(--color-bg-white)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '32px', textAlign: 'center' }}>
           <p style={{ color: 'var(--color-text-secondary)' }}>No se encontraron usuarios.</p>
@@ -181,6 +188,7 @@ export default function GestionarCiudadanos() {
                   <th>#</th>
                   <th>Nombre</th>
                   <th>DNI</th>
+                  <th>Teléfono</th>
                   <th>Email</th>
                   <th>Rol</th>
                   <th>Incidencias</th>
@@ -196,6 +204,7 @@ export default function GestionarCiudadanos() {
                       <td>{(paginaActual - 1) * ITEMS_POR_PAGINA + index + 1}</td>
                       <td style={{ fontWeight: 500 }}>{usuario.nombreCompleto} {usuario.apellidoCompleto}</td>
                       <td>{usuario.dni}</td>
+                      <td>{usuario.telefono || '—'}</td>
                       <td>{usuario.correoElectronico}</td>
                       <td>
                         <span className={`admin-badge ${usuario.rol === 'ADMIN' ? 'admin-badge--progress' : 'admin-badge--resolved'}`}>

@@ -27,6 +27,11 @@ const REPORTER_MAP = (() => {
   return map
 })()
 
+// La categoria real viene en "categoria"; en modo demo se guardaba en "titulo"
+function categoriaDe(incidencia) {
+  return incidencia.categoria || incidencia.titulo || ''
+}
+
 function esDemo() {
   const token = localStorage.getItem('token')
   return token === 'demo-token' || token === 'demo-token-admin'
@@ -106,7 +111,7 @@ export default function ManejarIncidencias() {
   const [incidenciaAEliminar, setIncidenciaAEliminar] = useState(null)
   const [incidencias, setIncidencias] = useState([])
   const [editando, setEditando] = useState(null)
-  const [formulario, setFormulario] = useState({ titulo: '', descripcion: '', estado: 'PENDIENTE', direccionTexto: '' })
+  const [formulario, setFormulario] = useState({ categoria: '', descripcion: '', estado: 'PENDIENTE', direccionTexto: '' })
   const [paginaActual, setPaginaActual] = useState(1)
 
   useEffect(() => {
@@ -141,11 +146,11 @@ export default function ManejarIncidencias() {
   }, [editando])
 
   async function handleEditar() {
-    if (!formulario.titulo || !formulario.descripcion) { alert('Completa todos los campos obligatorios.'); return }
+    if (!formulario.categoria || !formulario.descripcion) { alert('Completa todos los campos obligatorios.'); return }
     const payload = {
-      titulo: formulario.titulo,
+      titulo: editando.titulo || formulario.categoria,
       descripcion: formulario.descripcion,
-      categoria: editando.categoria || 'Otro',
+      categoria: formulario.categoria,
       estado: formulario.estado,
       direccionTexto: formulario.direccionTexto || editando.direccionTexto || '',
       latitud: editando.latitud ?? null,
@@ -155,7 +160,7 @@ export default function ManejarIncidencias() {
       if (esDemo()) {
         const actualizadas = incidencias.map(inc =>
           inc.idIncidencia === editando.idIncidencia
-            ? { ...inc, titulo: formulario.titulo, descripcion: formulario.descripcion, estado: formulario.estado, direccionTexto: formulario.direccionTexto }
+            ? { ...inc, titulo: formulario.categoria, categoria: formulario.categoria, descripcion: formulario.descripcion, estado: formulario.estado, direccionTexto: formulario.direccionTexto }
             : inc
         )
         setIncidencias(actualizadas)
@@ -195,14 +200,14 @@ export default function ManejarIncidencias() {
 
   function abrirEditar(incidencia) {
     setEditando(incidencia)
-    setFormulario({ titulo: incidencia.titulo, descripcion: incidencia.descripcion, estado: incidencia.estado, direccionTexto: incidencia.direccionTexto || '' })
+    setFormulario({ categoria: categoriaDe(incidencia), descripcion: incidencia.descripcion, estado: incidencia.estado, direccionTexto: incidencia.direccionTexto || '' })
   }
 
   function obtenerReportadoPor(incidencia) {
     if (esDemo()) {
       return REPORTER_MAP[incidencia.idIncidencia] || '—'
     }
-    return incidencia.nombreUsuario || '—'
+    return incidencia.reportadoPor || incidencia.nombreUsuario || '—'
   }
 
   const incidenciasFiltradas = incidencias.filter(incidencia => {
@@ -210,6 +215,8 @@ export default function ManejarIncidencias() {
     const fechaFormateada = formatearFecha(incidencia.fecha).toLowerCase()
     const coincideBusqueda = fechaFormateada.includes(busqueda.toLowerCase()) ||
       (incidencia.titulo || '').toLowerCase().includes(busqueda.toLowerCase()) ||
+      categoriaDe(incidencia).toLowerCase().includes(busqueda.toLowerCase()) ||
+      obtenerReportadoPor(incidencia).toLowerCase().includes(busqueda.toLowerCase()) ||
       (incidencia.direccionTexto || '').toLowerCase().includes(busqueda.toLowerCase())
     return coincideEstado && coincideBusqueda
   })
@@ -300,7 +307,7 @@ export default function ManejarIncidencias() {
                 {incidenciasPaginadas.map((incidencia, index) => (
                   <tr key={incidencia.idIncidencia}>
                     <td>{(paginaActual - 1) * ITEMS_POR_PAGINA + index + 1}</td>
-                    <td style={{ fontWeight: 500 }}>{incidencia.titulo}</td>
+                    <td style={{ fontWeight: 500 }}>{categoriaDe(incidencia)}</td>
                     <td>
                       <span className={`admin-badge ${ESTADO_BADGE[incidencia.estado] || 'admin-badge--pending'}`}>
                         {ESTADO_LABEL[incidencia.estado] || incidencia.estado}
@@ -358,9 +365,12 @@ export default function ManejarIncidencias() {
             <div className="admin-modal__form-grid">
               <div>
                 <label className="admin-modal__label">Categoría:</label>
-                <select value={formulario.titulo} onChange={e => setFormulario(f => ({ ...f, titulo: e.target.value }))} className="admin-input">
+                <select value={formulario.categoria} onChange={e => setFormulario(f => ({ ...f, categoria: e.target.value }))} className="admin-input">
                   <option value="">-- Selecciona --</option>
                   {CATEGORIAS.map(c => <option key={c} value={c}>{c}</option>)}
+                  {formulario.categoria && !CATEGORIAS.includes(formulario.categoria) && (
+                    <option value={formulario.categoria}>{formulario.categoria}</option>
+                  )}
                 </select>
               </div>
               <div>
