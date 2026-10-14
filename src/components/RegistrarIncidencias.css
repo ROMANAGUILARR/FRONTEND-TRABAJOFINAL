@@ -712,6 +712,32 @@
     50% { opacity: 0.6; }
 }
 
+
+/* Campo titulo */
+.registrar__titulo-input {
+  border: 2px solid var(--color-border);
+  padding: 12px 14px;
+  font-size: calc(1rem * var(--font-scale, 1));
+  color: var(--color-text);
+  background: var(--color-bg-white);
+  border-radius: var(--radius-md);
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: var(--font-sans);
+}
+
+.registrar__titulo-input:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px rgba(46, 150, 50, 0.15);
+}
+
+[data-theme="dark"] .registrar__titulo-input {
+  background: var(--color-bg-white);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
 /* ===== Dark Mode ===== */
 [data-theme="dark"] .registrar {
   background: var(--color-bg);
