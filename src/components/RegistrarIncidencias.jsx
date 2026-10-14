@@ -570,7 +570,7 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
                 <strong>No se pudo conectar con la IA:</strong>
                 <p>{errorTecnico}</p>
                 <p className="registrar__ia-tecnico-hint">
-                  Verifica que el backend esté ejecutándose y que la API Key de Hugging Face esté configurada correctamente.
+                  Verifica que el backend esté ejecutándose y que la API Key de Gemini (GEMINI_API_KEY) esté configurada correctamente.
                 </p>
               </div>
             )}
