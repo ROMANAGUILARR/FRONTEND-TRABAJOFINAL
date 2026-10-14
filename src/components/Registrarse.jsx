@@ -5,6 +5,14 @@ import Input from './ui/Input'
 import { useAuth } from '../hooks/useAuth'
 import './Registrarse.css'
 
+const PREGUNTAS_SEGURIDAD = [
+    '¿Cuál es el nombre de tu primera mascota?',
+    '¿En qué ciudad naciste?',
+    '¿Cuál es el nombre de tu colegio de primaria?',
+    '¿Cuál es tu comida favorita?',
+    '¿Cuál es el segundo nombre de tu madre?',
+]
+
 export default function Registrarse() {
     const navigate = useNavigate();
     const { login } = useAuth();
@@ -16,6 +24,7 @@ export default function Registrarse() {
     });
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const [enviando, setEnviando] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -35,7 +44,16 @@ export default function Registrarse() {
             setError('La contraseña debe tener al menos 6 caracteres');
             return;
         }
+        if (!/^\d{8}$/.test(formData.DNI)) {
+            setError('El DNI debe tener exactamente 8 dígitos');
+            return;
+        }
+        if (!/^\d{9}$/.test(formData.telefono)) {
+            setError('El teléfono debe tener exactamente 9 dígitos');
+            return;
+        }
 
+        setEnviando(true);
         try {
             const respuesta = await fetch(`${API_BASE}/usuario/registrar`, {
                 method: "POST",
@@ -71,13 +89,11 @@ export default function Registrarse() {
                 setTimeout(() => navigate("/login"), 2000);
             }
         } catch (error) {
-            // Si el backend no estÃ¡ disponible, simular registro exitoso (modo demo)
-            if (error.message === 'Failed to fetch') {
-                setSuccess('Registro exitoso (modo demo)! Redirigiendo al login...');
-                setTimeout(() => navigate("/login"), 2000);
-                return;
-            }
-            setError(error.message);
+            setError(error.message === 'Failed to fetch'
+                ? 'No se pudo conectar con el servidor. Si nadie lo usó en un rato, puede tardar hasta 1 minuto en activarse; espera un momento e intenta de nuevo.'
+                : error.message);
+        } finally {
+            setEnviando(false);
         }
     };
 
@@ -114,19 +130,34 @@ export default function Registrarse() {
                     </div>
 
                     <Input label="Correo electrónico" name="email" type="email" placeholder="tu@email.com" value={formData.email} onChange={handleChange} required />
-                    <Input label="Telefono" name="telefono" type="tel" maxLength="9" placeholder="Tu número de teléfono" value={formData.telefono} onChange={handleChange} required />
-                    <Input label="DNI" name="DNI" maxLength="8" placeholder="Establece el DNI" value={formData.DNI} onChange={handleChange} required />
+                    <Input label="Teléfono" name="telefono" type="tel" inputMode="numeric" maxLength="9" placeholder="9 dígitos, ej. 987654321" value={formData.telefono} onChange={handleChange} required />
+                    <Input label="DNI" name="DNI" inputMode="numeric" maxLength="8" placeholder="8 dígitos" value={formData.DNI} onChange={handleChange} required />
                     <Input label="Nombre de usuario" name="nombreUsuario" placeholder="Elige un nombre de usuario" value={formData.nombreUsuario} onChange={handleChange} required />
-                    <Input label="Pregunta de seguridad" name="pregunta" placeholder="Responda con 1 o 3 palabras" value={formData.pregunta} onChange={handleChange} required />
-                    <Input label="Respuesta" name="respuesta" placeholder="Solo coloque la respuesta" value={formData.respuesta} onChange={handleChange} required />
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="pregunta" className="font-semibold text-sm text-eco-text uppercase tracking-wider">
+                            Pregunta de seguridad<span className="text-eco-danger ml-1 font-bold">*</span>
+                        </label>
+                        <select
+                            id="pregunta"
+                            name="pregunta"
+                            value={formData.pregunta}
+                            onChange={handleChange}
+                            required
+                            className="w-full border-2 border-eco-border bg-eco-bg-white text-eco-text rounded-md p-3 text-base focus:outline-none focus:border-eco-primary max-sm:p-2.5 max-sm:text-sm"
+                        >
+                            <option value="">-- Elige una pregunta --</option>
+                            {PREGUNTAS_SEGURIDAD.map(p => <option key={p} value={p}>{p}</option>)}
+                        </select>
+                    </div>
+                    <Input label="Respuesta" name="respuesta" placeholder="Tu respuesta (la necesitarás para recuperar tu contraseña)" value={formData.respuesta} onChange={handleChange} required />
 
                     <Input label="Contraseña" name="contrasena" placeholder="Mínimo 6 caracteres" value={formData.contrasena} onChange={handleChange} required showToggle />
                     <Input label="Confirmar contraseña" name="confirmarContrasena" placeholder="Repite tu contraseña" value={formData.confirmarContrasena} onChange={handleChange} required showToggle />
 
                     <span className="text-eco-warning text-xs font-medium">* Campo Obligatorio</span>
 
-                    <Button type="submit" variant="primary" size="lg" fullWidth>
-                        Crear Cuenta
+                    <Button type="submit" variant="primary" size="lg" fullWidth disabled={enviando}>
+                        {enviando ? 'Creando cuenta...' : 'Crear Cuenta'}
                     </Button>
                 </form>
 
