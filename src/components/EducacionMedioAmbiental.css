@@ -443,11 +443,6 @@
   color: var(--color-text-secondary);
 }
 
-[data-theme="dark"] .educacion__categoria-btn {
-  background: var(--color-bg-white);
-  color: var(--color-text-secondary);
-  border-color: var(--color-border);
-}
 
 [data-theme="dark"] .educacion__detalle {
   background: var(--color-bg-white);
@@ -513,4 +508,58 @@
 
 [data-theme="dark"] .educacion__subtitle {
   color: var(--color-text-secondary);
+}
+/* Botones de filtro: cada uno con su color y el activo bien marcado */
+.educacion__categoria-btn {
+  --chip: #374151;
+  --chip-texto-activo: #ffffff;
+  background: var(--color-bg-white);
+  color: var(--chip);
+  border: 2px solid var(--chip);
+  font-weight: 600;
+}
+.educacion__categoria-btn--todas { --chip: #374151; }
+.educacion__categoria-btn--huella-de-carbono { --chip: #b45309; }
+.educacion__categoria-btn--reciclaje { --chip: #047857; }
+.educacion__categoria-btn--contaminacion { --chip: #b91c1c; }
+.educacion__categoria-btn--energia { --chip: #a16207; }
+.educacion__categoria-btn--compostaje { --chip: #7c4a1e; }
+.educacion__categoria-btn--movilidad { --chip: #1d4ed8; }
+.educacion__categoria-btn:hover {
+  background: color-mix(in srgb, var(--chip) 12%, transparent);
+  color: var(--chip);
+  border-color: var(--chip);
+}
+.educacion__categoria-btn--active,
+.educacion__categoria-btn--active:hover {
+  background: var(--chip);
+  color: var(--chip-texto-activo);
+  border-color: var(--chip);
+  font-weight: 700;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--chip) 35%, transparent);
+  transform: translateY(-1px);
+}
+.educacion__categoria-btn:focus-visible {
+  outline: 3px solid var(--chip);
+  outline-offset: 2px;
+}
+[data-theme="dark"] .educacion__categoria-btn {
+  --chip: #d1d5db;
+  --chip-texto-activo: #111827;
+  background: transparent;
+  color: var(--chip);
+  border-color: var(--chip);
+}
+[data-theme="dark"] .educacion__categoria-btn--todas { --chip: #d1d5db; }
+[data-theme="dark"] .educacion__categoria-btn--huella-de-carbono { --chip: #fbbf24; }
+[data-theme="dark"] .educacion__categoria-btn--reciclaje { --chip: #34d399; }
+[data-theme="dark"] .educacion__categoria-btn--contaminacion { --chip: #f87171; }
+[data-theme="dark"] .educacion__categoria-btn--energia { --chip: #fde047; }
+[data-theme="dark"] .educacion__categoria-btn--compostaje { --chip: #d6a06a; }
+[data-theme="dark"] .educacion__categoria-btn--movilidad { --chip: #60a5fa; }
+[data-theme="dark"] .educacion__categoria-btn--active,
+[data-theme="dark"] .educacion__categoria-btn--active:hover {
+  background: var(--chip);
+  color: var(--chip-texto-activo);
+  border-color: var(--chip);
 }

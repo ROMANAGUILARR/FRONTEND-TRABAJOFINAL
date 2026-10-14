@@ -86,6 +86,9 @@ const ARTICULOS = [
 ]
 
 const CATEGORIAS = ['Todas', 'Huella de Carbono', 'Reciclaje', 'Contaminación', 'Energía', 'Compostaje', 'Movilidad']
+// 'Huella de Carbono' -> 'huella-de-carbono' (para el color de cada boton)
+const slugCategoria = (texto) =>
+  texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, '-')
 const CATEGORIAS2 = ['Orgánicos', 'Inorgánicos no aprovechables', 'Inorgánicos aprovechables']
 export default function EducacionMedioAmbiental() {
   const MAX_CONTEXTO = 200
@@ -221,9 +224,12 @@ export default function EducacionMedioAmbiental() {
         {CATEGORIAS.map(categoria => (
           <button
             key={categoria}
-            className={`educacion__categoria-btn ${categoriaActiva === categoria ? 'educacion__categoria-btn--active' : ''}`}
+            type="button"
+            aria-pressed={categoriaActiva === categoria}
+            className={`educacion__categoria-btn educacion__categoria-btn--${slugCategoria(categoria)} ${categoriaActiva === categoria ? 'educacion__categoria-btn--active' : ''}`}
             onClick={() => setCategoriaActiva(categoria)}
           >
+            {categoriaActiva === categoria && <span aria-hidden="true">✓ </span>}
             {categoria}
           </button>
         ))}
