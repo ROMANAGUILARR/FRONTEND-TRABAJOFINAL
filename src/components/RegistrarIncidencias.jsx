@@ -44,7 +44,7 @@ function evaluarInsigniasLocales(totalIncidencias, insigniasYaDesbloqueadas = []
 }
 
 function calcularDistancia(lat1, lon1, lat2, lon2) {
-  const R = 6371e3; // Radio de la Tierra en metros
+  const R = 6371e3;
   const phi1 = lat1 * Math.PI / 180;
   const phi2 = lat2 * Math.PI / 180;
   const deltaPhi = (lat2 - lat1) * Math.PI / 180;
@@ -65,6 +65,7 @@ function crearSlotsVacios() {
 export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
   const [fotos, setFotos] = useState(crearSlotsVacios)
   const [categoria, setCategoria] = useState('')
+  const [titulo, setTitulo] = useState('')
   const [descripcion, setDescripcion] = useState('')
   const [caracteresRestantes, setCaracteresRestantes] = useState(MAX_CARACTERES)
   const [descripcionEsErrorIA, setDescripcionEsErrorIA] = useState(false)
@@ -90,7 +91,7 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
   const tieneFotos = fotosSubidas.length > 0
   const modalAbierto = showSuccessModal || showAIModal || showWarningModal
   const [showHelpModal, setShowHelpModal] = useState(false)
-  const [tamañoLetra, setTamañoLetra] = useState(1)
+  const [tamanoLetra, setTamanoLetra] = useState(1)
   const [puntosGanados, setPuntosGanados] = useState(0)
   const [nuevasInsignias, setNuevasInsignias] = useState([])
   const { updatePuntos } = useAuth()
@@ -151,6 +152,10 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
     if (descripcionEsErrorIA) limpiarEstadoErrorIA();
   }
 
+  function handleTituloChange(event) {
+    setTitulo(event.target.value);
+  }
+
   const comprimirImagen = (file) => {
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -191,8 +196,6 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
     });
   };
 
-  // Verifica si la incidencia ya existe (duplicada) en el almacenamiento local
-  // Lógica espejo del backend: misma categoria + descripcion + latitud + longitud en radio de 50m
   function esIncidenciaDuplicadaLocal(incidenciasLocales) {
     return incidenciasLocales.some(inc =>
       inc.categoria === categoria &&
@@ -201,11 +204,9 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
     )
   }
 
-  // Registra la incidencia localmente (modo offline sin backend)
   function registrarIncidenciaLocal() {
     const incidenciasLocales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]')
 
-    // HU011: Validar incidencia duplicada (no asigna puntos)
     if (esIncidenciaDuplicadaLocal(incidenciasLocales)) {
       setWarningMessage('Esta incidencia ya fue registrada anteriormente. No se asignarán puntos adicionales.')
       setShowWarningModal(true)
@@ -225,13 +226,11 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
     incidenciasLocales.push(nuevaIncidenciaLocal)
     localStorage.setItem('incidenciasLocales', JSON.stringify(incidenciasLocales))
 
-    // HU011: Asignar puntos al usuario (solo si no es duplicada)
     const puntosActuales = parseInt(localStorage.getItem('puntos') || '0', 10)
     const nuevosPuntos = puntosActuales + PUNTOS_POR_INCIDENCIA
     updatePuntos(nuevosPuntos)
     setPuntosGanados(PUNTOS_POR_INCIDENCIA)
 
-    // Evaluar insignias localmente
     const insigniasDesbloqueadas = JSON.parse(localStorage.getItem('insigniasDesbloqueadas') || '[]')
     const nuevasInsigniasLocales = evaluarInsigniasLocales(incidenciasLocales.length, insigniasDesbloqueadas)
     if (nuevasInsigniasLocales.length > 0) {
@@ -277,13 +276,12 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
         fotosComprimidas,
         ubicacion.address,
         ubicacion.lat,
-        ubicacion.lng
+        ubicacion.lng,
+        titulo
       )
 
       if (respuesta.puntosGanados) {
         setPuntosGanados(respuesta.puntosGanados)
-        // Consultar los puntos reales al backend (fuente de verdad) en lugar
-        // de sumar sobre un valor de localStorage que puede estar desactualizado
         try {
           const puntosReales = await obtenerPuntosUsuario()
           updatePuntos(puntosReales)
@@ -310,14 +308,12 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
         longitud: ubicacion.lng
       }
 
-      // Guardar en localStorage para modo demo/offline
       const token = localStorage.getItem('token')
       if (token === 'demo-token' || token === 'demo-token-admin') {
         const incidenciasLocales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]')
         incidenciasLocales.push(nuevaIncidencia)
         localStorage.setItem('incidenciasLocales', JSON.stringify(incidenciasLocales))
 
-        // Evaluar insignias en modo demo
         const insigniasDesbloqueadas = JSON.parse(localStorage.getItem('insigniasDesbloqueadas') || '[]')
         const nuevasInsigniasLocales = evaluarInsigniasLocales(incidenciasLocales.length, insigniasDesbloqueadas)
         if (nuevasInsigniasLocales.length > 0) {
@@ -375,28 +371,33 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
     setErrorTecnico('')
 
     try {
-      // Se comprimen las fotos antes de subirlas: reduce el peso que el backend
-      // descargará de Cloudinary y acelera el análisis de Gemini
       const fotosComprimidas = await Promise.all(
         fotosSubidas.map((slot) => comprimirImagen(slot.file))
       )
-      // La IA recibe las imagenes en base64/data-URL (no requiere Cloudinary)
       const dataUrls = await Promise.all(fotosComprimidas.map(fileToDataUrl))
-      const texto = (await describirFotosConIA(dataUrls)).trim()
+      const resultado = await describirFotosConIA(dataUrls)
+      const texto = resultado.descripcion.trim()
 
       if (esRespuestaFotosNoVisibles(texto)) {
         mostrarMensajeFotosNoVisibles()
+        setTitulo('')
       } else {
         setDescripcion(texto)
+        setCaracteresRestantes(MAX_CARACTERES - texto.length)
+        if (resultado.titulo) {
+          setTitulo(resultado.titulo.trim())
+        }
       }
     } catch (err) {
       const mensaje = err instanceof Error ? err.message : 'Error desconocido con la IA.'
       if (esErrorTecnicoIA(mensaje)) {
         setErrorTecnico(mensaje)
         setDescripcion('')
+        setTitulo('')
         limpiarEstadoErrorIA()
       } else {
         mostrarMensajeFotosNoVisibles()
+        setTitulo('')
       }
     } finally {
       setGenerandoIA(false)
@@ -409,6 +410,7 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
     })
     setFotos(crearSlotsVacios())
     setCategoria('')
+    setTitulo('')
     setDescripcion('')
     limpiarEstadoErrorIA()
     setErrorTecnico('')
@@ -433,7 +435,7 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
   };
 
   return (
-    <main className="registrar" style={{ '--font-scale': tamañoLetra }}>
+    <main className="registrar" style={{ '--font-scale': tamanoLetra }}>
       <h2 className="registrar__title">Registrar Incidencias</h2>
       <div className="registrar__controles-texto">
         <button
@@ -444,9 +446,9 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
           ¿Cómo funciona?
         </button>
         <div className="registrar__font-controls">
-          <button type="button"  onClick={() => setTamañoLetra(t => Math.max(0.8, t - 0.1))}>🗛-</button>
-          <button type="button"  onClick={() => setTamañoLetra(1)}>A</button>
-          <button type="button"  onClick={() => setTamañoLetra(t => Math.min(1.7, t + 0.1))}>🗚+</button>
+          <button type="button"  onClick={() => setTamanoLetra(t => Math.max(0.8, t - 0.1))}>🗛-</button>
+          <button type="button"  onClick={() => setTamanoLetra(1)}>A</button>
+          <button type="button"  onClick={() => setTamanoLetra(t => Math.min(1.7, t + 0.1))}>🗚+</button>
         </div>
       </div>
 
@@ -523,6 +525,19 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
             </div>
           </div>
 
+          <div className="registrar__field">
+            <label htmlFor="titulo">Título de la incidencia:</label>
+            <input
+              type="text"
+              id="titulo"
+              value={titulo}
+              onChange={handleTituloChange}
+              placeholder="Se genera automáticamente con IA o escriba uno propio"
+              maxLength={100}
+              className="registrar__titulo-input"
+            />
+          </div>
+
           <div className="registrar__field registrar__field--descripcion">
             <label htmlFor="descripcion">Descripción sobre la incidencia: <span style={{ color: '#ff7a00' }}>*</span></label>
             <div className="registrar__textarea-wrapper">
@@ -587,7 +602,7 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
               key={leafletKey}
               value={ubicacion}
               onConfirm={setUbicacion}
-              fontScale={tamañoLetra} />
+              fontScale={tamanoLetra} />
           </div>
           <div className="registrar__actions">
             <button type="submit" className="registrar__btn registrar__btn--primary">
@@ -626,7 +641,7 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
             />
           </Suspense>
         )}
-        {showHelpModal && <HelpModal onClose={() => setShowHelpModal(false)} fontScale={tamañoLetra} />}
+        {showHelpModal && <HelpModal onClose={() => setShowHelpModal(false)} fontScale={tamanoLetra} />}
       </div>
     </main>
   )
