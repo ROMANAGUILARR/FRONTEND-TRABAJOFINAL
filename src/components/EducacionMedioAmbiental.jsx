@@ -115,7 +115,17 @@ export default function EducacionMedioAmbiental() {
       setError('Debe seleccionar un tipo de material.')
       return
     }
-    setError('Esta funcionalidad requiere el backend activo con IA configurada.')
+    setCargando(true)
+    setError('')
+    setRecomendaciones([])
+    try {
+      const resultado = await generarRecomendaciones(tipoMaterial, contextoExtra)
+      setRecomendaciones(resultado)
+    } catch (err) {
+      setError(err.message ?? 'Error al generar recomendaciones.')
+    } finally {
+      setCargando(false)
+    }
   }
   return (
     <main className="educacion" style={{ '--font-scale': tamañoLetra }}>
@@ -181,9 +191,24 @@ export default function EducacionMedioAmbiental() {
           <span className={`registrar__contador2 ${caracteresRestantes < 50 ? 'registrar__contador2--alerta' : ''}`}>
             {caracteresRestantes} caracteres restantes
           </span>
-          <button type="submit" className="educacion_buttonOR">Obtener recomendaciones</button>
+          <button type="submit" className="educacion_buttonOR" disabled={cargando}>
+            {cargando ? 'Generando recomendaciones...' : 'Obtener recomendaciones'}
+          </button>
         </form>
+        {cargando && <p>Generando recomendaciones con IA, espera unos segundos...</p>}
         {error && <p className="educacion__error">{error}</p>}
+        {recomendaciones.length > 0 && (
+          <div className="espacio_recomendaciones">
+            <h2 className="reco_titulo">Recomendaciones para {tipoMaterial.toLowerCase()}</h2>
+            <ul className="educacion__recomendaciones">
+              {recomendaciones.map((rec, index) => (
+                <li key={index} className="educacion__recomendacion-item">
+                  {rec}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
       <div className="educacion__header">
         <h2 className="educacion__title">Educación Medio Ambiental</h2>
