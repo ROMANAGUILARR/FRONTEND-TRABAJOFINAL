@@ -173,3 +173,6 @@ mysql -u root -p ecosolido < ../BACKEND-TRABAJOFINAL/Database/Script/Seed_Demo.s
 |---------|------------|-----|
 | `admin` | `Admin123` | ADMIN |
 | `ciudadano` | `Ciudadano123` | CIUDADANO |
+## Despliegue
+
+Frontend publicado en Render: https://frontend-trabajofinal.onrender.com
