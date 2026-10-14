@@ -410,54 +410,101 @@
   }
 }
 
+/* Tarjetas: cuadricula con todas las tarjetas del mismo tamano */
 .seguimiento__tarjetas {
-  display: flex;
-  flex-wrap: wrap;
-  height:100%;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
   padding: 16px 0;
 }
 
 .incidencia-tarjeta {
+  display: flex;
+  flex-direction: column;
+  height: calc(190px + 230px * var(--font-scale, 1));
   background-color: #ffffff;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
-  padding: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  width: 280px;
+  overflow: hidden;
+  min-width: 0;
 }
-.incidencia-tarjeta__estado{
-  margin-left:5px;
-  font-size:15px;
+
+.incidencia-tarjeta__imagen-wrapper {
+  flex: 0 0 190px;
+  height: 190px;
+  background-color: #f1f3f2;
 }
+
+.incidencia-tarjeta__imagen {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.incidencia-tarjeta__sin-imagen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #888;
+  font-size: calc(0.9rem*var(--font-scale,1));
+}
+
+.incidencia-tarjeta__cuerpo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding: 14px 16px 16px;
+}
+
 .incidencia-tarjeta__header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 8px;
+  gap: 8px;
+  margin-bottom: 6px;
 }
-.incidencia-tarjeta__imagen {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 12px;
-}
+
 .incidencia-tarjeta__titulo {
   font-size: calc(1rem*var(--font-scale,1));
   font-weight: bold;
+  line-height: 1.3;
   margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.6em;
+}
+
+.incidencia-tarjeta__estado {
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: calc(0.75rem*var(--font-scale,1));
 }
 
 .incidencia-tarjeta__fecha {
   font-size: calc(0.8rem*var(--font-scale,1));
   color: #888;
-  margin-bottom: 8px;
+  margin: 0 0 8px;
 }
 
 .incidencia-tarjeta__descripcion {
   font-size: calc(0.9rem*var(--font-scale,1));
-  margin-bottom: 8px;
+  line-height: 1.4;
+  margin: 0;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .incidencia-tarjeta__ubicacion {
@@ -521,7 +568,7 @@
 }
 
 .incidencia-tarjeta__btn-detalle {
-    margin-top: 8px;
+    margin-top: auto;
     padding: 8px 16px;
     background: var(--color-btn-primary);
     color: white;
@@ -641,6 +688,9 @@
   background: var(--color-accent-green-light);
 }
 
+[data-theme="dark"] .incidencia-tarjeta__imagen-wrapper {
+  background-color: #2a2f2c;
+}
 [data-theme="dark"] .incidencia-tarjeta {
   background-color: var(--color-bg-white);
   border-color: var(--color-border);
