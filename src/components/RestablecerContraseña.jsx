@@ -2,6 +2,12 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import './RestablecerContraseña.css'
 
+function mensajeError(error) {
+    return error.message === 'Failed to fetch'
+        ? 'No se pudo conectar con el servidor. Si nadie lo usó en un rato, puede tardar hasta 1 minuto en activarse; espera un momento e intenta de nuevo.'
+        : error.message;
+}
+
 export default function RestablecerContra() {
     const navigate = useNavigate();
     const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
@@ -46,9 +52,7 @@ export default function RestablecerContra() {
                 throw new Error(errorText);
             }
 
-            {/*const data = await respuesta.json();*/ }
-
-            // Si es teléfono, guardamos para usar después
+                        // Si es teléfono, guardamos para usar después
             if (usarTelefono) {
                 setTelOCel(campo);
             } else {
@@ -58,7 +62,7 @@ export default function RestablecerContra() {
             // Paso 2: Obtener pregunta de seguridad
             await handleObtenerPreguntaSeguridad(campo);
         } catch (error) {
-            setError(error.message);
+            setError(mensajeError(error));
         }
     };
 
@@ -83,7 +87,7 @@ export default function RestablecerContra() {
             setPreguntaSeguridad(data.pregunta);
             setPaso(2);
         } catch (error) {
-            setError(error.message);
+            setError(mensajeError(error));
         }
     };
 
@@ -117,7 +121,7 @@ export default function RestablecerContra() {
             setSuccess('Respuesta verificada correctamente');
             setPaso(3);
         } catch (error) {
-            setError(error.message);
+            setError(mensajeError(error));
         }
     };
 
@@ -141,11 +145,13 @@ export default function RestablecerContra() {
             const body = usarTelefono
                 ? {
                     telefono: telOCel,
+                    respuesta: respuestaSeguridad,
                     nuevaContrasena: nuevaContrasena,
                     nuevaContrasenaRepetida: confirmarContrasena
                 }
                 : {
                     correo: correo,
+                    respuesta: respuestaSeguridad,
                     nuevaContrasena: nuevaContrasena,
                     nuevaContrasenaRepetida: confirmarContrasena
                 };
@@ -166,7 +172,7 @@ export default function RestablecerContra() {
                 navigate("/login");
             }, 3000);
         } catch (error) {
-            setError(error.message);
+            setError(mensajeError(error));
         }
     };
 
