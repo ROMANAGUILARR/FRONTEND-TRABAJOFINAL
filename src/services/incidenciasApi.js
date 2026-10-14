@@ -44,7 +44,7 @@ function extraerMensajeError(cuerpo, status) {
 }
 
 export async function describirFotosConIA(imagenesBase64) {
-  if (esDemo()) return 'Acumulacion de residuos solidos en la via publica. Se observan bolsas de basura rotas con desperdicios dispersos que obstruyen el paso peatonal.'
+  if (esDemo()) return { descripcion: 'Acumulacion de residuos solidos en la via publica. Se observan bolsas de basura rotas con desperdicios dispersos que obstruyen el paso peatonal.', titulo: 'Basura en via publica' }
 
   const token = localStorage.getItem("token");
   const response = await fetch(`${API_BASE}/incidencias/generar-descripcion`, {
@@ -67,7 +67,7 @@ export async function describirFotosConIA(imagenesBase64) {
     if (!data.descripcion) {
       throw new Error('La IA no devolvió una descripción.')
     }
-    return data.descripcion
+    return { descripcion: data.descripcion, titulo: data.titulo || '' }
   } catch (err) {
     if (err instanceof Error && err.message === 'La IA no devolvió una descripción.') {
       throw err
@@ -139,7 +139,7 @@ export async function subirFotosACloudinary(archivos) {
   return data.urls
 }
 
-export async function registrarIncidencia(categoria, descripcion, urlsFotos, archivos, direccionTexto, latitud, longitud) {
+export async function registrarIncidencia(categoria, descripcion, urlsFotos, archivos, direccionTexto, latitud, longitud, titulo) {
   if (esDemo()) {
     return { mensaje: 'Incidencia registrada exitosamente (modo demo)', puntosGanados: 0 }
   }
@@ -149,6 +149,7 @@ export async function registrarIncidencia(categoria, descripcion, urlsFotos, arc
     JSON.stringify({ 
         categoria, 
         descripcion,
+        titulo: titulo || '',
         latitud,
         longitud,
         direccionTexto
