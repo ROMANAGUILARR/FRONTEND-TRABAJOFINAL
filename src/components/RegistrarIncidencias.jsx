@@ -152,10 +152,6 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
     if (descripcionEsErrorIA) limpiarEstadoErrorIA();
   }
 
-  function handleTituloChange(event) {
-    setTitulo(event.target.value);
-  }
-
   const comprimirImagen = (file) => {
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -523,19 +519,6 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
                 ))}
               </select>
             </div>
-          </div>
-
-          <div className="registrar__field">
-            <label htmlFor="titulo">Título de la incidencia:</label>
-            <input
-              type="text"
-              id="titulo"
-              value={titulo}
-              onChange={handleTituloChange}
-              placeholder="Se genera automáticamente con IA o escriba uno propio"
-              maxLength={100}
-              className="registrar__titulo-input"
-            />
           </div>
 
           <div className="registrar__field registrar__field--descripcion">
