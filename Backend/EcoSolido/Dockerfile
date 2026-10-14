@@ -17,17 +17,19 @@ FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 RUN apt-get update && apt-get install -y \
-    mysql-client \
-    && rm -rf /var/lib/apt/lists/
+    default-mysql-client \
+    && rm -rf /var/lib/apt/lists/*
 
+# Render inyecta PORT; Spring usa server.port=${PORT:8081}
 ENV PORT=8080
 ENV SPRING_PROFILES_ACTIVE=prod
 
 COPY --from=builder /app/target/*.jar /app/app.jar
 
 RUN mkdir -p /app/uploads/products /app/uploads/backups /app/certs
-# Forzar la creación de un archivo vacío en caso de que tu código lo requiera al arrancar
 RUN touch /app/certs/ca.pem
+
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+# Escuchar en el puerto que asigne la plataforma (Render / Docker)
+ENTRYPOINT ["sh", "-c", "java -jar /app/app.jar --server.port=${PORT:-8080}"]

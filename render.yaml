@@ -1,0 +1,46 @@
+# EcoSolido — Render Blueprint
+# https://render.com/docs/blueprint-spec
+#
+# Render NO incluye MySQL: necesitas una base externa
+# (Railway, Aiven, PlanetScale, Clever Cloud, etc.).
+
+services:
+  - type: web
+    name: ecosolido-backend
+    runtime: docker
+    rootDir: Backend/EcoSolido
+    plan: free
+    region: frankfurt
+    healthCheckPath: /api/health
+    autoDeploy: true
+    dockerfilePath: ./Dockerfile
+    dockerContext: ./
+
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+
+      # Secreto JWT (Render lo genera la primera vez)
+      - key: TOKEN_SECRET_VALUE
+        generateValue: true
+
+      # APIs externas — completar en el dashboard con tus tokens reales
+      - key: HF_TOKEN
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: RENIEC_API_TOKEN
+        sync: false
+      - key: CLOUDINARY_URL
+        sync: false
+
+      # MySQL externo — completar en el dashboard
+      - key: DB_URL
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+
+      - key: MYSQLDUMP_PATH
+        value: /usr/bin/mysqldump
