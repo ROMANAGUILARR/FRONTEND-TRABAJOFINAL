@@ -165,9 +165,9 @@ src/
 
 ### Demo con datos de ejemplo
 
-`ash
+```bash
 mysql -u root -p ecosolido < ../BACKEND-TRABAJOFINAL/Database/Script/Seed_Demo.sql
-`
+```
 
 | Usuario | Contraseña | Rol |
 |---------|------------|-----|
