@@ -114,7 +114,7 @@ export default function EducacionMedioAmbiental() {
     : ARTICULOS.filter(articulo => articulo.categoria === categoriaActiva)
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!tipoMaterial || tipoMaterial === '--Selecione alguna opción--') {
+    if (!tipoMaterial || tipoMaterial === '--Seleccione alguna opción--') {
       setError('Debe seleccionar un tipo de material.')
       return
     }
@@ -159,7 +159,7 @@ export default function EducacionMedioAmbiental() {
             value={tipoMaterial}
             onChange={(e) => { setTipoMaterial(e.target.value) }}
           >
-            <option value="">--Selecione alguna opción--</option>
+            <option value="">--Seleccione alguna opción--</option>
             {CATEGORIAS2.map(categoria => (
               <option key={categoria} value={categoria}>{categoria}</option>
             ))}
