@@ -2,7 +2,7 @@
 # Puedes crear el servicio desde el dashboard de Render sin este archivo:
 #   Build Command:  npm install && npm run build
 #   Publish Directory: dist
-#   Environment Variable: VITE_API_URL = https://ecosolido-backend.onrender.com
+#   Environment Variable: VITE_API_URL = https://backend-trabajofinal.onrender.com
 services:
   - type: web
     name: ecosolido-frontend
@@ -17,4 +17,4 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        sync: false   # https://ecosolido-backend.onrender.com
+        sync: false   # https://backend-trabajofinal.onrender.com
