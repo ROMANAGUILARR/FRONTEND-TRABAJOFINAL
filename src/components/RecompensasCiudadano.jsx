@@ -19,7 +19,7 @@ const IMAGENES_INSIGNIAS = {
 
 const fs = (base) => `calc(${base}rem * var(--font-scale, 1))`
 
-// Misma estructura para insignias desbloqueadas y bloqueadas, asi todas miden igual
+// Misma estructura para insignias desbloqueadas y bloqueadas, así todas miden igual
 function InsigniaCard({ insignia, desbloqueada }) {
   return (
     <Card
