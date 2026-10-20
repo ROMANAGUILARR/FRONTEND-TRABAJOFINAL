@@ -6,6 +6,11 @@ Formato de versiones: MAJOR.MINOR.PATCH (versionado semántico).
 - MINOR: funcionalidades nuevas compatibles.
 - PATCH: correcciones de errores.
 
+## [1.0.1] - 2026-10-20
+
+### Corregido
+- Las imágenes de las tarjetas de Educación ambiental ahora se cargan desde el proyecto y ya no dependen de un sitio externo.
+
 ## [1.0.0] - 2026-10-19
 
 ### Añadido

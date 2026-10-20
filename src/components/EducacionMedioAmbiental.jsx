@@ -10,7 +10,7 @@ const ARTICULOS = [
     titulo: '¿Cómo reducir tu huella de carbono?',
     resumen: 'Descubre prácticas simples pero efectivas para disminuir tu impacto ambiental en el día a día.',
     categoria: 'Huella de Carbono',
-    imagen: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&h=250&fit=crop',
+    imagen: '/img/educacion/huella-carbono.svg',
     fecha: '2026-06-01',
     contenido: [
       'La huella de carbono es la cantidad total de gases de efecto invernadero que emitimos con nuestras acciones diarias. En Perú, cada persona genera en promedio 1.8 toneladas de CO₂ al año. Reducirla es clave para combatir el cambio climático.',
@@ -23,7 +23,7 @@ const ARTICULOS = [
     titulo: 'Reciclaje: Guía completa para principiantes',
     resumen: 'Aprende a separar correctamente tus residuos y contribuye al cuidado del medio ambiente.',
     categoria: 'Reciclaje',
-    imagen: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=400&h=250&fit=crop',
+    imagen: '/img/educacion/reciclaje.svg',
     fecha: '2026-05-28',
     contenido: [
       'El reciclaje es uno de los gestos más poderosos que podemos hacer por el planeta. En Perú solo se recicla el 5% de los residuos generados. Aprender a separar correctamente es el primer paso para cambiar esta realidad.',
@@ -36,7 +36,7 @@ const ARTICULOS = [
     titulo: 'El impacto de los plásticos en los océanos',
     resumen: 'Conoce cómo los plásticos de un solo uso afectan la vida marina y qué puedes hacer al respecto.',
     categoria: 'Contaminación',
-    imagen: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=400&h=250&fit=crop',
+    imagen: '/img/educacion/plasticos-oceano.svg',
     fecha: '2026-05-25',
     contenido: [
       'Cada año, más de 8 millones de toneladas de plástico llegan a los océanos del mundo. El Perú, con su larga costa del Pacífico, es especialmente afectado. Los plásticos tardan más de 400 años en degradarse y fragmentan en microplásticos que entran en la cadena alimentaria.',
@@ -49,7 +49,7 @@ const ARTICULOS = [
     titulo: 'Energías renovables: El futuro es hoy',
     resumen: 'Explora las diferentes fuentes de energía limpia y cómo están transformando nuestro mundo.',
     categoria: 'Energía',
-    imagen: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=400&h=250&fit=crop',
+    imagen: '/img/educacion/energias-renovables.svg',
     fecha: '2026-05-20',
     contenido: [
       'Las energías renovables provienen de fuentes naturales inagotables: el sol, el viento, el agua y la biomasa. Perú tiene un enorme potolar: la costa recibe radiación solar intensa, los Andes tienen corrientes de viento constantes y la selva cuenta con ríos caudalosos.',
@@ -62,7 +62,7 @@ const ARTICULOS = [
     titulo: 'Compostaje doméstico: Transforma tus residuos',
     resumen: 'Aprende a crear tu propio compost y reduce significativamente la basura que generas.',
     categoria: 'Compostaje',
-    imagen: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=250&fit=crop',
+    imagen: '/img/educacion/compostaje.svg',
     fecha: '2026-05-15',
     contenido: [
       'El compostaje convierte los residuos orgánicos (cáscaras de frutas, verduras, café, cáscaras de huevo) en abono natural para las plantas. Aproximadamente el 50% de la basura que generamos en casa es orgánica, así que compostar reduce enormemente lo que llega al vertedero.',
@@ -75,7 +75,7 @@ const ARTICULOS = [
     titulo: 'Movilidad sostenible: Alternativas ecológicas',
     resumen: 'Descubre opciones de transporte que reducen la contaminación y mejoran tu salud.',
     categoria: 'Movilidad',
-    imagen: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=250&fit=crop',
+    imagen: '/img/educacion/movilidad.svg',
     fecha: '2026-05-10',
     contenido: [
       'El transporte es responsable del 25% de las emisiones de CO₂ en el mundo. En ciudades como Lima, los vehículos particulares son la principal fuente de contaminación del aire. Cambiar nuestros hábitos de movilidad tiene un impacto directo en la calidad del aire que respiramos.',
