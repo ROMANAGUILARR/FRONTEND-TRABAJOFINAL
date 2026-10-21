@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from './ui/Button'
 import Input from './ui/Input'
-import { useAuth } from '../hooks/useAuth'
 import './Registrarse.css'
 
 const PREGUNTAS_SEGURIDAD = [
@@ -15,7 +14,6 @@ const PREGUNTAS_SEGURIDAD = [
 
 export default function Registrarse() {
     const navigate = useNavigate();
-    const { login } = useAuth();
     const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
     const [formData, setFormData] = useState({
         nombre: '', apellido: '', email: '', telefono: '', DNI: '',
@@ -76,18 +74,9 @@ export default function Registrarse() {
                 throw new Error(errorText);
             }
 
-            setSuccess('Registro exitoso! Ingresando al programa...');
-            // Auto-login: el usuario queda registrado e ingresa directo al programa
-            const resultadoLogin = await login(formData.nombreUsuario, formData.contrasena);
-            if (resultadoLogin.success) {
-                setTimeout(() => {
-                    navigate(resultadoLogin.rol === 'ADMIN' ? '/ciudadanos' : '/registro');
-                }, 1200);
-            } else {
-                // Si falla el auto-login, enviar al login manual
-                setSuccess('Registro exitoso! Redirigiendo al login...');
-                setTimeout(() => navigate("/login"), 2000);
-            }
+            // Tras registrarse, el usuario debe iniciar sesión con sus credenciales
+            setSuccess('¡Registro exitoso! Ahora inicia sesión con tu usuario y contraseña.');
+            setTimeout(() => navigate("/login"), 2000);
         } catch (error) {
             setError(error.message === 'Failed to fetch'
                 ? 'No se pudo conectar con el servidor. Si nadie lo usó en un rato, puede tardar hasta 1 minuto en activarse; espera un momento e intenta de nuevo.'
