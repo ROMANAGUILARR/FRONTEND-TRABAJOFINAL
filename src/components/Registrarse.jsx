@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from './ui/Button'
 import Input from './ui/Input'
+import { useAuth } from '../hooks/useAuth'
 import './Registrarse.css'
 
 const PREGUNTAS_SEGURIDAD = [
@@ -14,6 +15,7 @@ const PREGUNTAS_SEGURIDAD = [
 
 export default function Registrarse() {
     const navigate = useNavigate();
+    const { logout } = useAuth();
     const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
     const [formData, setFormData] = useState({
         nombre: '', apellido: '', email: '', telefono: '', DNI: '',
@@ -74,7 +76,10 @@ export default function Registrarse() {
                 throw new Error(errorText);
             }
 
-            // Tras registrarse, el usuario debe iniciar sesión con sus credenciales
+            // Tras registrarse, el usuario debe iniciar sesión con sus credenciales.
+            // Se cierra cualquier sesión previa guardada en el navegador para que
+            // la pantalla de login no redirija automáticamente al programa.
+            logout();
             setSuccess('¡Registro exitoso! Ahora inicia sesión con tu usuario y contraseña.');
             setTimeout(() => navigate("/login"), 2000);
         } catch (error) {
