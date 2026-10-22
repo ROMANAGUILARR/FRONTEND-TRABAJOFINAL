@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import Button from './ui/Button'
 import Input from './ui/Input'
+import ThemeToggleButton from './ThemeToggleButton'
 import './Login.css'
 
 export default function Login({ onLogin }) {
@@ -25,6 +26,7 @@ export default function Login({ onLogin }) {
 
     return (
         <div className="login flex items-center justify-center min-h-screen bg-eco-bg p-5">
+            <ThemeToggleButton />
             <div className="w-full max-w-[420px] bg-eco-bg-white rounded-lg shadow-lg p-10 max-md:p-6 max-sm:p-5">
 
                 {/* Logo */}
@@ -42,7 +44,7 @@ export default function Login({ onLogin }) {
 
                 {/* Error */}
                 {error && (
-                    <div className="bg-red-50 border border-eco-danger text-eco-danger p-3 rounded-md text-sm text-center mb-2">
+                    <div className="bg-[var(--color-accent-red-light)] border border-[var(--color-btn-danger)] text-[var(--color-danger-text)] p-3 rounded-md text-sm text-center mb-2">
                         {error}
                     </div>
                 )}
