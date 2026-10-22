@@ -7,13 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import logo from '../assets/LOGO ECOSOLIDO.png'
 import { obtenerPuntosUsuario } from '../services/incidenciasApi'
-const obtenerTemaInicial = () => {
-    const temaGuardado = localStorage.getItem('theme');
-    if (temaGuardado) {
-      return temaGuardado === 'dark';
-    }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-};
+import { obtenerTemaInicial, aplicarTema } from '../utils/tema'
 export default function Header({ onMenuClick,onLogout }) {
   const [temaOscuro, setTemaOscuro] = useState(obtenerTemaInicial)
   const navigate = useNavigate()
@@ -28,14 +22,7 @@ export default function Header({ onMenuClick,onLogout }) {
     }
   }, [user?.puntos])
   useEffect(() => {
-    const root = document.documentElement
-    if (temaOscuro) {
-        root.setAttribute('data-theme', 'dark')
-        localStorage.setItem('theme', 'dark')
-    } else {
-        root.removeAttribute('data-theme')
-        localStorage.setItem('theme', 'light')
-    }
+    aplicarTema(temaOscuro)
   }, [temaOscuro])
   useEffect(() => {
     async function cargarPuntos() {

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from './ui/Button'
 import Input from './ui/Input'
+import ThemeToggleButton from './ThemeToggleButton'
 import { useAuth } from '../hooks/useAuth'
 import './Registrarse.css'
 
@@ -93,6 +94,7 @@ export default function Registrarse() {
 
     return (
         <div className="registrarse flex items-center justify-center min-h-screen bg-eco-bg p-5 max-sm:p-3">
+            <ThemeToggleButton />
             <div className="w-full max-w-[520px] bg-eco-bg-white rounded-lg shadow-lg p-10 max-md:p-6 max-sm:p-5">
 
                 {/* Logo */}
@@ -106,12 +108,12 @@ export default function Registrarse() {
 
                 {/* Mensajes */}
                 {error && (
-                    <div className="bg-red-50 border border-eco-danger text-eco-danger p-3 rounded-md text-sm text-center mb-3">
+                    <div className="bg-[var(--color-accent-red-light)] border border-[var(--color-btn-danger)] text-[var(--color-danger-text)] p-3 rounded-md text-sm text-center mb-3">
                         {error}
                     </div>
                 )}
                 {success && (
-                    <div className="bg-green-50 border border-eco-success text-eco-success p-3 rounded-md text-sm text-center mb-3">
+                    <div className="bg-[var(--color-accent-green-light)] border border-[var(--color-btn-success)] text-[var(--color-success-text)] p-3 rounded-md text-sm text-center mb-3">
                         {success}
                     </div>
                 )}
@@ -148,7 +150,7 @@ export default function Registrarse() {
                     <Input label="Contraseña" name="contrasena" placeholder="Mínimo 6 caracteres" value={formData.contrasena} onChange={handleChange} required showToggle />
                     <Input label="Confirmar contraseña" name="confirmarContrasena" placeholder="Repite tu contraseña" value={formData.confirmarContrasena} onChange={handleChange} required showToggle />
 
-                    <span className="text-eco-warning text-xs font-medium">* Campo Obligatorio</span>
+                    <span className="text-[var(--color-warning-text)] text-xs font-medium">* Campo Obligatorio</span>
 
                     <Button type="submit" variant="primary" size="lg" fullWidth disabled={enviando}>
                         {enviando ? 'Creando cuenta...' : 'Crear Cuenta'}
