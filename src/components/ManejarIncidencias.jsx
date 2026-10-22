@@ -6,6 +6,10 @@ import './SeguimientoIncidencias.css'
 import './ManejarIncidencias.css'
 import './AIConfirmModal.css'
 import DeleteConfirmModal from './DeleteConfirmModal'
+import AsignarCuadrillaModal from './AsignarCuadrillaModal'
+import ResolverIncidenciaModal from './ResolverIncidenciaModal'
+import HistorialIncidencia from './HistorialIncidencia'
+import './Cuadrillas.css'
 
 const ITEMS_POR_PAGINA = 10
 
@@ -113,6 +117,17 @@ export default function ManejarIncidencias() {
   const [editando, setEditando] = useState(null)
   const [formulario, setFormulario] = useState({ categoria: '', descripcion: '', estado: 'PENDIENTE', direccionTexto: '' })
   const [paginaActual, setPaginaActual] = useState(1)
+  // Atención por cuadrillas
+  const [asignando, setAsignando] = useState(null)
+  const [resolviendo, setResolviendo] = useState(null)
+  const [viendoHistorial, setViendoHistorial] = useState(null)
+  const modoDemo = esDemo()
+
+  function actualizarFila(actualizada) {
+    setIncidencias(prev => prev.map(inc =>
+      inc.idIncidencia === actualizada.idIncidencia ? { ...inc, ...actualizada } : inc
+    ))
+  }
 
   useEffect(() => {
     async function mostrarIncidencias() {
@@ -137,13 +152,14 @@ export default function ManejarIncidencias() {
   // Close modal on Escape
   useEffect(() => {
     function handleKeyDown(e) {
-      if (e.key === 'Escape' && editando) {
-        setEditando(null)
+      if (e.key === 'Escape') {
+        if (editando) setEditando(null)
+        if (viendoHistorial) setViendoHistorial(null)
       }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [editando])
+  }, [editando, viendoHistorial])
 
   async function handleEditar() {
     if (!formulario.categoria || !formulario.descripcion) { alert('Completa todos los campos obligatorios.'); return }
@@ -217,6 +233,7 @@ export default function ManejarIncidencias() {
       (incidencia.titulo || '').toLowerCase().includes(busqueda.toLowerCase()) ||
       categoriaDe(incidencia).toLowerCase().includes(busqueda.toLowerCase()) ||
       obtenerReportadoPor(incidencia).toLowerCase().includes(busqueda.toLowerCase()) ||
+      (incidencia.cuadrillaNombre || '').toLowerCase().includes(busqueda.toLowerCase()) ||
       (incidencia.direccionTexto || '').toLowerCase().includes(busqueda.toLowerCase())
     return coincideEstado && coincideBusqueda
   })
@@ -268,7 +285,7 @@ export default function ManejarIncidencias() {
       {/* Buscador y filtros */}
       <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
         <input
-          type="text" placeholder="Buscar por fecha, título o ubicación..."
+          type="text" placeholder="Buscar por fecha, título, ubicación o cuadrilla..."
           value={busqueda} onChange={e => setBusqueda(e.target.value)}
           className="admin-input" style={{ flex: 1, minWidth: '300px' }}
         />
@@ -297,6 +314,7 @@ export default function ManejarIncidencias() {
                   <th>#</th>
                   <th>Categoría</th>
                   <th>Estado</th>
+                  <th>Cuadrilla</th>
                   <th>Descripción</th>
                   <th>Reportado por</th>
                   <th>Ubicación</th>
@@ -313,11 +331,39 @@ export default function ManejarIncidencias() {
                         {ESTADO_LABEL[incidencia.estado] || incidencia.estado}
                       </span>
                     </td>
+                    <td>
+                      {incidencia.cuadrillaNombre ? (
+                        <span className="cuad-celda">
+                          <span className="cuad-celda__nombre">{incidencia.cuadrillaNombre}</span>
+                          {incidencia.cuadrillaZona && <span className="cuad-celda__zona">{incidencia.cuadrillaZona}</span>}
+                        </span>
+                      ) : (
+                        <span className="cuad-celda__sin">Sin asignar</span>
+                      )}
+                    </td>
                     <td style={{ maxWidth: '250px', whiteSpace: 'normal', wordBreak: 'break-word' }}>{incidencia.descripcion}</td>
                     <td>{obtenerReportadoPor(incidencia)}</td>
                     <td>{incidencia.direccionTexto || 'No se sabe'}</td>
                     <td>
                       <div className="admin-table__acciones">
+                        {!modoDemo && incidencia.estado !== 'RESUELTO' && (
+                          <button onClick={() => setAsignando(incidencia)} className="admin-btn admin-btn--primary"
+                            title={incidencia.cuadrillaNombre ? 'Cambiar la cuadrilla responsable' : 'Elegir la cuadrilla que atenderá'}>
+                            {incidencia.cuadrillaNombre ? 'Reasignar' : 'Asignar'}
+                          </button>
+                        )}
+                        {!modoDemo && incidencia.estado !== 'RESUELTO' && (
+                          <button onClick={() => setResolviendo(incidencia)} className="admin-btn admin-btn--save"
+                            disabled={!incidencia.cuadrillaNombre}
+                            title={incidencia.cuadrillaNombre ? 'Subir fotos del trabajo terminado' : 'Primero asigna una cuadrilla'}>
+                            Resolver
+                          </button>
+                        )}
+                        {!modoDemo && (
+                          <button onClick={() => setViendoHistorial(incidencia)} className="admin-btn admin-btn--cancel" title="Ver quién cambió qué y cuándo">
+                            Historial
+                          </button>
+                        )}
                         <button onClick={() => abrirEditar(incidencia)} className="admin-btn admin-btn--edit">
                           Editar
                         </button>
@@ -378,7 +424,10 @@ export default function ManejarIncidencias() {
                 <select value={formulario.estado} onChange={e => setFormulario(f => ({ ...f, estado: e.target.value }))} className="admin-input">
                   <option value="PENDIENTE">Pendiente</option>
                   <option value="EN_PROCESO">En Proceso</option>
-                  <option value="RESUELTO">Resuelto</option>
+                  {/* Resolver exige fotos de evidencia: se hace con el botón "Resolver" */}
+                  <option value="RESUELTO" disabled={editando.estado !== 'RESUELTO' && !modoDemo}>
+                    {editando.estado !== 'RESUELTO' && !modoDemo ? 'Resuelto (usa el botón Resolver)' : 'Resuelto'}
+                  </option>
                 </select>
               </div>
               <div className="admin-modal__full-width">
@@ -393,6 +442,51 @@ export default function ManejarIncidencias() {
             <div className="admin-modal__actions">
               <button onClick={() => setEditando(null)} className="admin-btn admin-btn--cancel">Cancelar</button>
               <button onClick={handleEditar} className="admin-btn admin-btn--save">Guardar Cambios</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {asignando && (
+        <AsignarCuadrillaModal
+          incidencia={asignando}
+          onClose={() => setAsignando(null)}
+          onAsignada={(actualizada) => { actualizarFila(actualizada); setAsignando(null) }}
+        />
+      )}
+
+      {resolviendo && (
+        <ResolverIncidenciaModal
+          incidencia={resolviendo}
+          onClose={() => setResolviendo(null)}
+          onResuelta={(actualizada) => { actualizarFila(actualizada); setResolviendo(null) }}
+        />
+      )}
+
+      {viendoHistorial && (
+        <div className="admin-modal-overlay" onClick={() => setViendoHistorial(null)}>
+          <div className="admin-modal cuad-modal" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="historial-titulo">
+            <h3 className="admin-modal__title" id="historial-titulo">
+              <i className="fa-solid fa-clock-rotate-left" style={{ marginRight: '8px' }}></i>
+              {viendoHistorial.titulo || categoriaDe(viendoHistorial)}
+            </h3>
+            <p className="cuad-modal__contexto">
+              <span>Cuadrilla: {viendoHistorial.cuadrillaNombre || 'Sin asignar'}</span>
+              <span>Estado actual: {ESTADO_LABEL[viendoHistorial.estado] || viendoHistorial.estado}</span>
+            </p>
+            {viendoHistorial.urlsEvidencias?.length > 0 && (
+              <>
+                <span className="admin-modal__label">Evidencia del trabajo terminado</span>
+                <div className="atencion__evidencias">
+                  {viendoHistorial.urlsEvidencias.map((url, i) => (
+                    <a key={url} href={url} target="_blank" rel="noreferrer"><img src={url} alt={`Evidencia ${i + 1}`} /></a>
+                  ))}
+                </div>
+              </>
+            )}
+            <HistorialIncidencia key={viendoHistorial.idIncidencia} incidencia={viendoHistorial} mostrarAutor />
+            <div className="admin-modal__actions">
+              <button onClick={() => setViendoHistorial(null)} className="admin-btn admin-btn--cancel">Cerrar</button>
             </div>
           </div>
         </div>
