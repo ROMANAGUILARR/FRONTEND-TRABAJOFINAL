@@ -17,10 +17,9 @@ export default function ThemeToggleButton() {
       onClick={() => setTemaOscuro(prev => !prev)}
       aria-label={temaOscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
       title={temaOscuro ? 'Modo claro' : 'Modo oscuro'}
-      className="fixed top-4 right-4 z-50 flex items-center gap-2 py-2 px-3.5 rounded-full border-2 border-eco-border bg-eco-bg-white text-eco-text text-sm font-semibold shadow-md cursor-pointer transition-all duration-200 hover:border-eco-primary hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-eco-primary max-sm:top-3 max-sm:right-3 max-sm:px-2.5"
+      className="fixed top-4 right-4 z-50 flex items-center justify-center w-11 h-11 rounded-full border-2 border-eco-border bg-eco-bg-white text-eco-text shadow-md cursor-pointer transition-all duration-200 hover:border-eco-primary hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-eco-primary max-sm:top-3 max-sm:right-3"
     >
       {temaOscuro ? <IconSol /> : <IconLuna />}
-      <span className="max-sm:hidden">{temaOscuro ? 'Modo claro' : 'Modo oscuro'}</span>
     </button>
   )
 }
