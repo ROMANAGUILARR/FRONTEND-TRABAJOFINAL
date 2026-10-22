@@ -4,6 +4,7 @@ import { MOCK_INCIDENCIAS_POR_USUARIO } from '../services/mockData'
 const ITEMS_POR_PAGINA = 10
 import './SeguimientoIncidencias.css'
 import HelpModal from './HelpModal'
+import HistorialIncidencia, { formatearFechaHora } from './HistorialIncidencia'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 
 // Iconos SVG inline
@@ -401,6 +402,37 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
                   />
                 ))}
               </div>
+            )}
+
+            {/* Atención de la incidencia (cuadrilla, evidencia e historial) */}
+            {incidenciaDetalle.idIncidencia && !['demo-token', 'demo-token-admin'].includes(localStorage.getItem('token')) && (
+              <>
+                <div className="atencion">
+                  <h4 className="atencion__titulo">Atención</h4>
+                  {incidenciaDetalle.cuadrillaNombre ? (
+                    <p>
+                      <strong>Atendida por:</strong> {incidenciaDetalle.cuadrillaNombre}
+                      {incidenciaDetalle.cuadrillaZona ? ` (${incidenciaDetalle.cuadrillaZona})` : ''}
+                    </p>
+                  ) : (
+                    <p>Tu reporte está en espera de que se le asigne una cuadrilla.</p>
+                  )}
+                  {incidenciaDetalle.fechaResolucion && (
+                    <p><strong>Resuelta el:</strong> {formatearFechaHora(incidenciaDetalle.fechaResolucion)}</p>
+                  )}
+                  {incidenciaDetalle.urlsEvidencias?.length > 0 && (
+                    <>
+                      <p><strong>Así quedó el lugar:</strong></p>
+                      <div className="atencion__evidencias">
+                        {incidenciaDetalle.urlsEvidencias.map((url, index) => (
+                          <img key={url} src={url} alt={`Trabajo terminado, foto ${index + 1}`} />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+                <HistorialIncidencia key={incidenciaDetalle.idIncidencia} incidencia={incidenciaDetalle} />
+              </>
             )}
           </div>
         </div>

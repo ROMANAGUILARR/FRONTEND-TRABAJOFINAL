@@ -60,6 +60,17 @@ export function IconDashboard() {
     </svg>
   )
 }
+export function IconCuadrillas() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="8" r="3" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="5.5" cy="10" r="2.2" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="18.5" cy="10" r="2.2" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M6.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M2 18c0-2 1.5-3.5 3.5-3.5M22 18c0-2-1.5-3.5-3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  )
+}
 export function IconIncidencias() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
