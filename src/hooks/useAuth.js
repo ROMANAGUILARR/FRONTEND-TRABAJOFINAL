@@ -124,6 +124,7 @@ export function AuthProvider({ children }) {
       insignias: ['CIUDADANO'],
       ciudadanos: ['ADMIN'],
       gestion: ['ADMIN'],
+      cuadrillas: ['ADMIN'],
       dashboard: ['ADMIN'],
     };
 
