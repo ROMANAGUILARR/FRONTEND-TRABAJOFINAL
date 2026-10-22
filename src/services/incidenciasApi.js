@@ -6,7 +6,7 @@ function esDemo() {
   return token === 'demo-token' || token === 'demo-token-admin'
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
+const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8080' : 'https://backend-trabajofinal.onrender.com')
 const MAX_LADO_PX = 1280
 const CALIDAD_JPEG = 0.82
 function extraerMensajeError(cuerpo, status) {

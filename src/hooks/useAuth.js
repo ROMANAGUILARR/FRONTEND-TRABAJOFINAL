@@ -16,7 +16,7 @@ function permisosPorRol(rol) {
  * Provider que envuelve la aplicación y comparte el estado de autenticación
  */
 export function AuthProvider({ children }) {
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+  const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8080' : 'https://backend-trabajofinal.onrender.com');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
