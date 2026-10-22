@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { listarCuadrillas, asignarCuadrilla } from '../services/cuadrillasApi'
-import { coincideZona } from '../utils/zonas'
+import { coincideZona, compararNombres } from '../utils/zonas'
 import './Cuadrillas.css'
 
 /** Elige la cuadrilla responsable; primero aparecen las de la misma zona que la incidencia. */
@@ -27,11 +27,20 @@ export default function AsignarCuadrillaModal({ incidencia, onClose, onAsignada 
   const opciones = useMemo(() => {
     return cuadrillas
       .filter((c) => c.activa || c.idCuadrilla === incidencia.idCuadrilla)
-      .map((c) => ({ ...c, sugerida: coincideZona(c.zona, incidencia.direccionTexto) }))
-      .sort((a, b) =>
-        Number(b.sugerida) - Number(a.sugerida) ||
-        (a.pendientes + a.enProceso) - (b.pendientes + b.enProceso) ||
-        a.nombre.localeCompare(b.nombre))
+      .map((c) => {
+        const enCurso = c.pendientes + c.enProceso
+        const limite = c.limiteEnCurso ?? 3
+        return {
+          ...c,
+          enCurso,
+          limite,
+          sugerida: coincideZona(c.zona, incidencia.direccionTexto),
+          // Llena: ya tiene el máximo de incidencias en curso (salvo que sea la actual)
+          ocupada: enCurso >= limite && c.idCuadrilla !== incidencia.idCuadrilla,
+        }
+      })
+      // En orden por nombre (1, 2, 3, 4…); las ocupadas se ven deshabilitadas
+      .sort((a, b) => compararNombres(a.nombre, b.nombre))
   }, [cuadrillas, incidencia])
 
   async function guardar(idCuadrilla) {
@@ -47,6 +56,7 @@ export default function AsignarCuadrillaModal({ incidencia, onClose, onAsignada 
   }
 
   const sinCambios = (seleccion ?? null) === (incidencia.idCuadrilla ?? null)
+  const todasOcupadas = opciones.length > 0 && opciones.every((c) => c.ocupada)
 
   return (
     <div className="admin-modal-overlay" onClick={() => !guardando && onClose()}>
@@ -56,7 +66,7 @@ export default function AsignarCuadrillaModal({ incidencia, onClose, onAsignada 
         </h3>
         <p className="cuad-modal__contexto">
           <strong>{incidencia.titulo || incidencia.categoria}</strong>
-          <span>{incidencia.direccionTexto || 'Sin dirección registrada'}</span>
+          <span><strong>Ubicación:</strong> {incidencia.direccionTexto || 'Sin dirección registrada'}</span>
         </p>
 
         {error && <p className="cuad-alerta cuad-alerta--error">{error}</p>}
@@ -67,22 +77,33 @@ export default function AsignarCuadrillaModal({ incidencia, onClose, onAsignada 
             No hay cuadrillas activas. Créalas en <strong>Gestión de Cuadrillas</strong>.
           </p>
         ) : (
+          <>
+          {todasOcupadas && (
+            <p className="cuad-alerta cuad-alerta--aviso">
+              Todas las cuadrillas están ocupadas. Resuelve alguna incidencia o crea otra cuadrilla.
+            </p>
+          )}
           <ul className="cuad-opciones" role="radiogroup" aria-label="Cuadrillas disponibles">
             {opciones.map((c) => {
               const jefe = c.trabajadores.find((t) => t.esJefe)
               const activos = c.trabajadores.filter((t) => t.activo).length
               return (
                 <li key={c.idCuadrilla}>
-                  <label className={`cuad-opcion ${seleccion === c.idCuadrilla ? 'cuad-opcion--activa' : ''}`}>
+                  <label
+                    className={`cuad-opcion ${seleccion === c.idCuadrilla ? 'cuad-opcion--activa' : ''} ${c.ocupada ? 'cuad-opcion--ocupada' : ''}`}
+                    title={c.ocupada ? `Ocupada: ya tiene ${c.enCurso} incidencias en curso (máximo ${c.limite})` : undefined}
+                  >
                     <input
                       type="radio"
                       name="cuadrilla"
                       checked={seleccion === c.idCuadrilla}
+                      disabled={c.ocupada}
                       onChange={() => setSeleccion(c.idCuadrilla)}
                     />
                     <span className="cuad-opcion__cuerpo">
                       <span className="cuad-opcion__nombre">
                         {c.nombre}
+                        {c.ocupada && <span className="cuad-chip cuad-chip--ocupada">Ocupada</span>}
                         {c.sugerida && <span className="cuad-chip cuad-chip--sugerida">Misma zona</span>}
                         {!c.activa && <span className="cuad-chip">Inactiva</span>}
                       </span>
@@ -91,7 +112,7 @@ export default function AsignarCuadrillaModal({ incidencia, onClose, onAsignada 
                         {jefe ? ` · Jefe: ${jefe.nombreCompleto}` : ''}
                       </span>
                       <span className="cuad-opcion__meta">
-                        Carga actual: {c.pendientes + c.enProceso} en curso
+                        En curso: {c.enCurso} de {c.limite}
                       </span>
                     </span>
                   </label>
@@ -99,6 +120,7 @@ export default function AsignarCuadrillaModal({ incidencia, onClose, onAsignada 
               )
             })}
           </ul>
+          </>
         )}
 
         <div className="admin-modal__actions cuad-modal__acciones">

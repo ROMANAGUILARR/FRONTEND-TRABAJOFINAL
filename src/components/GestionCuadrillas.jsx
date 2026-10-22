@@ -3,7 +3,7 @@ import {
   listarCuadrillas, crearCuadrilla, actualizarCuadrilla, eliminarCuadrilla,
   agregarTrabajador, actualizarTrabajador, eliminarTrabajador,
 } from '../services/cuadrillasApi'
-import { DISTRITOS_LIMA, normalizarTexto } from '../utils/zonas'
+import { DISTRITOS_LIMA, normalizarTexto, compararNombres } from '../utils/zonas'
 import './ManejarIncidencias.css'
 import './Cuadrillas.css'
 
@@ -66,6 +66,7 @@ export default function GestionCuadrillas() {
       (verInactivas || c.activa) &&
       (!q || normalizarTexto(c.nombre).includes(q) || normalizarTexto(c.zona).includes(q) ||
         c.trabajadores.some((t) => normalizarTexto(t.nombreCompleto).includes(q))))
+      .sort((a, b) => compararNombres(a.nombre, b.nombre))
   }, [cuadrillas, busqueda, verInactivas])
 
   const metricas = useMemo(() => {
@@ -261,9 +262,16 @@ export default function GestionCuadrillas() {
                     <i className="fa-solid fa-location-dot" aria-hidden="true"></i> {c.zona || 'Sin zona asignada'}
                   </span>
                 </div>
-                <span className={`cuad-chip ${c.activa ? 'cuad-chip--activa' : ''}`}>{c.activa ? 'Activa' : 'Inactiva'}</span>
+                {c.activa && c.pendientes + c.enProceso >= (c.limiteEnCurso ?? 3) ? (
+                  <span className="cuad-chip cuad-chip--ocupada" title="Llegó al máximo de incidencias en curso">Ocupada</span>
+                ) : (
+                  <span className={`cuad-chip ${c.activa ? 'cuad-chip--activa' : ''}`}>{c.activa ? 'Activa' : 'Inactiva'}</span>
+                )}
               </header>
 
+              <p className="cuad-card__limite">
+                En curso: <strong>{c.pendientes + c.enProceso} de {c.limiteEnCurso ?? 3}</strong> incidencias
+              </p>
               <div className="cuad-card__carga" aria-label="Carga de trabajo">
                 <span><strong>{c.pendientes}</strong> Pendientes</span>
                 <span><strong>{c.enProceso}</strong> En proceso</span>

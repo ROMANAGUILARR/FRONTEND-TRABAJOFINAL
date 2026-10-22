@@ -56,7 +56,8 @@ export default function ResolverIncidenciaModal({ incidencia, onClose, onResuelt
         </h3>
         <p className="cuad-modal__contexto">
           <strong>{incidencia.titulo || incidencia.categoria}</strong>
-          <span>Atendida por: {incidencia.cuadrillaNombre}</span>
+          <span><strong>Ubicación:</strong> {incidencia.direccionTexto || 'Sin dirección registrada'}</span>
+          <span><strong>Atendida por:</strong> {incidencia.cuadrillaNombre}</span>
         </p>
 
         {error && <p className="cuad-alerta cuad-alerta--error">{error}</p>}
