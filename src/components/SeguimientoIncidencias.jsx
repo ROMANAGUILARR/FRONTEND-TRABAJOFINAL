@@ -58,7 +58,7 @@ const FILTROS_ESTADO = [
 
 export default function SeguimientoIncidencias({ incidencias: propsIncidencias }) {
   const [filtroEstado, setFiltroEstado] = useState('todos')
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
+  const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8080' : 'https://backend-trabajofinal.onrender.com')
   const [busqueda, setBusqueda] = useState('')
   const INCIDENCIAS_FALSAS = []
   const [tamañoLetra, setTamañoLetra] = useState(1);

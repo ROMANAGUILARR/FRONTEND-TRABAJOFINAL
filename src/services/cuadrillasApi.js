@@ -1,5 +1,5 @@
 // Cuadrillas de limpieza, asignación de incidencias, resolución con evidencia e historial
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
+const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8080' : 'https://backend-trabajofinal.onrender.com')
 const MAX_LADO_PX = 1600
 const CALIDAD_JPEG = 0.85
 
