@@ -3,8 +3,8 @@ const variants = {
   danger: 'bg-eco-danger text-white hover:bg-red-500 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0',
   secondary: 'bg-eco-gray text-white hover:bg-eco-gray-dark hover:shadow-md hover:-translate-y-0.5 active:translate-y-0',
   success: 'bg-eco-success text-white hover:bg-green-700 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0',
-  ghost: 'bg-transparent text-eco-primary hover:bg-eco-primary/10',
-  link: 'bg-transparent text-eco-primary font-semibold p-0 hover:text-eco-primary-dark hover:underline',
+  ghost: 'bg-transparent text-[var(--color-link)] hover:bg-eco-primary/10',
+  link: 'bg-transparent text-[var(--color-link)] font-semibold p-0 hover:text-[var(--color-link-hover)] hover:underline',
 }
 
 const sizes = {
