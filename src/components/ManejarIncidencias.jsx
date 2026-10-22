@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
-import { ESTADO_BADGE, ESTADO_LABEL, CATEGORIAS, formatearFecha } from '../utils/incidenciaConstants'
+import { ESTADO_BADGE, ESTADO_LABEL, formatearFecha } from '../utils/incidenciaConstants'
 import { MOCK_USUARIOS, MOCK_INCIDENCIAS_POR_USUARIO } from '../services/mockData'
-import { actualizarIncidencia, eliminarIncidencia } from '../services/incidenciasApi'
+import { eliminarIncidencia } from '../services/incidenciasApi'
 import './SeguimientoIncidencias.css'
 import './ManejarIncidencias.css'
 import './AIConfirmModal.css'
@@ -114,8 +114,6 @@ export default function ManejarIncidencias() {
   const [busqueda, setBusqueda] = useState('')
   const [incidenciaAEliminar, setIncidenciaAEliminar] = useState(null)
   const [incidencias, setIncidencias] = useState([])
-  const [editando, setEditando] = useState(null)
-  const [formulario, setFormulario] = useState({ categoria: '', descripcion: '', estado: 'PENDIENTE', direccionTexto: '' })
   const [paginaActual, setPaginaActual] = useState(1)
   // Atención por cuadrillas
   const [asignando, setAsignando] = useState(null)
@@ -153,45 +151,12 @@ export default function ManejarIncidencias() {
   useEffect(() => {
     function handleKeyDown(e) {
       if (e.key === 'Escape') {
-        if (editando) setEditando(null)
         if (viendoHistorial) setViendoHistorial(null)
       }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [editando, viendoHistorial])
-
-  async function handleEditar() {
-    if (!formulario.categoria || !formulario.descripcion) { alert('Completa todos los campos obligatorios.'); return }
-    const payload = {
-      titulo: editando.titulo || formulario.categoria,
-      descripcion: formulario.descripcion,
-      categoria: formulario.categoria,
-      estado: formulario.estado,
-      direccionTexto: formulario.direccionTexto || editando.direccionTexto || '',
-      latitud: editando.latitud ?? null,
-      longitud: editando.longitud ?? null
-    }
-    try {
-      if (esDemo()) {
-        const actualizadas = incidencias.map(inc =>
-          inc.idIncidencia === editando.idIncidencia
-            ? { ...inc, titulo: formulario.categoria, categoria: formulario.categoria, descripcion: formulario.descripcion, estado: formulario.estado, direccionTexto: formulario.direccionTexto }
-            : inc
-        )
-        setIncidencias(actualizadas)
-        guardarIncidenciasDemo(actualizadas)
-      } else {
-        const actualizada = await actualizarIncidencia(editando.idIncidencia, payload)
-        setIncidencias(prev => prev.map(inc =>
-          inc.idIncidencia === editando.idIncidencia ? { ...inc, ...actualizada } : inc
-        ))
-      }
-      setEditando(null)
-    } catch (error) {
-      alert(error.message || 'No se pudo actualizar la incidencia')
-    }
-  }
+  }, [viendoHistorial])
 
   function handleEliminar(id) {
     setIncidenciaAEliminar(id)
@@ -212,11 +177,6 @@ export default function ManejarIncidencias() {
     } catch (error) {
       alert(error.message || 'No se pudo eliminar la incidencia')
     }
-  }
-
-  function abrirEditar(incidencia) {
-    setEditando(incidencia)
-    setFormulario({ categoria: categoriaDe(incidencia), descripcion: incidencia.descripcion, estado: incidencia.estado, direccionTexto: incidencia.direccionTexto || '' })
   }
 
   function obtenerReportadoPor(incidencia) {
@@ -364,9 +324,6 @@ export default function ManejarIncidencias() {
                             Historial
                           </button>
                         )}
-                        <button onClick={() => abrirEditar(incidencia)} className="admin-btn admin-btn--edit">
-                          Editar
-                        </button>
                         <button onClick={() => handleEliminar(incidencia.idIncidencia)} className="admin-btn admin-btn--delete">
                           Eliminar
                         </button>
@@ -401,50 +358,6 @@ export default function ManejarIncidencias() {
             </div>
           )}
         </>
-      )}
-
-      {/* Modal de edición */}
-      {editando && (
-        <div className="admin-modal-overlay" onClick={() => setEditando(null)}>
-          <div className="admin-modal" onClick={e => e.stopPropagation()}>
-            <h3 className="admin-modal__title"><i className="fa-solid fa-pen-to-square" style={{ marginRight: '8px' }}></i>Editar Incidencia</h3>
-            <div className="admin-modal__form-grid">
-              <div>
-                <label className="admin-modal__label">Categoría:</label>
-                <select value={formulario.categoria} onChange={e => setFormulario(f => ({ ...f, categoria: e.target.value }))} className="admin-input">
-                  <option value="">-- Selecciona --</option>
-                  {CATEGORIAS.map(c => <option key={c} value={c}>{c}</option>)}
-                  {formulario.categoria && !CATEGORIAS.includes(formulario.categoria) && (
-                    <option value={formulario.categoria}>{formulario.categoria}</option>
-                  )}
-                </select>
-              </div>
-              <div>
-                <label className="admin-modal__label">Estado:</label>
-                <select value={formulario.estado} onChange={e => setFormulario(f => ({ ...f, estado: e.target.value }))} className="admin-input">
-                  <option value="PENDIENTE">Pendiente</option>
-                  <option value="EN_PROCESO">En Proceso</option>
-                  {/* Resolver exige fotos de evidencia: se hace con el botón "Resolver" */}
-                  <option value="RESUELTO" disabled={editando.estado !== 'RESUELTO' && !modoDemo}>
-                    {editando.estado !== 'RESUELTO' && !modoDemo ? 'Resuelto (usa el botón Resolver)' : 'Resuelto'}
-                  </option>
-                </select>
-              </div>
-              <div className="admin-modal__full-width">
-                <label className="admin-modal__label">Descripción:</label>
-                <textarea value={formulario.descripcion} onChange={e => setFormulario(f => ({ ...f, descripcion: e.target.value }))} className="admin-input" style={{ minHeight: '80px', resize: 'vertical' }} />
-              </div>
-              <div className="admin-modal__full-width">
-                <label className="admin-modal__label">Dirección:</label>
-                <input value={formulario.direccionTexto} onChange={e => setFormulario(f => ({ ...f, direccionTexto: e.target.value }))} className="admin-input" />
-              </div>
-            </div>
-            <div className="admin-modal__actions">
-              <button onClick={() => setEditando(null)} className="admin-btn admin-btn--cancel">Cancelar</button>
-              <button onClick={handleEditar} className="admin-btn admin-btn--save">Guardar Cambios</button>
-            </div>
-          </div>
-        </div>
       )}
 
       {asignando && (
@@ -484,7 +397,7 @@ export default function ManejarIncidencias() {
                 </div>
               </>
             )}
-            <HistorialIncidencia key={viendoHistorial.idIncidencia} incidencia={viendoHistorial} mostrarAutor />
+            <HistorialIncidencia key={viendoHistorial.idIncidencia} incidencia={viendoHistorial} />
             <div className="admin-modal__actions">
               <button onClick={() => setViendoHistorial(null)} className="admin-btn admin-btn--cancel">Cerrar</button>
             </div>
