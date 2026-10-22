@@ -257,6 +257,37 @@
   border-color: transparent;
 }
 
+.cuad-chip--ocupada {
+  background: var(--color-accent-red-light);
+  color: var(--color-danger-text);
+  border-color: transparent;
+}
+
+.cuad-opcion--ocupada {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.cuad-opcion--ocupada:hover {
+  border-color: var(--color-border);
+}
+
+.cuad-card__limite {
+  margin: -6px 0 0;
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+
+.cuad-card__limite strong {
+  color: var(--color-text);
+}
+
+.cuad-alerta--aviso {
+  background: var(--color-accent-orange-light);
+  color: var(--color-warning-text);
+  border: 1px solid var(--color-btn-warning);
+}
+
 .cuad-chip--jefe {
   background: var(--color-accent-orange-light);
   color: var(--color-warning-text);

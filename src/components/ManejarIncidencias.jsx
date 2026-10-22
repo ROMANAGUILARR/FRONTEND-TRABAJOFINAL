@@ -384,8 +384,9 @@ export default function ManejarIncidencias() {
               {viendoHistorial.titulo || categoriaDe(viendoHistorial)}
             </h3>
             <p className="cuad-modal__contexto">
-              <span>Cuadrilla: {viendoHistorial.cuadrillaNombre || 'Sin asignar'}</span>
-              <span>Estado actual: {ESTADO_LABEL[viendoHistorial.estado] || viendoHistorial.estado}</span>
+              <span><strong>Ubicación:</strong> {viendoHistorial.direccionTexto || 'Sin dirección registrada'}</span>
+              <span><strong>Cuadrilla:</strong> {viendoHistorial.cuadrillaNombre || 'Sin asignar'}</span>
+              <span><strong>Estado actual:</strong> {ESTADO_LABEL[viendoHistorial.estado] || viendoHistorial.estado}</span>
             </p>
             {viendoHistorial.urlsEvidencias?.length > 0 && (
               <>
