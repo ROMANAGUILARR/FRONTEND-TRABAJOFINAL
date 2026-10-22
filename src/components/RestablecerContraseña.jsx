@@ -10,7 +10,7 @@ function mensajeError(error) {
 
 export default function RestablecerContra() {
     const navigate = useNavigate();
-    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
+    const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8080' : 'https://backend-trabajofinal.onrender.com')
     // Estados para el flujo de múltiples pasos
     const [paso, setPaso] = useState(1); // 1: verificar, 2: pregunta seguridad, 3: verificar respuesta, 4: nueva contraseña
     const [telOCel, setTelOCel] = useState("");
