@@ -10,6 +10,11 @@ export const DISTRITOS_LIMA = [
   'Callao', 'Bellavista', 'La Perla', 'La Punta', 'Ventanilla', 'Carmen de la Legua',
 ]
 
+// Orden natural de nombres: "Cuadrilla 2" antes que "Cuadrilla 10"; ignora mayúsculas y tildes
+export function compararNombres(a, b) {
+  return (a || '').localeCompare(b || '', 'es', { numeric: true, sensitivity: 'base' })
+}
+
 // Minúsculas y sin tildes, para comparar "Rímac" con "rimac"
 export function normalizarTexto(texto) {
   return (texto || '')
