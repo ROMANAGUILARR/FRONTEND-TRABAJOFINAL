@@ -613,8 +613,8 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
           <Suspense fallback={<div className="modal-loading">Cargando...</div>}>
             <WarningModal
               message={warningMessage}
-              title={warningMessage === 'Esta incidencia ya fue registrada anteriormente. No se asignarán puntos adicionales.' ? 'Incidencia duplicada' : undefined}
-              hidePrefix={warningMessage === 'Esta incidencia ya fue registrada anteriormente. No se asignarán puntos adicionales.'}
+              title={/ya fue registrada|Otro vecino ya reportó/.test(warningMessage || '') ? 'Incidencia duplicada' : undefined}
+              hidePrefix={/ya fue registrada|Otro vecino ya reportó/.test(warningMessage || '')}
               onClose={() => setShowWarningModal(false)}
             />
           </Suspense>

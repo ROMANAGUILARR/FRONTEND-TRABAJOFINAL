@@ -147,7 +147,7 @@ export default function GestionarCiudadanos() {
       {/* Buscador y filtros */}
       <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
         <input
-          type="text" placeholder="Buscar por nombre, DNI, teléfono, email o usuario..."
+          type="text" placeholder="Buscar por nombre, documento, teléfono, email o usuario..."
           value={busqueda} onChange={e => setBusqueda(e.target.value)}
           className="admin-input" style={{ flex: 1, minWidth: '250px' }}
         />
@@ -187,7 +187,7 @@ export default function GestionarCiudadanos() {
                 <tr>
                   <th>#</th>
                   <th>Nombre</th>
-                  <th>DNI</th>
+                  <th>Documento</th>
                   <th>Teléfono</th>
                   <th>Email</th>
                   <th>Rol</th>
@@ -203,7 +203,7 @@ export default function GestionarCiudadanos() {
                     <tr key={usuario.idUsuario}>
                       <td>{(paginaActual - 1) * ITEMS_POR_PAGINA + index + 1}</td>
                       <td style={{ fontWeight: 500 }}>{usuario.nombreCompleto} {usuario.apellidoCompleto}</td>
-                      <td>{usuario.dni}</td>
+                      <td style={{ whiteSpace: 'nowrap' }}>{usuario.tipoDocumento && usuario.tipoDocumento !== 'DNI' ? `${usuario.tipoDocumento} ` : ''}{usuario.dni}</td>
                       <td>{usuario.telefono || '—'}</td>
                       <td>{usuario.correoElectronico}</td>
                       <td>
@@ -213,12 +213,14 @@ export default function GestionarCiudadanos() {
                       </td>
                       <td style={{ textAlign: 'center' }}>{conteo}</td>
                       <td>
-                        <div className="admin-table__acciones">
-                          <button onClick={() => verResumen(usuario)} className="admin-btn admin-btn--primary">
-                            {isSelected ? 'Ocultar' : 'Ver Resumen'}
+                        <div className="icon-acciones">
+                          <button type="button" onClick={() => verResumen(usuario)} className="icon-btn icon-btn--gris"
+                            aria-label={isSelected ? 'Ocultar resumen' : 'Ver resumen'} title={isSelected ? 'Ocultar resumen' : 'Ver resumen'}>
+                            <i className={`fa-solid ${isSelected ? 'fa-eye-slash' : 'fa-eye'}`} aria-hidden="true"></i>
                           </button>
-                          <button onClick={() => abrirReporte(usuario)} className="admin-btn admin-btn--edit">
-                            Reporte
+                          <button type="button" onClick={() => abrirReporte(usuario)} className="icon-btn icon-btn--azul"
+                            aria-label="Ver reporte del ciudadano" title="Reporte">
+                            <i className="fa-solid fa-file-lines" aria-hidden="true"></i>
                           </button>
                         </div>
                       </td>

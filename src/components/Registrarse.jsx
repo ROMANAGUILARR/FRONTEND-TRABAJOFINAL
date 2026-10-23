@@ -14,12 +14,20 @@ const PREGUNTAS_SEGURIDAD = [
     '¿Cuál es el segundo nombre de tu madre?',
 ]
 
+// Documentos de identidad aceptados en Perú (además del DNI)
+const TIPOS_DOCUMENTO = {
+    DNI: { etiqueta: 'DNI', patron: /^\d{8}$/, max: 8, ayuda: '8 dígitos', numerico: true },
+    CE: { etiqueta: 'Carné de extranjería', patron: /^[A-Z0-9]{8,12}$/, max: 12, ayuda: '8 a 12 letras o dígitos', numerico: false },
+    PASAPORTE: { etiqueta: 'Pasaporte', patron: /^[A-Z0-9]{6,12}$/, max: 12, ayuda: '6 a 12 letras o dígitos', numerico: false },
+    PTP: { etiqueta: 'PTP (Permiso Temporal de Permanencia)', patron: /^\d{9}$/, max: 9, ayuda: '9 dígitos', numerico: true },
+};
+
 export default function Registrarse() {
     const navigate = useNavigate();
     const { logout } = useAuth();
     const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8080' : 'https://backend-trabajofinal.onrender.com')
     const [formData, setFormData] = useState({
-        nombre: '', apellido: '', email: '', telefono: '', DNI: '',
+        nombre: '', apellido: '', email: '', telefono: '', tipoDocumento: 'DNI', DNI: '',
         nombreUsuario: '', contrasena: '', confirmarContrasena: '',
         pregunta: '', respuesta: ''
     });
@@ -45,8 +53,10 @@ export default function Registrarse() {
             setError('La contraseña debe tener al menos 6 caracteres');
             return;
         }
-        if (!/^\d{8}$/.test(formData.DNI)) {
-            setError('El DNI debe tener exactamente 8 dígitos');
+        const documento = TIPOS_DOCUMENTO[formData.tipoDocumento];
+        const numeroDocumento = formData.DNI.trim().toUpperCase();
+        if (!documento.patron.test(numeroDocumento)) {
+            setError(`El número de ${documento.etiqueta} debe tener ${documento.ayuda}`);
             return;
         }
         if (!/^\d{9}$/.test(formData.telefono)) {
@@ -62,7 +72,8 @@ export default function Registrarse() {
                 body: JSON.stringify({
                     nombreCompleto: formData.nombre,
                     apellidoCompleto: formData.apellido,
-                    dni: formData.DNI,
+                    tipoDocumento: formData.tipoDocumento,
+                    dni: numeroDocumento,
                     telefono: formData.telefono,
                     correoElectronico: formData.email,
                     nombreUsuario: formData.nombreUsuario,
@@ -127,7 +138,28 @@ export default function Registrarse() {
 
                     <Input label="Correo electrónico" name="email" type="email" placeholder="tu@email.com" value={formData.email} onChange={handleChange} required />
                     <Input label="Teléfono" name="telefono" type="tel" inputMode="numeric" maxLength="9" placeholder="9 dígitos, ej. 987654321" value={formData.telefono} onChange={handleChange} required />
-                    <Input label="DNI" name="DNI" inputMode="numeric" maxLength="8" placeholder="8 dígitos" value={formData.DNI} onChange={handleChange} required />
+                    <div className="grid grid-cols-[2fr_3fr] gap-3 max-sm:grid-cols-1">
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="tipoDocumento" className="font-semibold text-sm text-eco-text uppercase tracking-wider">
+                                Tipo de documento<span className="text-eco-danger ml-1 font-bold">*</span>
+                            </label>
+                            <select
+                                id="tipoDocumento"
+                                name="tipoDocumento"
+                                value={formData.tipoDocumento}
+                                onChange={(e) => setFormData(prev => ({ ...prev, tipoDocumento: e.target.value, DNI: '' }))}
+                                required
+                                className="w-full border-2 border-eco-border bg-eco-bg-white text-eco-text rounded-md p-3 text-base focus:outline-none focus:border-eco-primary max-sm:p-2.5 max-sm:text-sm"
+                            >
+                                {Object.entries(TIPOS_DOCUMENTO).map(([valor, d]) => <option key={valor} value={valor}>{d.etiqueta}</option>)}
+                            </select>
+                        </div>
+                        <Input label="Número de documento" name="DNI"
+                            inputMode={TIPOS_DOCUMENTO[formData.tipoDocumento].numerico ? 'numeric' : 'text'}
+                            maxLength={TIPOS_DOCUMENTO[formData.tipoDocumento].max}
+                            placeholder={TIPOS_DOCUMENTO[formData.tipoDocumento].ayuda}
+                            value={formData.DNI} onChange={handleChange} required />
+                    </div>
                     <Input label="Nombre de usuario" name="nombreUsuario" placeholder="Elige un nombre de usuario" value={formData.nombreUsuario} onChange={handleChange} required />
                     <div className="flex flex-col gap-2">
                         <label htmlFor="pregunta" className="font-semibold text-sm text-eco-text uppercase tracking-wider">
