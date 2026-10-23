@@ -176,3 +176,71 @@ textarea {
 }
 
  
+
+/* =============================================================
+   Botones de acción con ícono: iconografía estándar de todo el sistema
+   Editar = lápiz (azul) · Ver = ojo (gris) · Activar/Resolver = check (verde)
+   Desactivar = prohibido (naranja) · Eliminar = papelera (rojo)
+   ============================================================= */
+:root {
+  --icon-azul: #1565C0;
+  --icon-naranja: #BF5000;
+}
+
+[data-theme="dark"] {
+  --icon-azul: #64B5F6;
+  --icon-naranja: #FFB74D;
+}
+
+.icon-acciones {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 36px;
+  gap: 6px;
+  justify-content: center;
+}
+
+.icon-btn,
+.icon-btn--hueco {
+  width: 36px;
+  height: 36px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-white);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.icon-btn:hover:not(:disabled) {
+  background: var(--color-accent-green-light);
+  transform: translateY(-1px);
+}
+
+.icon-btn:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.icon-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.icon-btn--azul { color: var(--icon-azul); }
+.icon-btn--verde { color: var(--color-link); }
+.icon-btn--naranja { color: var(--icon-naranja); }
+.icon-btn--gris { color: var(--color-text-secondary); }
+.icon-btn--rojo { color: var(--color-danger-text); }
+
+.icon-btn--hueco {
+  display: block;
+}
