@@ -305,27 +305,32 @@ export default function ManejarIncidencias() {
                     <td>{obtenerReportadoPor(incidencia)}</td>
                     <td>{incidencia.direccionTexto || 'No se sabe'}</td>
                     <td>
-                      <div className="admin-table__acciones">
-                        {!modoDemo && incidencia.estado !== 'RESUELTO' && (
-                          <button onClick={() => setAsignando(incidencia)} className="admin-btn admin-btn--primary"
-                            title={incidencia.cuadrillaNombre ? 'Cambiar la cuadrilla responsable' : 'Elegir la cuadrilla que atenderá'}>
-                            {incidencia.cuadrillaNombre ? 'Reasignar' : 'Asignar'}
+                      {/* Cada acción ocupa siempre su columna, así los íconos quedan alineados en todas las filas */}
+                      <div className="icon-acciones">
+                        {!modoDemo && (incidencia.estado !== 'RESUELTO' ? (
+                          <button type="button" onClick={() => setAsignando(incidencia)} className="icon-btn icon-btn--azul"
+                            aria-label={incidencia.cuadrillaNombre ? 'Reasignar cuadrilla' : 'Asignar cuadrilla'}
+                            title={incidencia.cuadrillaNombre ? 'Reasignar cuadrilla' : 'Asignar cuadrilla'}>
+                            <i className={`fa-solid ${incidencia.cuadrillaNombre ? 'fa-right-left' : 'fa-people-group'}`} aria-hidden="true"></i>
                           </button>
-                        )}
-                        {!modoDemo && incidencia.estado !== 'RESUELTO' && (
-                          <button onClick={() => setResolviendo(incidencia)} className="admin-btn admin-btn--save"
+                        ) : <span className="icon-btn--hueco" aria-hidden="true"></span>)}
+                        {!modoDemo && (incidencia.estado !== 'RESUELTO' ? (
+                          <button type="button" onClick={() => setResolviendo(incidencia)} className="icon-btn icon-btn--verde"
                             disabled={!incidencia.cuadrillaNombre}
-                            title={incidencia.cuadrillaNombre ? 'Subir fotos del trabajo terminado' : 'Primero asigna una cuadrilla'}>
-                            Resolver
+                            aria-label="Resolver incidencia"
+                            title={incidencia.cuadrillaNombre ? 'Resolver: subir fotos del trabajo terminado' : 'Primero asigna una cuadrilla'}>
+                            <i className="fa-solid fa-circle-check" aria-hidden="true"></i>
                           </button>
-                        )}
+                        ) : <span className="icon-btn--hueco" aria-hidden="true"></span>)}
                         {!modoDemo && (
-                          <button onClick={() => setViendoHistorial(incidencia)} className="admin-btn admin-btn--cancel" title="Ver quién cambió qué y cuándo">
-                            Historial
+                          <button type="button" onClick={() => setViendoHistorial(incidencia)} className="icon-btn icon-btn--gris"
+                            aria-label="Ver historial" title="Ver historial">
+                            <i className="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
                           </button>
                         )}
-                        <button onClick={() => handleEliminar(incidencia.idIncidencia)} className="admin-btn admin-btn--delete">
-                          Eliminar
+                        <button type="button" onClick={() => handleEliminar(incidencia.idIncidencia)} className="icon-btn icon-btn--rojo"
+                          aria-label="Eliminar incidencia" title="Eliminar incidencia">
+                          <i className="fa-solid fa-trash" aria-hidden="true"></i>
                         </button>
                       </div>
                     </td>
