@@ -138,7 +138,7 @@ export default function Registrarse() {
 
                     <Input label="Correo electrónico" name="email" type="email" placeholder="tu@email.com" value={formData.email} onChange={handleChange} required />
                     <Input label="Teléfono" name="telefono" type="tel" inputMode="numeric" maxLength="9" placeholder="9 dígitos, ej. 987654321" value={formData.telefono} onChange={handleChange} required />
-                    <div className="grid grid-cols-[2fr_3fr] gap-3 max-sm:grid-cols-1">
+                    <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
                             <label htmlFor="tipoDocumento" className="font-semibold text-sm text-eco-text uppercase tracking-wider">
                                 Tipo de documento<span className="text-eco-danger ml-1 font-bold">*</span>
