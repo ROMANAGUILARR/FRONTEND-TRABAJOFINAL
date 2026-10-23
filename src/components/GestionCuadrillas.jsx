@@ -314,11 +314,18 @@ export default function GestionCuadrillas() {
               </div>
 
               <footer className="cuad-card__acciones">
-                <button type="button" className="admin-btn admin-btn--edit" onClick={() => abrirEditarCuadrilla(c)}>Editar</button>
-                <button type="button" className="admin-btn admin-btn--cancel" onClick={() => cambiarActiva(c)}>
-                  {c.activa ? 'Desactivar' : 'Activar'}
+                <button type="button" className="icon-btn icon-btn--azul" onClick={() => abrirEditarCuadrilla(c)}
+                  aria-label={`Editar la cuadrilla ${c.nombre}`} title="Editar cuadrilla">
+                  <i className="fa-solid fa-pen" aria-hidden="true"></i>
                 </button>
-                <button type="button" className="admin-btn admin-btn--delete" onClick={() => pedirEliminarCuadrilla(c)}>Eliminar</button>
+                <button type="button" className={`icon-btn ${c.activa ? 'icon-btn--naranja' : 'icon-btn--verde'}`} onClick={() => cambiarActiva(c)}
+                  aria-label={`${c.activa ? 'Desactivar' : 'Activar'} la cuadrilla ${c.nombre}`} title={c.activa ? 'Desactivar cuadrilla' : 'Activar cuadrilla'}>
+                  <i className={`fa-solid ${c.activa ? 'fa-ban' : 'fa-circle-check'}`} aria-hidden="true"></i>
+                </button>
+                <button type="button" className="icon-btn icon-btn--rojo" onClick={() => pedirEliminarCuadrilla(c)}
+                  aria-label={`Eliminar la cuadrilla ${c.nombre}`} title="Eliminar cuadrilla">
+                  <i className="fa-solid fa-trash" aria-hidden="true"></i>
+                </button>
               </footer>
             </article>
           ))}
