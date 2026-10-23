@@ -231,7 +231,7 @@
   display: flex;
   gap: 8px;
   flex-wrap: nowrap;
-  justify-content: flex-end;
+  justify-content: center;
   margin-top: auto;
   padding-top: 4px;
 }
@@ -252,7 +252,7 @@
   grid-auto-flow: column;
   grid-auto-columns: 36px;
   gap: 6px;
-  justify-content: start;
+  justify-content: center;
 }
 
 .icon-btn,
