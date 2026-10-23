@@ -9,6 +9,7 @@ import DeleteConfirmModal from './DeleteConfirmModal'
 import AsignarCuadrillaModal from './AsignarCuadrillaModal'
 import ResolverIncidenciaModal from './ResolverIncidenciaModal'
 import HistorialIncidencia from './HistorialIncidencia'
+import ReportePorFechas from './ReportePorFechas'
 import './Cuadrillas.css'
 
 const ITEMS_POR_PAGINA = 10
@@ -119,6 +120,8 @@ export default function ManejarIncidencias() {
   const [asignando, setAsignando] = useState(null)
   const [resolviendo, setResolviendo] = useState(null)
   const [viendoHistorial, setViendoHistorial] = useState(null)
+  // Rango de fechas elegido en el reporte ({ desde, hasta } en YYYY-MM-DD) o null
+  const [rango, setRango] = useState(null)
   const modoDemo = esDemo()
 
   function actualizarFila(actualizada) {
@@ -145,7 +148,7 @@ export default function ManejarIncidencias() {
   // Reset page to 1 when filters change
   useEffect(() => {
     setPaginaActual(1)
-  }, [filtroEstado, busqueda])
+  }, [filtroEstado, busqueda, rango])
 
   // Close modal on Escape
   useEffect(() => {
@@ -195,7 +198,9 @@ export default function ManejarIncidencias() {
       obtenerReportadoPor(incidencia).toLowerCase().includes(busqueda.toLowerCase()) ||
       (incidencia.cuadrillaNombre || '').toLowerCase().includes(busqueda.toLowerCase()) ||
       (incidencia.direccionTexto || '').toLowerCase().includes(busqueda.toLowerCase())
-    return coincideEstado && coincideBusqueda
+    const fechaRegistro = (incidencia.fecha || '').slice(0, 10)
+    const coincideRango = !rango || (fechaRegistro >= rango.desde && fechaRegistro <= rango.hasta)
+    return coincideEstado && coincideBusqueda && coincideRango
   })
 
   // Metrics
@@ -241,6 +246,9 @@ export default function ManejarIncidencias() {
           <i className="fa-solid fa-circle-check admin-metric-card__icon"></i>
         </div>
       </div>
+
+      {/* Reporte por rango de fechas */}
+      <ReportePorFechas modoDemo={modoDemo} incidenciasDemo={incidencias} onCambioRango={setRango} />
 
       {/* Buscador y filtros */}
       <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' }}>

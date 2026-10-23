@@ -294,6 +294,23 @@ export async function obtenerIncidenciasPorUsuario(usuarioId) {
   return response.json()
 }
 
+/**
+ * Reporte de incidencias registradas entre dos fechas (YYYY-MM-DD, ambas incluidas).
+ * Devuelve totales, resumen por ciudadano y el motivo de las no resueltas.
+ */
+export async function obtenerReportePorFechas(desde, hasta) {
+  const token = localStorage.getItem('token')
+  const params = new URLSearchParams({ desde, hasta })
+  const response = await fetch(`${API_BASE}/incidencias/reporte?${params}`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  })
+  const cuerpo = await response.text()
+  if (!response.ok) {
+    throw new Error(extraerMensajeError(cuerpo, response.status))
+  }
+  return JSON.parse(cuerpo)
+}
+
 export async function actualizarIncidencia(idIncidencia, datos) {
   const token = localStorage.getItem('token')
   const response = await fetch(`${API_BASE}/incidencias/${idIncidencia}`, {
