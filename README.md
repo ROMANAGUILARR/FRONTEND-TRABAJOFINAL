@@ -48,7 +48,20 @@ Y los administradores pueden:
 
 ## 🔁 Prevención de incidencias duplicadas
 
-Antes de guardar un reporte, el backend busca incidencias **abiertas** (pendientes o en proceso) de la **misma categoría** en un radio de **50 metros**, calculado con las coordenadas del mapa (fórmula de Haversine). Si encuentra una, sea del mismo vecino o de otro, el reporte **no se crea, no suma puntos** y se informa cuál es la incidencia existente.
+Cuando varios vecinos ven el mismo problema, EcoSolido evita que se registre dos veces. Antes de guardar un reporte, el **backend** busca incidencias **abiertas** (pendientes o en proceso) de la **misma categoría** en un radio de **50 metros**, calculado con las coordenadas del mapa (fórmula de Haversine). La validación se hace en el servidor, por lo que no se puede saltar desde la página.
+
+### Flujo de validación
+
+```mermaid
+flowchart TD
+    A["El vecino registra una incidencia<br/>foto + categoría + punto en el mapa"] --> B{"¿Hay una incidencia de la<br/>misma categoría a 50 m o menos?"}
+    B -- No --> G["Se registra la incidencia<br/>+10 puntos"]
+    B -- Sí --> C{"¿Esa incidencia ya está resuelta?"}
+    C -- Sí --> G
+    C -- No --> D["Se rechaza como duplicada<br/>no se crea ni suma puntos"]
+    D --> E["Aviso: «Otro vecino ya reportó este problema<br/>a X m de aquí (incidencia #N)»"]
+    G --> F["El administrador asigna una cuadrilla<br/>y la cierra con foto de evidencia"]
+```
 
 | Caso | Resultado |
 |---|---|
@@ -57,23 +70,7 @@ Antes de guardar un reporte, el backend busca incidencias **abiertas** (pendient
 | Misma categoría, a más de 50 m | ✅ Se registra (es otro lugar) |
 | Misma categoría en el mismo punto, pero la anterior ya está resuelta | ✅ Se registra (el problema volvió a aparecer) |
 
-**¿Quién valida la incidencia?** El administrador de la municipalidad: asigna la cuadrilla de la zona y solo puede marcarla como resuelta subiendo una foto de evidencia. Cada paso queda en el historial con fecha y hora, visible para el ciudadano en su seguimiento.
-
-### 🧪 Cómo comprobarlo
-
-En https://frontend-trabajofinall.vercel.app, con dos cuentas de ciudadano y la del administrador:
-
-| Rol | Usuario | Contraseña |
-|---|---|---|
-| Vecino 1 (cuenta de demostración, datos ficticios) | `amendez` | `Andreina2026` |
-| Vecino 2 | `GASPER` | *(cuenta del equipo, se ingresa en la demo)* |
-| Administrador | `admin` | `Palacios13579` |
-
-1. **Reporte original:** entra como `amendez` → *Registrar Incidencia*. Sube una foto, elige **Acumulación de basura**, marca un punto en el mapa y registra. Suma +10 puntos.
-2. **Intento duplicado:** entra como `GASPER` → *Registrar Incidencia*. Usa la **misma categoría** y marca **el mismo punto**. Aparece el aviso **"Incidencia duplicada"**: *"Otro vecino ya reportó este problema a X m de aquí (incidencia #N, pendiente)…"*. No se crea el reporte ni se dan puntos.
-3. **No bloquea de más:** como `GASPER`, registra **Quema de residuos** en el mismo punto. Sí se registra.
-4. **Validación del administrador:** entra como `admin` → *Gestión de Incidencias*. El ícono *Resolver* está desactivado hasta asignar una cuadrilla. Asígnala (pasa a *En proceso*), resuélvela subiendo la foto de evidencia y abre el *Historial* para ver cada paso con su fecha y hora.
-5. **Problema que vuelve a aparecer:** con la incidencia original ya resuelta, `GASPER` puede reportar de nuevo **Acumulación de basura** en ese punto y sí se registra.
+**¿Quién valida la incidencia?** El sistema valida automáticamente que no esté duplicada, y el **administrador de la municipalidad** valida su atención: asigna la cuadrilla de la zona y solo puede marcarla como resuelta subiendo una foto de evidencia. Cada paso queda en el historial con fecha y hora, visible para el ciudadano en su seguimiento.
 
 ---
 
