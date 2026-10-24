@@ -203,7 +203,7 @@ export default function GestionarCiudadanos() {
                     <tr key={usuario.idUsuario}>
                       <td>{(paginaActual - 1) * ITEMS_POR_PAGINA + index + 1}</td>
                       <td style={{ fontWeight: 500 }}>{usuario.nombreCompleto} {usuario.apellidoCompleto}</td>
-                      <td style={{ whiteSpace: 'nowrap' }}>{usuario.tipoDocumento && usuario.tipoDocumento !== 'DNI' ? `${usuario.tipoDocumento} ` : ''}{usuario.dni}</td>
+                      <td style={{ whiteSpace: 'nowrap' }}>{`${usuario.tipoDocumento || 'DNI'} - ${usuario.dni}`}</td>
                       <td>{usuario.telefono || '—'}</td>
                       <td>{usuario.correoElectronico}</td>
                       <td>
