@@ -158,3 +158,26 @@ src/
 ├── App.jsx                    # Componente principal con rutas
 └── main.jsx                   # Punto de entrada
 ```
+
+---
+
+## 🔑 Credenciales para probar el proyecto
+
+**Aplicación en línea:** https://frontend-trabajofinall.vercel.app
+
+El inicio de sesión se hace con el **nombre de usuario** y la contraseña.
+
+**Administrador** (acceso completo: gestión de incidencias, cuadrillas, ciudadanos, reportes y dashboard):
+
+* Usuario: `admin`
+* Contraseña: `Palacios13579`
+
+**Ciudadano** (registrar incidencias, seguimiento, recompensas y educación ambiental):
+
+* Usuario: `GASPER`
+* Contraseña: `Palacios10`
+
+* Usuario: `amendez`
+* Contraseña: `Andreina2026`
+
+La cuenta `amendez` es de demostración y sus datos son ficticios. También puedes crear tu propia cuenta desde **Registrarse** (con DNI, carné de extranjería, pasaporte o PTP).
