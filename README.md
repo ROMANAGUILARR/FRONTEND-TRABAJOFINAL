@@ -52,16 +52,9 @@ Cuando varios vecinos ven el mismo problema, EcoSolido evita que se registre dos
 
 ### Flujo de validación
 
-```mermaid
-flowchart TD
-    A["El vecino registra una incidencia<br/>foto + categoría + punto en el mapa"] --> B{"¿Hay una incidencia de la<br/>misma categoría a 50 m o menos?"}
-    B -- No --> G["Se registra la incidencia<br/>+10 puntos"]
-    B -- Sí --> C{"¿Esa incidencia ya está resuelta?"}
-    C -- Sí --> G
-    C -- No --> D["Se rechaza como duplicada<br/>no se crea ni suma puntos"]
-    D --> E["Aviso: «Otro vecino ya reportó este problema<br/>a X m de aquí (incidencia #N)»"]
-    G --> F["El administrador asigna una cuadrilla<br/>y la cierra con foto de evidencia"]
-```
+<p align="center">
+  <img src="docs/flujo-duplicados.png" alt="Flujo de validación de incidencias duplicadas" width="600">
+</p>
 
 | Caso | Resultado |
 |---|---|
