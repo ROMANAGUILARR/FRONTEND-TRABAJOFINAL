@@ -31,9 +31,17 @@ export default function RestablecerContra() {
         setError(null);
         setSuccess(null);
 
-        const campo = usarTelefono ? telOCel : correo;
-        if (!campo.trim()) {
+        const campo = (usarTelefono ? telOCel : correo).trim();
+        if (!campo) {
             setError(`Por favor ingresa tu ${usarTelefono ? 'teléfono' : 'correo electrónico'}`);
+            return;
+        }
+        if (usarTelefono && !/^\d{9}$/.test(campo)) {
+            setError('El teléfono debe tener exactamente 9 dígitos.');
+            return;
+        }
+        if (!usarTelefono && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(campo)) {
+            setError('El correo electrónico no tiene un formato válido.');
             return;
         }
 
@@ -132,8 +140,8 @@ export default function RestablecerContra() {
         setError(null);
         setSuccess(null);
 
-        if (nuevaContrasena.length < 6) {
-            setError('La contraseña debe tener al menos 6 caracteres');
+        if (nuevaContrasena.length < 6 || nuevaContrasena.length > 72) {
+            setError('La contraseña debe tener entre 6 y 72 caracteres.');
             return;
         }
 
@@ -249,7 +257,7 @@ export default function RestablecerContra() {
                                     type={usarTelefono ? "tel" : "email"}
                                     id={usarTelefono ? "telefono" : "correo"}
                                     placeholder={usarTelefono ? "Ingresa tu número de teléfono" : "Ingresa tu correo electrónico"}
-                                    maxLength={usarTelefono ? "9" : "500"}
+                                    maxLength={usarTelefono ? 9 : 100}
                                     value={usarTelefono ? telOCel : correo}
                                     onChange={(e) => usarTelefono ? setTelOCel(e.target.value) : setCorreo(e.target.value)}
                                     required

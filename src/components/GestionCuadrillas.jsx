@@ -137,8 +137,8 @@ export default function GestionCuadrillas() {
     e.preventDefault()
     const { modo, id, idCuadrilla, datos } = formTrabajador
     if (!datos.nombreCompleto.trim()) { setErrorForm('Escribe el nombre del integrante.'); return }
-    if (datos.dni && datos.dni.length !== 8) { setErrorForm('El DNI debe tener 8 dígitos.'); return }
-    if (datos.telefono && datos.telefono.length !== 9) { setErrorForm('El teléfono debe tener 9 dígitos.'); return }
+    if (datos.dni && !/^\d{8}$/.test(datos.dni)) { setErrorForm('El DNI debe tener exactamente 8 dígitos.'); return }
+    if (datos.telefono && !/^\d{9}$/.test(datos.telefono)) { setErrorForm('El teléfono debe tener exactamente 9 dígitos.'); return }
     setGuardando(true)
     setErrorForm(null)
     try {
