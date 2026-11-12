@@ -57,27 +57,27 @@ function leerIncidenciasDemo() {
   // Datos iniciales mock
   const mock = [
     { idIncidencia: 1, titulo: 'Acumulación y falta de recojo', descripcion: 'Basura acumulada en la esquina de Av. Principal con Jr. Los Olivos', estado: 'RESUELTO', fecha: '2026-09-10', direccionTexto: 'Av. Principal 123' },
-    { idIncidencia: 2, titulo: 'Basura en vía pública', descripcion: 'Vertido de aguas residuales en el canal del barrio San Martin', estado: 'EN_PROCESO', fecha: '2026-09-11', direccionTexto: 'Jr. San Martin 456' },
-    { idIncidencia: 3, titulo: 'Residuos en parques o áreas verdes', descripcion: 'Quema ilegal de basura en terreno baldio cerca del colegio', estado: 'PENDIENTE', fecha: '2026-09-12', direccionTexto: 'Calle Los Cedros 789' },
-    { idIncidencia: 4, titulo: 'Contenedor dañado o lleno', descripcion: 'Arbol caido bloquea la vereda despues de temporal', estado: 'RESUELTO', fecha: '2026-09-13', direccionTexto: 'Av. Grau 321' },
-    { idIncidencia: 5, titulo: 'Escombros o materiales de construcción', descripcion: 'Pequeno derrame de aceite en la pista principal', estado: 'EN_PROCESO', fecha: '2026-09-14', direccionTexto: 'Panamericana Sur km 15' },
+    { idIncidencia: 2, titulo: 'Basura en vía pública', descripcion: 'Vertido de aguas residuales en el canal del barrio San Martín', estado: 'EN_PROCESO', fecha: '2026-09-11', direccionTexto: 'Jr. San Martín 456' },
+    { idIncidencia: 3, titulo: 'Residuos en parques o áreas verdes', descripcion: 'Quema ilegal de basura en terreno baldío cerca del colegio', estado: 'PENDIENTE', fecha: '2026-09-12', direccionTexto: 'Calle Los Cedros 789' },
+    { idIncidencia: 4, titulo: 'Contenedor dañado o lleno', descripcion: 'Árbol caído bloquea la vereda después del temporal', estado: 'RESUELTO', fecha: '2026-09-13', direccionTexto: 'Av. Grau 321' },
+    { idIncidencia: 5, titulo: 'Escombros o materiales de construcción', descripcion: 'Pequeño derrame de aceite en la pista principal', estado: 'EN_PROCESO', fecha: '2026-09-14', direccionTexto: 'Panamericana Sur km 15' },
     { idIncidencia: 6, titulo: 'Otro', descripcion: 'No hay papeleras en el parque del barrio Las Flores', estado: 'PENDIENTE', fecha: '2026-09-15', direccionTexto: 'Parque Las Flores' },
     { idIncidencia: 7, titulo: 'Acumulación y falta de recojo', descripcion: 'Basura acumulada frente al mercado municipal', estado: 'RESUELTO', fecha: '2026-09-16', direccionTexto: 'Mercado Municipal' },
-    { idIncidencia: 8, titulo: 'Basura en vía pública', descripcion: 'Humo negro proveniente de fabrica textil', estado: 'EN_PROCESO', fecha: '2026-09-17', direccionTexto: 'Zona Industrial' },
-    { idIncidencia: 9, titulo: 'Residuos en parques o áreas verdes', descripcion: 'Quema de hojas secas en via publica', estado: 'PENDIENTE', fecha: '2026-09-18', direccionTexto: 'Jr. Las Palmeras' },
+    { idIncidencia: 8, titulo: 'Basura en vía pública', descripcion: 'Humo negro proveniente de fábrica textil', estado: 'EN_PROCESO', fecha: '2026-09-17', direccionTexto: 'Zona Industrial' },
+    { idIncidencia: 9, titulo: 'Residuos en parques o áreas verdes', descripcion: 'Quema de hojas secas en vía pública', estado: 'PENDIENTE', fecha: '2026-09-18', direccionTexto: 'Jr. Las Palmeras' },
     { idIncidencia: 10, titulo: 'Acumulación y falta de recojo', descripcion: 'Residuos abandonados en terreno', estado: 'PENDIENTE', fecha: '2026-09-19', direccionTexto: 'Av. Argentina' },
-    { idIncidencia: 11, titulo: 'Contenedor dañado o lleno', descripcion: 'Arbol bloquea la vereda despues del temporal', estado: 'RESUELTO', fecha: '2026-09-08', direccionTexto: 'Av. Grau 321' },
+    { idIncidencia: 11, titulo: 'Contenedor dañado o lleno', descripcion: 'Árbol bloquea la vereda después del temporal', estado: 'RESUELTO', fecha: '2026-09-08', direccionTexto: 'Av. Grau 321' },
     { idIncidencia: 12, titulo: 'Otro', descripcion: 'No hay papeleras en el parque del barrio', estado: 'PENDIENTE', fecha: '2026-09-11', direccionTexto: 'Parque Las Flores' },
     { idIncidencia: 13, titulo: 'Escombros o materiales de construcción', descripcion: 'Derrame de aceite en la pista principal', estado: 'EN_PROCESO', fecha: '2026-09-07', direccionTexto: 'Panamericana Sur km 15' },
     { idIncidencia: 14, titulo: 'Acumulación y falta de recojo', descripcion: 'Basura frente al mercado municipal', estado: 'RESUELTO', fecha: '2026-09-09', direccionTexto: 'Mercado Municipal' },
-    { idIncidencia: 15, titulo: 'Basura en vía pública', descripcion: 'Humo negro de fabrica textil', estado: 'EN_PROCESO', fecha: '2026-09-13', direccionTexto: 'Zona Industrial' },
-    { idIncidencia: 16, titulo: 'Residuos en parques o áreas verdes', descripcion: 'Quema de hojas secas en via publica', estado: 'PENDIENTE', fecha: '2026-09-15', direccionTexto: 'Jr. Las Palmeras' },
+    { idIncidencia: 15, titulo: 'Basura en vía pública', descripcion: 'Humo negro de fábrica textil', estado: 'EN_PROCESO', fecha: '2026-09-13', direccionTexto: 'Zona Industrial' },
+    { idIncidencia: 16, titulo: 'Residuos en parques o áreas verdes', descripcion: 'Quema de hojas secas en vía pública', estado: 'PENDIENTE', fecha: '2026-09-15', direccionTexto: 'Jr. Las Palmeras' },
     { idIncidencia: 17, titulo: 'Acumulación y falta de recojo', descripcion: 'Residuos en parque central', estado: 'RESUELTO', fecha: '2026-09-16', direccionTexto: 'Parque Central' },
-    { idIncidencia: 18, titulo: 'Acumulación y falta de recojo', descripcion: 'Residuos abandonados en terreno baldio', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Av. Argentina' },
+    { idIncidencia: 18, titulo: 'Acumulación y falta de recojo', descripcion: 'Residuos abandonados en terreno baldío', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Av. Argentina' },
     { idIncidencia: 19, titulo: 'Basura en vía pública', descripcion: 'Agua turbia en acequia del barrio', estado: 'EN_PROCESO', fecha: '2026-09-10', direccionTexto: 'Jr. Los Pinos' },
-    { idIncidencia: 20, titulo: 'Contenedor dañado o lleno', descripcion: 'Arbol caido sobre vehiculo estacionado', estado: 'RESUELTO', fecha: '2026-09-12', direccionTexto: 'Calle Los Olivos' },
+    { idIncidencia: 20, titulo: 'Contenedor dañado o lleno', descripcion: 'Árbol caído sobre vehículo estacionado', estado: 'RESUELTO', fecha: '2026-09-12', direccionTexto: 'Calle Los Olivos' },
     { idIncidencia: 21, titulo: 'Otro', descripcion: 'Sin papeleras en parque', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Parque Las Flores' },
-    { idIncidencia: 22, titulo: 'Otro', descripcion: 'Sin papeleras en cuadra completa del centro', estado: 'PENDIENTE', fecha: '2026-09-13', direccionTexto: 'Jr. Bolivar' },
+    { idIncidencia: 22, titulo: 'Otro', descripcion: 'Sin papeleras en cuadra completa del centro', estado: 'PENDIENTE', fecha: '2026-09-13', direccionTexto: 'Jr. Bolívar' },
   ]
   const locales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]')
   const idBase = 100
@@ -242,7 +242,7 @@ export default function ManejarIncidencias() {
         </div>
         <div className="admin-metric-card admin-metric-card--resolved">
           <span className="admin-metric-card__numero">{resueltosCount}</span>
-          <span className="admin-metric-card__label">Resueltos</span>
+          <span className="admin-metric-card__label">Resueltas</span>
           <i className="fa-solid fa-circle-check admin-metric-card__icon"></i>
         </div>
       </div>
@@ -258,7 +258,7 @@ export default function ManejarIncidencias() {
           className="admin-input" style={{ flex: 1, minWidth: '300px' }}
         />
         <div style={{ display: 'flex', gap: '6px' }}>
-          {[{ key: 'todos', label: 'Todos', color: '#37474F' }, { key: 'pending', label: 'Pendientes', color: '#E65100' }, { key: 'in-progress', label: 'En Proceso', color: '#1565C0' }, { key: 'resolved', label: 'Resueltos', color: '#2E7D32' }].map(f => (
+          {[{ key: 'todos', label: 'Todos', color: '#37474F' }, { key: 'pending', label: 'Pendientes', color: '#E65100' }, { key: 'in-progress', label: 'En Proceso', color: '#1565C0' }, { key: 'resolved', label: 'Resueltas', color: '#2E7D32' }].map(f => (
             <button key={f.key} onClick={() => setFiltroEstado(f.key)} className="admin-btn" style={{
               background: filtroEstado === f.key ? f.color : 'var(--color-bg-white)',
               color: filtroEstado === f.key ? '#fff' : 'var(--color-text)',

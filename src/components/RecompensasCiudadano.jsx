@@ -111,7 +111,7 @@ export default function RecompensasCiudadano() {
     <main className="recompensas p-6 max-md:p-4" style={{ '--font-scale': tamañoLetra }}>
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3 mb-2">
-        <h2 className="font-bold text-eco-text m-0" style={{ fontSize: fs(1.5) }}>Area de Recompensas</h2>
+        <h2 className="font-bold text-eco-text m-0" style={{ fontSize: fs(1.5) }}>Área de Recompensas</h2>
         <button
           type="button"
           className="bg-transparent border border-current rounded-[20px] px-3.5 py-1 cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
@@ -128,7 +128,7 @@ export default function RecompensasCiudadano() {
       </div>
 
       <p className="text-eco-text-secondary mb-6" style={{ fontSize: fs(1) }}>
-        Aqui podras ver tus insignias y los premios que mereces por obtener cada una.
+        Aquí podrás ver tus insignias y los premios que mereces por obtener cada una.
       </p>
 
       {cargando && <p className="text-eco-text-secondary text-center py-8">Cargando insignias...</p>}
@@ -149,7 +149,7 @@ export default function RecompensasCiudadano() {
             </h3>
             {desbloqueadas.length === 0 ? (
               <div className="bg-eco-bg-white rounded-lg border border-eco-border p-6 text-center shadow-sm">
-                <p className="text-eco-text-secondary" style={{ fontSize: fs(1.1) }}>Aun no has desbloqueado insignias. Registra incidencias para comenzar a ganar.</p>
+                <p className="text-eco-text-secondary" style={{ fontSize: fs(1.1) }}>Aún no has desbloqueado insignias. Registra incidencias para comenzar a ganar.</p>
               </div>
             ) : (
               <div className="insignias-grid">
@@ -167,7 +167,7 @@ export default function RecompensasCiudadano() {
             </h3>
             {pendientes.length === 0 ? (
               <div className="bg-eco-primary/10 dark:bg-green-900/30 rounded-lg border border-eco-success p-6 text-center">
-                <p className="text-eco-success font-bold text-lg">Felicidades! Has desbloqueado todas las insignias.</p>
+                <p className="text-eco-success font-bold text-lg">¡Felicidades! Has desbloqueado todas las insignias.</p>
               </div>
             ) : (
               <div className="insignias-grid">

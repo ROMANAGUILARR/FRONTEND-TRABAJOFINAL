@@ -53,7 +53,7 @@ const FILTROS_ESTADO = [
   { valor: 'todos', texto: 'Todos' },
   { valor: 'pending', texto: 'Pendientes' },
   { valor: 'in-progress', texto: 'En Proceso' },
-  { valor: 'resolved', texto: 'Resueltos' },
+  { valor: 'resolved', texto: 'Resueltas' },
 ]
 
 export default function SeguimientoIncidencias({ incidencias: propsIncidencias }) {
@@ -247,7 +247,7 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
             <span className="metrica-card__numero">
               {cargandoMetricas ? '...' : `${metricas.resueltos ?? 0} (${porcentajeResueltos.toFixed(2)}%)`}
             </span>
-            <span className="metrica-card__label">Resueltos</span>
+            <span className="metrica-card__label">Resueltas</span>
           </div>
         </div>
       </div>
@@ -262,7 +262,7 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
         <div className="seguimiento__search">
           <input
             type="text"
-            placeholder="Buscar por fecha, titulo o ubicacion..."
+            placeholder="Buscar por fecha, título o ubicación..."
             value={listening ? transcript : busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
             className="seguimiento__search-input"

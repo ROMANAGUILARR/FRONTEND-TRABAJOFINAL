@@ -44,7 +44,7 @@ function extraerMensajeError(cuerpo, status) {
 }
 
 export async function describirFotosConIA(imagenesBase64) {
-  if (esDemo()) return { descripcion: 'Acumulacion de residuos solidos en la via publica. Se observan bolsas de basura rotas con desperdicios dispersos que obstruyen el paso peatonal.', titulo: 'Basura en via publica' }
+  if (esDemo()) return { descripcion: 'Acumulación de residuos sólidos en la vía pública. Se observan bolsas de basura rotas con desperdicios dispersos que obstruyen el paso peatonal.', titulo: 'Basura en vía pública' }
 
   const token = localStorage.getItem("token");
   const response = await fetch(`${API_BASE}/incidencias/generar-descripcion`, {

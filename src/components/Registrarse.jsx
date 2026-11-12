@@ -113,7 +113,7 @@ export default function Registrarse() {
                     <svg className="w-14 h-14 text-eco-primary mx-auto mb-3" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                     </svg>
-                    <h1 className="m-0 mb-1 text-2xl font-bold text-eco-text">EcoSolido</h1>
+                    <h1 className="m-0 mb-1 text-2xl font-bold text-eco-text">EcoSólido</h1>
                     <p className="m-0 text-sm text-eco-text-secondary">Crea tu cuenta para gestionar incidencias</p>
                 </div>
 
@@ -182,7 +182,7 @@ export default function Registrarse() {
                     <Input label="Contraseña" name="contrasena" placeholder="Mínimo 6 caracteres" value={formData.contrasena} onChange={handleChange} required showToggle />
                     <Input label="Confirmar contraseña" name="confirmarContrasena" placeholder="Repite tu contraseña" value={formData.confirmarContrasena} onChange={handleChange} required showToggle />
 
-                    <span className="text-[var(--color-warning-text)] text-xs font-medium">* Campo Obligatorio</span>
+                    <span className="text-[var(--color-warning-text)] text-xs font-medium">* Campo obligatorio</span>
 
                     <Button type="submit" variant="primary" size="lg" fullWidth disabled={enviando}>
                         {enviando ? 'Creando cuenta...' : 'Crear Cuenta'}

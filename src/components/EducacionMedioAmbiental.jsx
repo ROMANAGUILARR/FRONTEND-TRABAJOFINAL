@@ -52,7 +52,7 @@ const ARTICULOS = [
     imagen: '/img/educacion/energias-renovables.svg',
     fecha: '2026-05-20',
     contenido: [
-      'Las energías renovables provienen de fuentes naturales inagotables: el sol, el viento, el agua y la biomasa. Perú tiene un enorme potolar: la costa recibe radiación solar intensa, los Andes tienen corrientes de viento constantes y la selva cuenta con ríos caudalosos.',
+      'Las energías renovables provienen de fuentes naturales inagotables: el sol, el viento, el agua y la biomasa. Perú tiene un enorme potencial: la costa recibe radiación solar intensa, los Andes tienen corrientes de viento constantes y la selva cuenta con ríos caudalosos.',
       'La energía solar ha crecido significativamente en el país. Parques solares en Moquegua y Tacna ya generan electricidad para miles de hogares. La energía eólica en Marcona y Talara complementa la matriz energética. Estas fuentes no generan emisiones de CO₂ ni contaminan el agua.',
       'Tú también puedes contribuir: instala paneles solares si es posible, elige proveedores de energía limpia, y apoya políticas de transición energética. Un futuro con energía limpia significa aire más puro, menos cambio climático y empleos verdes para las nuevas generaciones.'
     ]
