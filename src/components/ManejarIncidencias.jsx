@@ -1,11 +1,16 @@
 import { useState, useEffect, useCallback } from 'react'
-import { ESTADO_BADGE, ESTADO_LABEL, CATEGORIAS, formatearFecha } from '../utils/incidenciaConstants'
+import { ESTADO_BADGE, ESTADO_LABEL, formatearFecha } from '../utils/incidenciaConstants'
 import { MOCK_USUARIOS, MOCK_INCIDENCIAS_POR_USUARIO } from '../services/mockData'
-import { actualizarIncidencia, eliminarIncidencia } from '../services/incidenciasApi'
+import { eliminarIncidencia } from '../services/incidenciasApi'
 import './SeguimientoIncidencias.css'
 import './ManejarIncidencias.css'
 import './AIConfirmModal.css'
 import DeleteConfirmModal from './DeleteConfirmModal'
+import AsignarCuadrillaModal from './AsignarCuadrillaModal'
+import ResolverIncidenciaModal from './ResolverIncidenciaModal'
+import HistorialIncidencia from './HistorialIncidencia'
+import ReportePorFechas from './ReportePorFechas'
+import './Cuadrillas.css'
 
 const ITEMS_POR_PAGINA = 10
 
@@ -52,27 +57,27 @@ function leerIncidenciasDemo() {
   // Datos iniciales mock
   const mock = [
     { idIncidencia: 1, titulo: 'Acumulación y falta de recojo', descripcion: 'Basura acumulada en la esquina de Av. Principal con Jr. Los Olivos', estado: 'RESUELTO', fecha: '2026-09-10', direccionTexto: 'Av. Principal 123' },
-    { idIncidencia: 2, titulo: 'Basura en vía pública', descripcion: 'Vertido de aguas residuales en el canal del barrio San Martin', estado: 'EN_PROCESO', fecha: '2026-09-11', direccionTexto: 'Jr. San Martin 456' },
-    { idIncidencia: 3, titulo: 'Residuos en parques o áreas verdes', descripcion: 'Quema ilegal de basura en terreno baldio cerca del colegio', estado: 'PENDIENTE', fecha: '2026-09-12', direccionTexto: 'Calle Los Cedros 789' },
-    { idIncidencia: 4, titulo: 'Contenedor dañado o lleno', descripcion: 'Arbol caido bloquea la vereda despues de temporal', estado: 'RESUELTO', fecha: '2026-09-13', direccionTexto: 'Av. Grau 321' },
-    { idIncidencia: 5, titulo: 'Escombros o materiales de construcción', descripcion: 'Pequeno derrame de aceite en la pista principal', estado: 'EN_PROCESO', fecha: '2026-09-14', direccionTexto: 'Panamericana Sur km 15' },
+    { idIncidencia: 2, titulo: 'Basura en vía pública', descripcion: 'Vertido de aguas residuales en el canal del barrio San Martín', estado: 'EN_PROCESO', fecha: '2026-09-11', direccionTexto: 'Jr. San Martín 456' },
+    { idIncidencia: 3, titulo: 'Residuos en parques o áreas verdes', descripcion: 'Quema ilegal de basura en terreno baldío cerca del colegio', estado: 'PENDIENTE', fecha: '2026-09-12', direccionTexto: 'Calle Los Cedros 789' },
+    { idIncidencia: 4, titulo: 'Contenedor dañado o lleno', descripcion: 'Árbol caído bloquea la vereda después del temporal', estado: 'RESUELTO', fecha: '2026-09-13', direccionTexto: 'Av. Grau 321' },
+    { idIncidencia: 5, titulo: 'Escombros o materiales de construcción', descripcion: 'Pequeño derrame de aceite en la pista principal', estado: 'EN_PROCESO', fecha: '2026-09-14', direccionTexto: 'Panamericana Sur km 15' },
     { idIncidencia: 6, titulo: 'Otro', descripcion: 'No hay papeleras en el parque del barrio Las Flores', estado: 'PENDIENTE', fecha: '2026-09-15', direccionTexto: 'Parque Las Flores' },
     { idIncidencia: 7, titulo: 'Acumulación y falta de recojo', descripcion: 'Basura acumulada frente al mercado municipal', estado: 'RESUELTO', fecha: '2026-09-16', direccionTexto: 'Mercado Municipal' },
-    { idIncidencia: 8, titulo: 'Basura en vía pública', descripcion: 'Humo negro proveniente de fabrica textil', estado: 'EN_PROCESO', fecha: '2026-09-17', direccionTexto: 'Zona Industrial' },
-    { idIncidencia: 9, titulo: 'Residuos en parques o áreas verdes', descripcion: 'Quema de hojas secas en via publica', estado: 'PENDIENTE', fecha: '2026-09-18', direccionTexto: 'Jr. Las Palmeras' },
+    { idIncidencia: 8, titulo: 'Basura en vía pública', descripcion: 'Humo negro proveniente de fábrica textil', estado: 'EN_PROCESO', fecha: '2026-09-17', direccionTexto: 'Zona Industrial' },
+    { idIncidencia: 9, titulo: 'Residuos en parques o áreas verdes', descripcion: 'Quema de hojas secas en vía pública', estado: 'PENDIENTE', fecha: '2026-09-18', direccionTexto: 'Jr. Las Palmeras' },
     { idIncidencia: 10, titulo: 'Acumulación y falta de recojo', descripcion: 'Residuos abandonados en terreno', estado: 'PENDIENTE', fecha: '2026-09-19', direccionTexto: 'Av. Argentina' },
-    { idIncidencia: 11, titulo: 'Contenedor dañado o lleno', descripcion: 'Arbol bloquea la vereda despues del temporal', estado: 'RESUELTO', fecha: '2026-09-08', direccionTexto: 'Av. Grau 321' },
+    { idIncidencia: 11, titulo: 'Contenedor dañado o lleno', descripcion: 'Árbol bloquea la vereda después del temporal', estado: 'RESUELTO', fecha: '2026-09-08', direccionTexto: 'Av. Grau 321' },
     { idIncidencia: 12, titulo: 'Otro', descripcion: 'No hay papeleras en el parque del barrio', estado: 'PENDIENTE', fecha: '2026-09-11', direccionTexto: 'Parque Las Flores' },
     { idIncidencia: 13, titulo: 'Escombros o materiales de construcción', descripcion: 'Derrame de aceite en la pista principal', estado: 'EN_PROCESO', fecha: '2026-09-07', direccionTexto: 'Panamericana Sur km 15' },
     { idIncidencia: 14, titulo: 'Acumulación y falta de recojo', descripcion: 'Basura frente al mercado municipal', estado: 'RESUELTO', fecha: '2026-09-09', direccionTexto: 'Mercado Municipal' },
-    { idIncidencia: 15, titulo: 'Basura en vía pública', descripcion: 'Humo negro de fabrica textil', estado: 'EN_PROCESO', fecha: '2026-09-13', direccionTexto: 'Zona Industrial' },
-    { idIncidencia: 16, titulo: 'Residuos en parques o áreas verdes', descripcion: 'Quema de hojas secas en via publica', estado: 'PENDIENTE', fecha: '2026-09-15', direccionTexto: 'Jr. Las Palmeras' },
+    { idIncidencia: 15, titulo: 'Basura en vía pública', descripcion: 'Humo negro de fábrica textil', estado: 'EN_PROCESO', fecha: '2026-09-13', direccionTexto: 'Zona Industrial' },
+    { idIncidencia: 16, titulo: 'Residuos en parques o áreas verdes', descripcion: 'Quema de hojas secas en vía pública', estado: 'PENDIENTE', fecha: '2026-09-15', direccionTexto: 'Jr. Las Palmeras' },
     { idIncidencia: 17, titulo: 'Acumulación y falta de recojo', descripcion: 'Residuos en parque central', estado: 'RESUELTO', fecha: '2026-09-16', direccionTexto: 'Parque Central' },
-    { idIncidencia: 18, titulo: 'Acumulación y falta de recojo', descripcion: 'Residuos abandonados en terreno baldio', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Av. Argentina' },
+    { idIncidencia: 18, titulo: 'Acumulación y falta de recojo', descripcion: 'Residuos abandonados en terreno baldío', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Av. Argentina' },
     { idIncidencia: 19, titulo: 'Basura en vía pública', descripcion: 'Agua turbia en acequia del barrio', estado: 'EN_PROCESO', fecha: '2026-09-10', direccionTexto: 'Jr. Los Pinos' },
-    { idIncidencia: 20, titulo: 'Contenedor dañado o lleno', descripcion: 'Arbol caido sobre vehiculo estacionado', estado: 'RESUELTO', fecha: '2026-09-12', direccionTexto: 'Calle Los Olivos' },
+    { idIncidencia: 20, titulo: 'Contenedor dañado o lleno', descripcion: 'Árbol caído sobre vehículo estacionado', estado: 'RESUELTO', fecha: '2026-09-12', direccionTexto: 'Calle Los Olivos' },
     { idIncidencia: 21, titulo: 'Otro', descripcion: 'Sin papeleras en parque', estado: 'PENDIENTE', fecha: '2026-09-14', direccionTexto: 'Parque Las Flores' },
-    { idIncidencia: 22, titulo: 'Otro', descripcion: 'Sin papeleras en cuadra completa del centro', estado: 'PENDIENTE', fecha: '2026-09-13', direccionTexto: 'Jr. Bolivar' },
+    { idIncidencia: 22, titulo: 'Otro', descripcion: 'Sin papeleras en cuadra completa del centro', estado: 'PENDIENTE', fecha: '2026-09-13', direccionTexto: 'Jr. Bolívar' },
   ]
   const locales = JSON.parse(localStorage.getItem('incidenciasLocales') || '[]')
   const idBase = 100
@@ -110,9 +115,20 @@ export default function ManejarIncidencias() {
   const [busqueda, setBusqueda] = useState('')
   const [incidenciaAEliminar, setIncidenciaAEliminar] = useState(null)
   const [incidencias, setIncidencias] = useState([])
-  const [editando, setEditando] = useState(null)
-  const [formulario, setFormulario] = useState({ categoria: '', descripcion: '', estado: 'PENDIENTE', direccionTexto: '' })
   const [paginaActual, setPaginaActual] = useState(1)
+  // Atención por cuadrillas
+  const [asignando, setAsignando] = useState(null)
+  const [resolviendo, setResolviendo] = useState(null)
+  const [viendoHistorial, setViendoHistorial] = useState(null)
+  // Rango de fechas elegido en el reporte ({ desde, hasta } en YYYY-MM-DD) o null
+  const [rango, setRango] = useState(null)
+  const modoDemo = esDemo()
+
+  function actualizarFila(actualizada) {
+    setIncidencias(prev => prev.map(inc =>
+      inc.idIncidencia === actualizada.idIncidencia ? { ...inc, ...actualizada } : inc
+    ))
+  }
 
   useEffect(() => {
     async function mostrarIncidencias() {
@@ -132,50 +148,18 @@ export default function ManejarIncidencias() {
   // Reset page to 1 when filters change
   useEffect(() => {
     setPaginaActual(1)
-  }, [filtroEstado, busqueda])
+  }, [filtroEstado, busqueda, rango])
 
   // Close modal on Escape
   useEffect(() => {
     function handleKeyDown(e) {
-      if (e.key === 'Escape' && editando) {
-        setEditando(null)
+      if (e.key === 'Escape') {
+        if (viendoHistorial) setViendoHistorial(null)
       }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [editando])
-
-  async function handleEditar() {
-    if (!formulario.categoria || !formulario.descripcion) { alert('Completa todos los campos obligatorios.'); return }
-    const payload = {
-      titulo: editando.titulo || formulario.categoria,
-      descripcion: formulario.descripcion,
-      categoria: formulario.categoria,
-      estado: formulario.estado,
-      direccionTexto: formulario.direccionTexto || editando.direccionTexto || '',
-      latitud: editando.latitud ?? null,
-      longitud: editando.longitud ?? null
-    }
-    try {
-      if (esDemo()) {
-        const actualizadas = incidencias.map(inc =>
-          inc.idIncidencia === editando.idIncidencia
-            ? { ...inc, titulo: formulario.categoria, categoria: formulario.categoria, descripcion: formulario.descripcion, estado: formulario.estado, direccionTexto: formulario.direccionTexto }
-            : inc
-        )
-        setIncidencias(actualizadas)
-        guardarIncidenciasDemo(actualizadas)
-      } else {
-        const actualizada = await actualizarIncidencia(editando.idIncidencia, payload)
-        setIncidencias(prev => prev.map(inc =>
-          inc.idIncidencia === editando.idIncidencia ? { ...inc, ...actualizada } : inc
-        ))
-      }
-      setEditando(null)
-    } catch (error) {
-      alert(error.message || 'No se pudo actualizar la incidencia')
-    }
-  }
+  }, [viendoHistorial])
 
   function handleEliminar(id) {
     setIncidenciaAEliminar(id)
@@ -198,11 +182,6 @@ export default function ManejarIncidencias() {
     }
   }
 
-  function abrirEditar(incidencia) {
-    setEditando(incidencia)
-    setFormulario({ categoria: categoriaDe(incidencia), descripcion: incidencia.descripcion, estado: incidencia.estado, direccionTexto: incidencia.direccionTexto || '' })
-  }
-
   function obtenerReportadoPor(incidencia) {
     if (esDemo()) {
       return REPORTER_MAP[incidencia.idIncidencia] || '—'
@@ -217,8 +196,11 @@ export default function ManejarIncidencias() {
       (incidencia.titulo || '').toLowerCase().includes(busqueda.toLowerCase()) ||
       categoriaDe(incidencia).toLowerCase().includes(busqueda.toLowerCase()) ||
       obtenerReportadoPor(incidencia).toLowerCase().includes(busqueda.toLowerCase()) ||
+      (incidencia.cuadrillaNombre || '').toLowerCase().includes(busqueda.toLowerCase()) ||
       (incidencia.direccionTexto || '').toLowerCase().includes(busqueda.toLowerCase())
-    return coincideEstado && coincideBusqueda
+    const fechaRegistro = (incidencia.fecha || '').slice(0, 10)
+    const coincideRango = !rango || (fechaRegistro >= rango.desde && fechaRegistro <= rango.hasta)
+    return coincideEstado && coincideBusqueda && coincideRango
   })
 
   // Metrics
@@ -260,20 +242,23 @@ export default function ManejarIncidencias() {
         </div>
         <div className="admin-metric-card admin-metric-card--resolved">
           <span className="admin-metric-card__numero">{resueltosCount}</span>
-          <span className="admin-metric-card__label">Resueltos</span>
+          <span className="admin-metric-card__label">Resueltas</span>
           <i className="fa-solid fa-circle-check admin-metric-card__icon"></i>
         </div>
       </div>
 
+      {/* Reporte por rango de fechas */}
+      <ReportePorFechas modoDemo={modoDemo} incidenciasDemo={incidencias} onCambioRango={setRango} />
+
       {/* Buscador y filtros */}
       <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
         <input
-          type="text" placeholder="Buscar por fecha, título o ubicación..."
+          type="text" placeholder="Buscar por fecha, título, ubicación o cuadrilla..."
           value={busqueda} onChange={e => setBusqueda(e.target.value)}
           className="admin-input" style={{ flex: 1, minWidth: '300px' }}
         />
         <div style={{ display: 'flex', gap: '6px' }}>
-          {[{ key: 'todos', label: 'Todos', color: '#37474F' }, { key: 'pending', label: 'Pendientes', color: '#E65100' }, { key: 'in-progress', label: 'En Proceso', color: '#1565C0' }, { key: 'resolved', label: 'Resueltos', color: '#2E7D32' }].map(f => (
+          {[{ key: 'todos', label: 'Todos', color: '#37474F' }, { key: 'pending', label: 'Pendientes', color: '#E65100' }, { key: 'in-progress', label: 'En Proceso', color: '#1565C0' }, { key: 'resolved', label: 'Resueltas', color: '#2E7D32' }].map(f => (
             <button key={f.key} onClick={() => setFiltroEstado(f.key)} className="admin-btn" style={{
               background: filtroEstado === f.key ? f.color : 'var(--color-bg-white)',
               color: filtroEstado === f.key ? '#fff' : 'var(--color-text)',
@@ -297,6 +282,7 @@ export default function ManejarIncidencias() {
                   <th>#</th>
                   <th>Categoría</th>
                   <th>Estado</th>
+                  <th>Cuadrilla</th>
                   <th>Descripción</th>
                   <th>Reportado por</th>
                   <th>Ubicación</th>
@@ -313,16 +299,46 @@ export default function ManejarIncidencias() {
                         {ESTADO_LABEL[incidencia.estado] || incidencia.estado}
                       </span>
                     </td>
+                    <td>
+                      {incidencia.cuadrillaNombre ? (
+                        <span className="cuad-celda">
+                          <span className="cuad-celda__nombre">{incidencia.cuadrillaNombre}</span>
+                          {incidencia.cuadrillaZona && <span className="cuad-celda__zona">{incidencia.cuadrillaZona}</span>}
+                        </span>
+                      ) : (
+                        <span className="cuad-celda__sin">Sin asignar</span>
+                      )}
+                    </td>
                     <td style={{ maxWidth: '250px', whiteSpace: 'normal', wordBreak: 'break-word' }}>{incidencia.descripcion}</td>
                     <td>{obtenerReportadoPor(incidencia)}</td>
                     <td>{incidencia.direccionTexto || 'No se sabe'}</td>
                     <td>
-                      <div className="admin-table__acciones">
-                        <button onClick={() => abrirEditar(incidencia)} className="admin-btn admin-btn--edit">
-                          Editar
-                        </button>
-                        <button onClick={() => handleEliminar(incidencia.idIncidencia)} className="admin-btn admin-btn--delete">
-                          Eliminar
+                      {/* Cada acción ocupa siempre su columna, así los íconos quedan alineados en todas las filas */}
+                      <div className="icon-acciones">
+                        {!modoDemo && (incidencia.estado !== 'RESUELTO' ? (
+                          <button type="button" onClick={() => setAsignando(incidencia)} className="icon-btn icon-btn--azul"
+                            aria-label={incidencia.cuadrillaNombre ? 'Reasignar cuadrilla' : 'Asignar cuadrilla'}
+                            title={incidencia.cuadrillaNombre ? 'Reasignar cuadrilla' : 'Asignar cuadrilla'}>
+                            <i className={`fa-solid ${incidencia.cuadrillaNombre ? 'fa-right-left' : 'fa-people-group'}`} aria-hidden="true"></i>
+                          </button>
+                        ) : <span className="icon-btn--hueco" aria-hidden="true"></span>)}
+                        {!modoDemo && (incidencia.estado !== 'RESUELTO' ? (
+                          <button type="button" onClick={() => setResolviendo(incidencia)} className="icon-btn icon-btn--verde"
+                            disabled={!incidencia.cuadrillaNombre}
+                            aria-label="Resolver incidencia"
+                            title={incidencia.cuadrillaNombre ? 'Resolver: subir fotos del trabajo terminado' : 'Primero asigna una cuadrilla'}>
+                            <i className="fa-solid fa-circle-check" aria-hidden="true"></i>
+                          </button>
+                        ) : <span className="icon-btn--hueco" aria-hidden="true"></span>)}
+                        {!modoDemo && (
+                          <button type="button" onClick={() => setViendoHistorial(incidencia)} className="icon-btn icon-btn--gris"
+                            aria-label="Ver historial" title="Ver historial">
+                            <i className="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
+                          </button>
+                        )}
+                        <button type="button" onClick={() => handleEliminar(incidencia.idIncidencia)} className="icon-btn icon-btn--rojo"
+                          aria-label="Eliminar incidencia" title="Eliminar incidencia">
+                          <i className="fa-solid fa-trash" aria-hidden="true"></i>
                         </button>
                       </div>
                     </td>
@@ -357,42 +373,47 @@ export default function ManejarIncidencias() {
         </>
       )}
 
-      {/* Modal de edición */}
-      {editando && (
-        <div className="admin-modal-overlay" onClick={() => setEditando(null)}>
-          <div className="admin-modal" onClick={e => e.stopPropagation()}>
-            <h3 className="admin-modal__title"><i className="fa-solid fa-pen-to-square" style={{ marginRight: '8px' }}></i>Editar Incidencia</h3>
-            <div className="admin-modal__form-grid">
-              <div>
-                <label className="admin-modal__label">Categoría:</label>
-                <select value={formulario.categoria} onChange={e => setFormulario(f => ({ ...f, categoria: e.target.value }))} className="admin-input">
-                  <option value="">-- Selecciona --</option>
-                  {CATEGORIAS.map(c => <option key={c} value={c}>{c}</option>)}
-                  {formulario.categoria && !CATEGORIAS.includes(formulario.categoria) && (
-                    <option value={formulario.categoria}>{formulario.categoria}</option>
-                  )}
-                </select>
-              </div>
-              <div>
-                <label className="admin-modal__label">Estado:</label>
-                <select value={formulario.estado} onChange={e => setFormulario(f => ({ ...f, estado: e.target.value }))} className="admin-input">
-                  <option value="PENDIENTE">Pendiente</option>
-                  <option value="EN_PROCESO">En Proceso</option>
-                  <option value="RESUELTO">Resuelto</option>
-                </select>
-              </div>
-              <div className="admin-modal__full-width">
-                <label className="admin-modal__label">Descripción:</label>
-                <textarea value={formulario.descripcion} onChange={e => setFormulario(f => ({ ...f, descripcion: e.target.value }))} className="admin-input" style={{ minHeight: '80px', resize: 'vertical' }} />
-              </div>
-              <div className="admin-modal__full-width">
-                <label className="admin-modal__label">Dirección:</label>
-                <input value={formulario.direccionTexto} onChange={e => setFormulario(f => ({ ...f, direccionTexto: e.target.value }))} className="admin-input" />
-              </div>
-            </div>
+      {asignando && (
+        <AsignarCuadrillaModal
+          incidencia={asignando}
+          onClose={() => setAsignando(null)}
+          onAsignada={(actualizada) => { actualizarFila(actualizada); setAsignando(null) }}
+        />
+      )}
+
+      {resolviendo && (
+        <ResolverIncidenciaModal
+          incidencia={resolviendo}
+          onClose={() => setResolviendo(null)}
+          onResuelta={(actualizada) => { actualizarFila(actualizada); setResolviendo(null) }}
+        />
+      )}
+
+      {viendoHistorial && (
+        <div className="admin-modal-overlay" onClick={() => setViendoHistorial(null)}>
+          <div className="admin-modal cuad-modal" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="historial-titulo">
+            <h3 className="admin-modal__title" id="historial-titulo">
+              <i className="fa-solid fa-clock-rotate-left" style={{ marginRight: '8px' }}></i>
+              {viendoHistorial.titulo || categoriaDe(viendoHistorial)}
+            </h3>
+            <p className="cuad-modal__contexto">
+              <span><strong>Ubicación:</strong> {viendoHistorial.direccionTexto || 'Sin dirección registrada'}</span>
+              <span><strong>Cuadrilla:</strong> {viendoHistorial.cuadrillaNombre || 'Sin asignar'}</span>
+              <span><strong>Estado actual:</strong> {ESTADO_LABEL[viendoHistorial.estado] || viendoHistorial.estado}</span>
+            </p>
+            {viendoHistorial.urlsEvidencias?.length > 0 && (
+              <>
+                <span className="admin-modal__label">Evidencia del trabajo terminado</span>
+                <div className="atencion__evidencias">
+                  {viendoHistorial.urlsEvidencias.map((url, i) => (
+                    <a key={url} href={url} target="_blank" rel="noreferrer"><img src={url} alt={`Evidencia ${i + 1}`} /></a>
+                  ))}
+                </div>
+              </>
+            )}
+            <HistorialIncidencia key={viendoHistorial.idIncidencia} incidencia={viendoHistorial} />
             <div className="admin-modal__actions">
-              <button onClick={() => setEditando(null)} className="admin-btn admin-btn--cancel">Cancelar</button>
-              <button onClick={handleEditar} className="admin-btn admin-btn--save">Guardar Cambios</button>
+              <button onClick={() => setViendoHistorial(null)} className="admin-btn admin-btn--cancel">Cerrar</button>
             </div>
           </div>
         </div>

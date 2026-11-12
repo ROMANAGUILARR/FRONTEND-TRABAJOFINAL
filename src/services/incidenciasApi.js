@@ -44,7 +44,7 @@ function extraerMensajeError(cuerpo, status) {
 }
 
 export async function describirFotosConIA(imagenesBase64) {
-  if (esDemo()) return { descripcion: 'Acumulacion de residuos solidos en la via publica. Se observan bolsas de basura rotas con desperdicios dispersos que obstruyen el paso peatonal.', titulo: 'Basura en via publica' }
+  if (esDemo()) return { descripcion: 'Acumulación de residuos sólidos en la vía pública. Se observan bolsas de basura rotas con desperdicios dispersos que obstruyen el paso peatonal.', titulo: 'Basura en vía pública' }
 
   const token = localStorage.getItem("token");
   const response = await fetch(`${API_BASE}/incidencias/generar-descripcion`, {
@@ -292,6 +292,23 @@ export async function obtenerIncidenciasPorUsuario(usuarioId) {
   }
 
   return response.json()
+}
+
+/**
+ * Reporte de incidencias registradas entre dos fechas (YYYY-MM-DD, ambas incluidas).
+ * Devuelve totales, resumen por ciudadano y el motivo de las no resueltas.
+ */
+export async function obtenerReportePorFechas(desde, hasta) {
+  const token = localStorage.getItem('token')
+  const params = new URLSearchParams({ desde, hasta })
+  const response = await fetch(`${API_BASE}/incidencias/reporte?${params}`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  })
+  const cuerpo = await response.text()
+  if (!response.ok) {
+    throw new Error(extraerMensajeError(cuerpo, response.status))
+  }
+  return JSON.parse(cuerpo)
 }
 
 export async function actualizarIncidencia(idIncidencia, datos) {

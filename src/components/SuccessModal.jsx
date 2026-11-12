@@ -8,8 +8,8 @@ export default function SuccessModal({ onClose, puntosGanados = 0, nuevasInsigni
         <div className="text-5xl mb-4">✅</div>
 
         <p className="text-sm text-eco-text-secondary leading-relaxed mb-4">
-          Su incidencia ha sido registrada exitosamente y ha sido establecida como
-          Pendiente en el panel de 'Seguimiento de Incidencias'.
+          Su incidencia ha sido registrada exitosamente y quedó como
+          Pendiente en el panel «Seguimiento de Incidencias».
         </p>
 
         {puntosGanados > 0 && (

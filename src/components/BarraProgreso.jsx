@@ -1,9 +1,9 @@
 const puntosCategoria = [
     { puntosNecesarios: 10, insignia: 'Primer reporte' },
     { puntosNecesarios: 50, insignia: 'Reportero activo' },
-    { puntosNecesarios: 100, insignia: 'Guardian del barrio' },
-    { puntosNecesarios: 150, insignia: 'EcoHeroe' },
-    { puntosNecesarios: 200, insignia: 'Embajador EcoSolido' },
+    { puntosNecesarios: 100, insignia: 'Guardián del barrio' },
+    { puntosNecesarios: 150, insignia: 'EcoHéroe' },
+    { puntosNecesarios: 200, insignia: 'Embajador EcoSólido' },
 ]
 export default function BarraProgreso({ puntos }) {
     const puntosNum = Number(puntos)
@@ -33,7 +33,7 @@ export default function BarraProgreso({ puntos }) {
             <div className="text-xs text-eco-text-secondary">
                 {puntosNum === 0 ? (
                     <p className="text-base bg-eco-danger text-white p-2.5 rounded-md">
-                        Aun no has realizado contribuciones. Registra tu primera incidencia!
+                        Aún no has realizado contribuciones. ¡Registra tu primera incidencia!
                     </p>
                 ) : nivelSiguiente ? (
                     <>
@@ -45,7 +45,7 @@ export default function BarraProgreso({ puntos }) {
                         </span>
                     </>
                 ) : (
-                    <span>Has alcanzado el nivel maximo!</span>
+                    <span>¡Has alcanzado el nivel máximo!</span>
                 )}
             </div>
         </div>

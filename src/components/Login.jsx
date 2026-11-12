@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import Button from './ui/Button'
 import Input from './ui/Input'
+import ThemeToggleButton from './ThemeToggleButton'
 import './Login.css'
 
 export default function Login({ onLogin }) {
@@ -25,6 +26,7 @@ export default function Login({ onLogin }) {
 
     return (
         <div className="login flex items-center justify-center min-h-screen bg-eco-bg p-5">
+            <ThemeToggleButton />
             <div className="w-full max-w-[420px] bg-eco-bg-white rounded-lg shadow-lg p-10 max-md:p-6 max-sm:p-5">
 
                 {/* Logo */}
@@ -33,7 +35,7 @@ export default function Login({ onLogin }) {
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                     </svg>
                     <h1 className="m-0 mb-2 text-2xl font-bold text-eco-text tracking-tight max-md:text-xl max-sm:text-lg">
-                        EcoSolido
+                        EcoSólido
                     </h1>
                     <p className="m-0 text-sm text-eco-text-secondary leading-relaxed">
                         Inicia sesión para gestionar incidencias
@@ -42,7 +44,7 @@ export default function Login({ onLogin }) {
 
                 {/* Error */}
                 {error && (
-                    <div className="bg-red-50 border border-eco-danger text-eco-danger p-3 rounded-md text-sm text-center mb-2">
+                    <div className="bg-[var(--color-accent-red-light)] border border-[var(--color-btn-danger)] text-[var(--color-danger-text)] p-3 rounded-md text-sm text-center mb-2">
                         {error}
                     </div>
                 )}

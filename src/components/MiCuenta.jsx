@@ -38,7 +38,7 @@ export default function MiCuenta() {
                     </div>
                     <h1 className="m-0 mb-1 text-2xl font-bold text-eco-text">Mi Cuenta</h1>
                     <p className="m-0 text-sm text-eco-text-secondary">
-                        Datos de tu cuenta en EcoSolido
+                        Datos de tu cuenta en EcoSólido
                     </p>
                 </div>
 

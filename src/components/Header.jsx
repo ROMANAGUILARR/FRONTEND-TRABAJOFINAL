@@ -7,13 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import logo from '../assets/LOGO ECOSOLIDO.png'
 import { obtenerPuntosUsuario } from '../services/incidenciasApi'
-const obtenerTemaInicial = () => {
-    const temaGuardado = localStorage.getItem('theme');
-    if (temaGuardado) {
-      return temaGuardado === 'dark';
-    }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-};
+import { obtenerTemaInicial, aplicarTema } from '../utils/tema'
 export default function Header({ onMenuClick,onLogout }) {
   const [temaOscuro, setTemaOscuro] = useState(obtenerTemaInicial)
   const navigate = useNavigate()
@@ -28,14 +22,7 @@ export default function Header({ onMenuClick,onLogout }) {
     }
   }, [user?.puntos])
   useEffect(() => {
-    const root = document.documentElement
-    if (temaOscuro) {
-        root.setAttribute('data-theme', 'dark')
-        localStorage.setItem('theme', 'dark')
-    } else {
-        root.removeAttribute('data-theme')
-        localStorage.setItem('theme', 'light')
-    }
+    aplicarTema(temaOscuro)
   }, [temaOscuro])
   useEffect(() => {
     async function cargarPuntos() {
@@ -70,8 +57,8 @@ export default function Header({ onMenuClick,onLogout }) {
         type="button"
         className="hidden items-center justify-center p-2 border-none bg-transparent text-white cursor-pointer opacity-90 transition-all duration-200 rounded-sm flex-shrink-0 hover:opacity-100 hover:scale-105 active:scale-95 max-sm:flex max-md:flex"
         onClick={onMenuClick}
-        aria-label="Abrir menu"
-        title="Menu"
+        aria-label="Abrir menú"
+        title="Menú"
       >
         <IconMenu />
       </button>
@@ -80,7 +67,7 @@ export default function Header({ onMenuClick,onLogout }) {
       <div className="header__logo-container flex items-center gap-2.5">
         <img src={logo} alt="Logo" className="header__logo-img w-20 h-20 object-contain rounded-sm max-md:w-16 max-md:h-16 max-sm:w-14 max-sm:h-14" />
         <h1 className="header__logo m-0 text-xl font-bold text-white tracking-tight whitespace-nowrap max-md:text-base max-sm:text-sm">
-          EcoSolido
+          EcoSólido
         </h1>
       </div>
 

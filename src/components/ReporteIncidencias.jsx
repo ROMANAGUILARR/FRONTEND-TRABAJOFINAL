@@ -101,10 +101,10 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
       <div ref={reporteRef} className="reporte-container">
         {/* Encabezado */}
         <div className="reporte-header">
-          <img src={logoEcoSolido} alt="EcoSolido" className="reporte-logo" />
+          <img src={logoEcoSolido} alt="EcoSólido" className="reporte-logo" />
           <div className="reporte-titulo">
             <h1>Hoja de Recuento de Registro de Incidencias</h1>
-            <p>Sistema de Gestión Ambiental — EcoSolido</p>
+            <p>Sistema de Gestión Ambiental — EcoSólido</p>
           </div>
         </div>
 

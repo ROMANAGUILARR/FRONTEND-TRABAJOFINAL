@@ -31,9 +31,9 @@ const PUNTOS_POR_INCIDENCIA = 10
 const INSIGNIAS_LOCALES = [
   { nombre: 'Primer reporte', recompensa: 'Bono de S/20 en tu billetera digital para canjear en mercados locales.', requisito: 1 },
   { nombre: 'Reportero activo', recompensa: 'Bono de S/50 en tu billetera digital + recarga de 10 GB móviles.', requisito: 5 },
-  { nombre: 'Guardian del barrio', recompensa: 'Vale de S/100 en canasta familiar + reconocimiento público en redes sociales.', requisito: 10 },
-  { nombre: 'EcoHeroe', recompensa: 'Vale de S/200 en canasta familiar + kit de productos ecológicos para el hogar.', requisito: 15 },
-  { nombre: 'Embajador EcoSolido', recompensa: 'Vale de S/500 en canasta familiar + kit EcoSólido + certificado de Embajador Ambiental.', requisito: 20 },
+  { nombre: 'Guardián del barrio', recompensa: 'Vale de S/100 en canasta familiar + reconocimiento público en redes sociales.', requisito: 10 },
+  { nombre: 'EcoHéroe', recompensa: 'Vale de S/200 en canasta familiar + kit de productos ecológicos para el hogar.', requisito: 15 },
+  { nombre: 'Embajador EcoSólido', recompensa: 'Vale de S/500 en canasta familiar + kit EcoSólido + certificado de Embajador Ambiental.', requisito: 20 },
 ]
 
 function evaluarInsigniasLocales(totalIncidencias, insigniasYaDesbloqueadas = []) {
@@ -257,9 +257,9 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
       alert('Genera una descripción válida o cambia las fotos antes de registrar.');
       return;
     }
-    if (!categoria) { setWarningMessage('No ha establecido alguna categoría.'); setShowWarningModal(true); return; }
+    if (!categoria) { setWarningMessage('No ha seleccionado ninguna categoría.'); setShowWarningModal(true); return; }
     if (!tieneFotos) { setWarningMessage('No ha colocado foto alguna.'); setShowWarningModal(true); return; }
-    if (!descripcion.trim()) { setWarningMessage('No ha escrito alguna descripción de la incidencia.'); setShowWarningModal(true); return; }
+    if (!descripcion.trim()) { setWarningMessage('No ha escrito ninguna descripción de la incidencia.'); setShowWarningModal(true); return; }
     if (!ubicacion) { setWarningMessage('Debe seleccionar y confirmar una ubicación antes de registrar.'); setShowWarningModal(true); return; }
     try {
       const fotosComprimidas = await Promise.all(
@@ -470,7 +470,7 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
                   <span className="foto-slot__upload-text">
                     {fotosSubidas.length > 0
                       ? `${fotosSubidas.length} foto(s) seleccionada(s)`
-                      : 'Ingresa o arrastre una o más fotos'}
+                      : 'Selecciona o arrastra una o más fotos'}
                   </span>
                 </div>
               </button>
@@ -497,7 +497,7 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
           </fieldset>
 
           <div className="registrar__field">
-            <label htmlFor="categoria">Selecciona una categoría(6 categorías) <span style={{ color: '#ff7a00' }}>*</span>:</label>
+            <label htmlFor="categoria">Selecciona una categoría (6 categorías) <span style={{ color: '#ff7a00' }}>*</span>:</label>
             <div className="registrar__select-wrap" >
               <select
                 id="categoria"
@@ -559,7 +559,7 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
                 </div>
               )}
             </div>
-            <span style={{ color: '#ff7a00' }}>*Campo Obligatorio</span>
+            <span style={{ color: '#ff7a00' }}>* Campo obligatorio</span>
             {generandoIA && (
               <span className="registrar__ia-loading" role="status">
                 Analizando las fotos con IA...
@@ -613,8 +613,8 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
           <Suspense fallback={<div className="modal-loading">Cargando...</div>}>
             <WarningModal
               message={warningMessage}
-              title={warningMessage === 'Esta incidencia ya fue registrada anteriormente. No se asignarán puntos adicionales.' ? 'Incidencia duplicada' : undefined}
-              hidePrefix={warningMessage === 'Esta incidencia ya fue registrada anteriormente. No se asignarán puntos adicionales.'}
+              title={/ya fue registrada|Otro vecino ya reportó/.test(warningMessage || '') ? 'Incidencia duplicada' : undefined}
+              hidePrefix={/ya fue registrada|Otro vecino ya reportó/.test(warningMessage || '')}
               onClose={() => setShowWarningModal(false)}
             />
           </Suspense>

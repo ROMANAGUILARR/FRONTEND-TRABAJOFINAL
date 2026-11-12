@@ -2,25 +2,25 @@ import Modal from './ui/Modal'
 
 const PASOS = [
     { titulo: "1. Sube tus fotos", descripcion: "Arrastra o selecciona hasta 5 fotos del problema. Formatos aceptados: JPG, PNG, WEBP." },
-    { titulo: "2. Selecciona una categoria", descripcion: "Elige la categoria que mejor describa la incidencia (basura, contenedor danado, escombros, etc.)." },
-    { titulo: "3. Escribe o genera una descripcion", descripcion: "Describe el problema con detalle o usa el boton de IA para generar una descripcion automatica." },
-    { titulo: "4. Registra la incidencia", descripcion: "Haz click en 'Registrar incidencia'. Tu reporte quedara guardado en el sistema." },
+    { titulo: "2. Selecciona una categoría", descripcion: "Elige la categoría que mejor describa la incidencia (basura, contenedor dañado, escombros, etc.)." },
+    { titulo: "3. Escribe o genera una descripción", descripcion: "Describe el problema con detalle o usa el botón de IA para generar una descripción automática." },
+    { titulo: "4. Registra la incidencia", descripcion: "Haz clic en «Registrar incidencia». Tu reporte quedará guardado en el sistema." },
 ]
 
 const FAQS = [
-    { pregunta: "Cuanto tarda en revisarse mi reporte?", respuesta: "El equipo municipal revisa los reportes en un plazo de 24 a 48 horas habiles." },
-    { pregunta: "Que pasa despues de enviar?", respuesta: "Tu incidencia queda registrada y puedes hacer seguimiento desde la seccion 'Seguimiento'." },
-    { pregunta: "Puedo registrar sin fotos?", respuesta: "No, al menos una foto es obligatoria para validar la incidencia." },
-    { pregunta: "Que hace la IA?", respuesta: "Analiza tus fotos y genera automaticamente una descripcion del problema." },
-    { pregunta: "Para que sirven los botones de tamano de letra?", respuesta: "Permiten modificar el tamano de la fuente de los titulos y demas campos textuales." },
-    { pregunta: "Para que sirve el boton de la luna?", respuesta: "Cambia la pestana a modo nocturno. Presione otra vez para volver al modo claro." },
-    { pregunta: "Como funciona el dictado por voz?", respuesta: "Manten presionado el boton mientras dictas la descripcion y tu voz se convertira en texto." },
-    { pregunta: "Como funciona la busqueda por voz?", respuesta: "Haz click en el microfono, menciona el titulo de la incidencia y presiona detener." },
+    { pregunta: "¿Cuánto tarda en revisarse mi reporte?", respuesta: "El equipo municipal revisa los reportes en un plazo de 24 a 48 horas hábiles." },
+    { pregunta: "¿Qué pasa después de enviar?", respuesta: "Tu incidencia queda registrada y puedes hacerle seguimiento desde la sección «Seguimiento de Incidencias»." },
+    { pregunta: "¿Puedo registrar sin fotos?", respuesta: "No, al menos una foto es obligatoria para validar la incidencia." },
+    { pregunta: "¿Qué hace la IA?", respuesta: "Analiza tus fotos y genera automáticamente una descripción del problema." },
+    { pregunta: "¿Para qué sirven los botones de tamaño de letra?", respuesta: "Permiten modificar el tamaño de la letra de los títulos y demás textos." },
+    { pregunta: "¿Para qué sirve el botón de la luna?", respuesta: "Cambia la página a modo oscuro. Presiónalo otra vez para volver al modo claro." },
+    { pregunta: "¿Cómo funciona el dictado por voz?", respuesta: "Mantén presionado el botón mientras dictas la descripción y tu voz se convertirá en texto." },
+    { pregunta: "¿Cómo funciona la búsqueda por voz?", respuesta: "Haz clic en el micrófono, menciona el título de la incidencia y presiona «Detener»." },
 ]
 
 export default function HelpModal({ onClose }) {
     return (
-        <Modal isOpen={true} onClose={onClose} title="Como funciona?" size="lg">
+        <Modal isOpen={true} onClose={onClose} title="¿Cómo funciona?" size="lg">
             <div style={{ '--font-scale': 1 }}>
                 <h3 className="text-base font-bold text-eco-text mb-3">Pasos para registrar una incidencia</h3>
                 <ol className="list-decimal pl-5 mb-6 space-y-2">
