@@ -22,6 +22,30 @@ const TIPOS_DOCUMENTO = {
     PTP: { etiqueta: 'PTP (Permiso Temporal de Permanencia)', patron: /^\d{9}$/, max: 9, ayuda: '9 dígitos', numerico: true },
 };
 
+// Mismas reglas que valida el backend (CrearUsuarioRequestDTO)
+const PATRON_NOMBRE = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ' -]+$/
+const PATRON_USUARIO = /^[A-Za-z0-9._-]+$/
+const PATRON_CORREO = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
+
+function validarRegistro(datos) {
+    const nombre = datos.nombre.trim()
+    const apellido = datos.apellido.trim()
+    const usuario = datos.nombreUsuario.trim()
+    if (nombre.length < 2 || nombre.length > 100) return 'El nombre debe tener entre 2 y 100 caracteres.'
+    if (!PATRON_NOMBRE.test(nombre)) return 'El nombre solo puede contener letras y espacios.'
+    if (apellido.length < 2 || apellido.length > 100) return 'El apellido debe tener entre 2 y 100 caracteres.'
+    if (!PATRON_NOMBRE.test(apellido)) return 'El apellido solo puede contener letras y espacios.'
+    if (!PATRON_CORREO.test(datos.email.trim())) return 'El correo electrónico no tiene un formato válido.'
+    if (usuario.length < 3 || usuario.length > 50) return 'El nombre de usuario debe tener entre 3 y 50 caracteres.'
+    if (!PATRON_USUARIO.test(usuario)) return 'El nombre de usuario solo puede tener letras, números, punto, guion o guion bajo (sin espacios).'
+    if (!datos.pregunta) return 'Elige una pregunta de seguridad.'
+    if (!datos.respuesta.trim()) return 'Escribe la respuesta a tu pregunta de seguridad.'
+    if (datos.respuesta.trim().length > 50) return 'La respuesta de seguridad debe tener como máximo 50 caracteres.'
+    if (datos.contrasena.length < 6 || datos.contrasena.length > 72) return 'La contraseña debe tener entre 6 y 72 caracteres.'
+    if (datos.contrasena !== datos.confirmarContrasena) return 'Las contraseñas no coinciden.'
+    return null
+}
+
 export default function Registrarse() {
     const navigate = useNavigate();
     const { logout } = useAuth();
@@ -45,12 +69,9 @@ export default function Registrarse() {
         setError(null);
         setSuccess(null);
 
-        if (formData.contrasena !== formData.confirmarContrasena) {
-            setError('Las contraseñas no coinciden');
-            return;
-        }
-        if (formData.contrasena.length < 6) {
-            setError('La contraseña debe tener al menos 6 caracteres');
+        const errorValidacion = validarRegistro(formData);
+        if (errorValidacion) {
+            setError(errorValidacion);
             return;
         }
         const documento = TIPOS_DOCUMENTO[formData.tipoDocumento];
@@ -60,7 +81,7 @@ export default function Registrarse() {
             return;
         }
         if (!/^\d{9}$/.test(formData.telefono)) {
-            setError('El teléfono debe tener exactamente 9 dígitos');
+            setError('El teléfono debe tener exactamente 9 dígitos.');
             return;
         }
 
@@ -70,16 +91,16 @@ export default function Registrarse() {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    nombreCompleto: formData.nombre,
-                    apellidoCompleto: formData.apellido,
+                    nombreCompleto: formData.nombre.trim(),
+                    apellidoCompleto: formData.apellido.trim(),
                     tipoDocumento: formData.tipoDocumento,
                     dni: numeroDocumento,
                     telefono: formData.telefono,
-                    correoElectronico: formData.email,
-                    nombreUsuario: formData.nombreUsuario,
+                    correoElectronico: formData.email.trim(),
+                    nombreUsuario: formData.nombreUsuario.trim(),
                     contrasena: formData.contrasena,
                     preguntaSeguridad: formData.pregunta,
-                    respuestaPregunta: formData.respuesta
+                    respuestaPregunta: formData.respuesta.trim()
                 })
             });
 
@@ -132,8 +153,8 @@ export default function Registrarse() {
                 {/* Formulario */}
                 <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
-                        <Input label="Nombre" name="nombre" placeholder="Tu nombre" value={formData.nombre} onChange={handleChange} required />
-                        <Input label="Apellido" name="apellido" placeholder="Tu apellido" value={formData.apellido} onChange={handleChange} required />
+                        <Input label="Nombre" name="nombre" placeholder="Tu nombre" value={formData.nombre} onChange={handleChange} required maxLength={100} />
+                        <Input label="Apellido" name="apellido" placeholder="Tu apellido" value={formData.apellido} onChange={handleChange} required maxLength={100} />
                     </div>
 
                     <Input label="Correo electrónico" name="email" type="email" placeholder="tu@email.com" value={formData.email} onChange={handleChange} required />
@@ -160,7 +181,7 @@ export default function Registrarse() {
                             placeholder={TIPOS_DOCUMENTO[formData.tipoDocumento].ayuda}
                             value={formData.DNI} onChange={handleChange} required />
                     </div>
-                    <Input label="Nombre de usuario" name="nombreUsuario" placeholder="Elige un nombre de usuario" value={formData.nombreUsuario} onChange={handleChange} required />
+                    <Input label="Nombre de usuario" name="nombreUsuario" placeholder="De 3 a 50 caracteres, sin espacios" value={formData.nombreUsuario} onChange={handleChange} required maxLength={50} />
                     <div className="flex flex-col gap-2">
                         <label htmlFor="pregunta" className="font-semibold text-sm text-eco-text uppercase tracking-wider">
                             Pregunta de seguridad<span className="text-eco-danger ml-1 font-bold">*</span>
@@ -177,10 +198,10 @@ export default function Registrarse() {
                             {PREGUNTAS_SEGURIDAD.map(p => <option key={p} value={p}>{p}</option>)}
                         </select>
                     </div>
-                    <Input label="Respuesta" name="respuesta" placeholder="Tu respuesta (la necesitarás para recuperar tu contraseña)" value={formData.respuesta} onChange={handleChange} required />
+                    <Input label="Respuesta" name="respuesta" placeholder="Tu respuesta (la necesitarás para recuperar tu contraseña)" value={formData.respuesta} onChange={handleChange} required maxLength={50} />
 
-                    <Input label="Contraseña" name="contrasena" placeholder="Mínimo 6 caracteres" value={formData.contrasena} onChange={handleChange} required showToggle />
-                    <Input label="Confirmar contraseña" name="confirmarContrasena" placeholder="Repite tu contraseña" value={formData.confirmarContrasena} onChange={handleChange} required showToggle />
+                    <Input label="Contraseña" name="contrasena" placeholder="Mínimo 6 caracteres" value={formData.contrasena} onChange={handleChange} required showToggle maxLength={72} />
+                    <Input label="Confirmar contraseña" name="confirmarContrasena" placeholder="Repite tu contraseña" value={formData.confirmarContrasena} onChange={handleChange} required showToggle maxLength={72} />
 
                     <span className="text-[var(--color-warning-text)] text-xs font-medium">* Campo obligatorio</span>
 

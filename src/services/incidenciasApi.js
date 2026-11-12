@@ -149,10 +149,11 @@ export async function registrarIncidencia(categoria, descripcion, urlsFotos, arc
     JSON.stringify({ 
         categoria, 
         descripcion,
-        titulo: titulo || '',
+        // Límites de la base de datos: título 200 y dirección 255 caracteres
+        titulo: (titulo || '').slice(0, 200),
         latitud,
         longitud,
-        direccionTexto
+        direccionTexto: (direccionTexto || '').slice(0, 255)
     })
   ], { type: 'application/json' });
   formData.append('incidencia', incidenciaBlob);
