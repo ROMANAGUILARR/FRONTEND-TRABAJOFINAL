@@ -1,0 +1,190 @@
+/* Reporte de incidencias por rango de fechas (Gestión de Incidencias) */
+.rpf {
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.rpf__titulo {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rpf__titulo i { color: var(--color-link); }
+
+.rpf__ayuda {
+  margin: 4px 0 16px;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.rpf__controles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.rpf__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  flex: 0 0 auto;
+}
+
+.rpf__campo .admin-input {
+  width: 180px;
+}
+
+.rpf__atajos,
+.rpf__botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rpf__chip {
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-link);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.rpf__chip:hover {
+  border-color: var(--color-link);
+  background: var(--color-accent-green-light);
+}
+
+.rpf__error {
+  margin: 12px 0 0;
+  color: var(--color-danger-text);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.rpf__resultado { margin-top: 20px; }
+
+.rpf__rango {
+  margin: 0 0 12px;
+  color: var(--color-text);
+}
+
+.rpf__totales {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.rpf__total {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  border-left: 5px solid var(--color-text-secondary);
+}
+
+.rpf__total--ok { border-left-color: var(--color-link); }
+.rpf__total--pend { border-left-color: var(--color-warning-text); }
+
+.rpf__numero {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.1;
+}
+
+.rpf__etiqueta {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.rpf__detalle {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.rpf__bloque h4 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.rpf__tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  color: var(--color-text);
+}
+
+.rpf__tabla th,
+.rpf__tabla td {
+  padding: 8px;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.rpf__tabla th:not(:first-child),
+.rpf__tabla td:not(:first-child) { text-align: center; }
+
+.rpf__tabla th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.rpf__motivos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.rpf__motivos li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.rpf__motivo-titulo {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--color-text);
+}
+
+.rpf__motivo-texto {
+  font-size: 0.82rem;
+  color: var(--color-warning-text);
+}
+
+.rpf__vacio,
+.rpf__nota {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin: 8px 0 0;
+}

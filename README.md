@@ -46,6 +46,27 @@ Y los administradores pueden:
 
 ---
 
+## 🔁 Prevención de incidencias duplicadas
+
+Cuando varios vecinos ven el mismo problema, EcoSolido evita que se registre dos veces. Antes de guardar un reporte, el **backend** busca incidencias **abiertas** (pendientes o en proceso) de la **misma categoría** en un radio de **50 metros**, calculado con las coordenadas del mapa (fórmula de Haversine). La validación se hace en el servidor, por lo que no se puede saltar desde la página.
+
+### Flujo de validación
+
+<p align="center">
+  <img src="docs/flujo-duplicados.png" alt="Flujo de validación de incidencias duplicadas" width="600">
+</p>
+
+| Caso | Resultado |
+|---|---|
+| Misma categoría, a 50 m o menos, incidencia sin resolver | ❌ Se rechaza como duplicada |
+| Otra categoría en el mismo punto | ✅ Se registra (es otro problema) |
+| Misma categoría, a más de 50 m | ✅ Se registra (es otro lugar) |
+| Misma categoría en el mismo punto, pero la anterior ya está resuelta | ✅ Se registra (el problema volvió a aparecer) |
+
+**¿Quién valida la incidencia?** El sistema valida automáticamente que no esté duplicada, y el **administrador de la municipalidad** valida su atención: asigna la cuadrilla de la zona y solo puede marcarla como resuelta subiendo una foto de evidencia. Cada paso queda en el historial con fecha y hora, visible para el ciudadano en su seguimiento.
+
+---
+
 ## 💻 Tecnologías usadas
 
 | Capa | Tecnología |
@@ -137,3 +158,26 @@ src/
 ├── App.jsx                    # Componente principal con rutas
 └── main.jsx                   # Punto de entrada
 ```
+
+---
+
+## 🔑 Credenciales para probar el proyecto
+
+**Aplicación en línea:** https://frontend-trabajofinall.vercel.app
+
+El inicio de sesión se hace con el **nombre de usuario** y la contraseña.
+
+**Administrador** (acceso completo: gestión de incidencias, cuadrillas, ciudadanos, reportes y dashboard):
+
+* Usuario: `admin`
+* Contraseña: `Palacios13579`
+
+**Ciudadano** (registrar incidencias, seguimiento, recompensas y educación ambiental):
+
+* Usuario: `GASPER`
+* Contraseña: `Palacios10`
+
+* Usuario: `amendez`
+* Contraseña: `Andreina2026`
+
+La cuenta `amendez` es de demostración y sus datos son ficticios. También puedes crear tu propia cuenta desde **Registrarse** (con DNI, carné de extranjería, pasaporte o PTP).

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { IconRegistro, IconSeguimiento, IconEducacion, IconCerrarMenu, IconMenu, IconInsignia, IconIncidencias, IconDashboard } from './icons'
+import { IconRegistro, IconSeguimiento, IconEducacion, IconCerrarMenu, IconMenu, IconInsignia, IconIncidencias, IconDashboard, IconCuadrillas } from './icons'
 import './Sidebar.css'
 import { useAuth } from '../hooks/useAuth'
 
@@ -50,6 +50,14 @@ const MENU_ITEMS = [
     label: 'Gestión de Incidencias', 
     icon: IconIncidencias, 
     path: '/gestion',
+    enabled: true,
+    roles: ['ADMIN']
+  },
+  {
+    id: 'cuadrillas',
+    label: 'Gestión de Cuadrillas',
+    icon: IconCuadrillas,
+    path: '/cuadrillas',
     enabled: true,
     roles: ['ADMIN']
   },{

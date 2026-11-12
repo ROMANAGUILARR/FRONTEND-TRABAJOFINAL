@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import './RestablecerContraseña.css'
+import ThemeToggleButton from './ThemeToggleButton'
 
 function mensajeError(error) {
     return error.message === 'Failed to fetch'
@@ -186,6 +187,7 @@ export default function RestablecerContra() {
 
     return (
         <div className="restablecer">
+            <ThemeToggleButton />
             <div className="restablecer__container">
                 <div className="restablecer__logo">
                     <svg className="restablecer__logo-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

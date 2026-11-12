@@ -17,6 +17,7 @@ import ProtectedRoute, { PublicRoute } from './components/ProtectedRoute'
 import Dashboard from './components/Dashboard'
 import ManejarIncidencias from './components/ManejarIncidencias'
 import GestionarCiudadanos from './components/GestionarCiudadanos'
+import GestionCuadrillas from './components/GestionCuadrillas'
 // Componente de diseño para el layout principal (con Header y Sidebar)
 function MainLayout() {
   const [menuAbierto, setMenuAbierto] = useState(false)
@@ -96,6 +97,11 @@ function App() {
           <Route path="/ciudadanos" element={
             <ProtectedRoute module="ciudadanos">
               <GestionarCiudadanos />
+            </ProtectedRoute>
+          } />
+          <Route path="/cuadrillas" element={
+            <ProtectedRoute module="cuadrillas">
+              <GestionCuadrillas />
             </ProtectedRoute>
           } />
           <Route path="/dashboard" element={
