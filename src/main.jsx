@@ -4,9 +4,14 @@ import './styles/z-index.css'
 import App from './App.jsx'
 import { AuthProvider } from './hooks/useAuth'
 import { obtenerTemaInicial, aplicarTema } from './utils/tema'
+import { instalarControlDeSesion } from './utils/sesion'
 
 // Aplica el tema guardado (claro/oscuro) en todas las pantallas desde el inicio
 aplicarTema(obtenerTemaInicial())
+
+// Cierra la sesión sola cuando el token vence y vuelve al inicio de sesión con un aviso
+const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8080' : 'https://backend-trabajofinal.onrender.com')
+instalarControlDeSesion(API_BASE)
 
 // Note: StrictMode is disabled to avoid issues with Leaflet map initialization
 // In React 18, StrictMode causes components to mount/unmount twice in development,
