@@ -4,13 +4,15 @@ import { useAuth } from '../hooks/useAuth'
 import Button from './ui/Button'
 import Input from './ui/Input'
 import ThemeToggleButton from './ThemeToggleButton'
+import { consumirAvisoSesionVencida } from '../utils/sesion'
 import './Login.css'
 
 export default function Login({ onLogin }) {
     const [nombreUs, setNombreUs] = useState("")
     const [contra, setContra] = useState("")
     const navigate = useNavigate();
-    const [error, setError] = useState(null);
+    // Si la sesión anterior venció, se muestra el aviso al llegar aquí
+    const [error, setError] = useState(() => consumirAvisoSesionVencida());
     const { login } = useAuth();
     
     const handleSubmit = async (e) => {
