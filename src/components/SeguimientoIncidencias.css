@@ -844,3 +844,42 @@
   color: var(--chip-texto-activo);
   border-color: var(--chip);
 }
+
+/* Descripción con "Ver más" en la tarjeta */
+.incidencia-tarjeta__texto {
+  font-size: calc(0.9rem*var(--font-scale,1));
+  line-height: 1.4;
+  margin-bottom: 12px;
+  color: #555;
+}
+
+[data-theme="dark"] .incidencia-tarjeta__texto {
+  color: var(--color-text-secondary);
+}
+
+.detalle-modal__descripcion {
+  margin: 0 0 1em;
+  line-height: 1.5;
+}
+
+.detalle-modal__descripcion .texto-expandible {
+  margin-top: 4px;
+}
+
+/* Etiqueta de estado de la tarjeta y del detalle */
+.incidencia-tarjeta__estado {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+/* La tarjeta crece al pulsar "Ver más" (antes tenía alto fijo y cortaba el texto) */
+.seguimiento__tarjetas {
+  align-items: start;
+}
+
+.incidencia-tarjeta {
+  height: auto;
+  min-height: calc(190px + 230px * var(--font-scale, 1));
+}

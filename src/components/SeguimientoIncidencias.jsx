@@ -6,6 +6,9 @@ import './SeguimientoIncidencias.css'
 import HelpModal from './HelpModal'
 import HistorialIncidencia, { formatearFechaHora } from './HistorialIncidencia'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
+import TextoExpandible from './comun/TextoExpandible'
+import TrazabilidadEstado from './comun/TrazabilidadEstado'
+import { ESTADO_LABEL } from '../utils/incidenciaConstants'
 
 // Iconos SVG inline
 const IconTotal = () => (
@@ -331,12 +334,13 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
                 <div className="incidencia-tarjeta__cuerpo">
                   <div className="incidencia-tarjeta__header">
                     <h3 className="incidencia-tarjeta__titulo" title={incidencia.titulo}>{incidencia.titulo}</h3>
-                    <span className={`incidencia-tarjeta__estado estado--${CLASES_ESTADO[ESTADOS[incidencia.estado]]}`}>
-                      {incidencia.estado}
+                    <span className={`incidencia-tarjeta__estado ${CLASES_ESTADO[ESTADOS[incidencia.estado]] || ''}`}>
+                      {ESTADO_LABEL[incidencia.estado] || incidencia.estado}
                     </span>
                   </div>
                   <p className="incidencia-tarjeta__fecha">Fecha: {formatearFecha(incidencia.fecha)}</p>
-                  <p className="incidencia-tarjeta__descripcion">{incidencia.descripcion}</p>
+                  <TrazabilidadEstado estado={incidencia.estado} compacta />
+                  <TextoExpandible texto={incidencia.descripcion} lineas={2} className="incidencia-tarjeta__texto" />
                   <button
                     type="button"
                     className="incidencia-tarjeta__btn-detalle"
@@ -383,11 +387,15 @@ export default function SeguimientoIncidencias({ incidencias: propsIncidencias }
               ×
             </button>
             <h3 className="detalle-modal__titulo">{incidenciaDetalle.titulo}</h3>
-            <span className={`incidencia-tarjeta__estado estado--${CLASES_ESTADO[ESTADOS[incidenciaDetalle.estado]]}`}>
-              {incidenciaDetalle.estado}
+            <span className={`incidencia-tarjeta__estado ${CLASES_ESTADO[ESTADOS[incidenciaDetalle.estado]] || ''}`}>
+              {ESTADO_LABEL[incidenciaDetalle.estado] || incidenciaDetalle.estado}
             </span>
+            <TrazabilidadEstado estado={incidenciaDetalle.estado} />
             <p><strong>Fecha:</strong> {formatearFecha(incidenciaDetalle.fecha)}</p>
-            <p><strong>Descripción:</strong> {incidenciaDetalle.descripcion}</p>
+            <div className="detalle-modal__descripcion">
+              <strong>Descripción:</strong>
+              <TextoExpandible texto={incidenciaDetalle.descripcion} lineas={3} />
+            </div>
             <p><strong>Ubicación:</strong> {incidenciaDetalle.direccionTexto ?? 'No se sabe'}</p>
 
             {/* Todas las imágenes */}

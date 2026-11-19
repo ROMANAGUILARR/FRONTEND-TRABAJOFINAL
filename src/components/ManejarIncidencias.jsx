@@ -10,6 +10,7 @@ import AsignarCuadrillaModal from './AsignarCuadrillaModal'
 import ResolverIncidenciaModal from './ResolverIncidenciaModal'
 import HistorialIncidencia from './HistorialIncidencia'
 import ReportePorFechas from './ReportePorFechas'
+import TextoExpandible from './comun/TextoExpandible'
 import './Cuadrillas.css'
 
 const ITEMS_POR_PAGINA = 10
@@ -309,7 +310,9 @@ export default function ManejarIncidencias() {
                         <span className="cuad-celda__sin">Sin asignar</span>
                       )}
                     </td>
-                    <td style={{ maxWidth: '250px', whiteSpace: 'normal', wordBreak: 'break-word' }}>{incidencia.descripcion}</td>
+                    <td style={{ maxWidth: '250px', whiteSpace: 'normal', wordBreak: 'break-word' }}>
+                      <TextoExpandible texto={incidencia.descripcion} lineas={2} />
+                    </td>
                     <td>{obtenerReportadoPor(incidencia)}</td>
                     <td>{incidencia.direccionTexto || 'No se sabe'}</td>
                     <td>
