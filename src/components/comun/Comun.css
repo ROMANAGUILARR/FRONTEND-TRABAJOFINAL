@@ -1,0 +1,196 @@
+/* ---------- Texto con "Ver más / Ver menos" ---------- */
+.texto-expandible__texto {
+  margin: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+.texto-expandible__texto--recortado {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.texto-expandible__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 2px 0;
+  border: none;
+  background: none;
+  color: var(--color-link);
+  font-size: 0.85em;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.texto-expandible__btn i { font-size: 0.75em; }
+.texto-expandible__btn:hover { text-decoration: underline; }
+
+/* ---------- Trazabilidad del estado ---------- */
+.trazabilidad {
+  display: flex;
+  align-items: flex-start;
+  margin: 12px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trazabilidad__paso {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+}
+
+/* Línea que une cada paso con el anterior */
+.trazabilidad__paso + .trazabilidad__paso::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  right: calc(50% + 18px);
+  left: calc(-50% + 18px);
+  height: 3px;
+  border-radius: 2px;
+  background: #D0D0D0;
+}
+
+.trazabilidad__paso--hecha + .trazabilidad__paso::before,
+.trazabilidad__paso--hecha + .trazabilidad__paso--actual::before {
+  background: var(--color-link);
+}
+
+.trazabilidad__marca {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: #E0E0E0;
+  color: #9E9E9E;
+  border: 2px solid #D0D0D0;
+}
+
+.trazabilidad__paso--hecha .trazabilidad__marca {
+  background: var(--color-link);
+  border-color: var(--color-link);
+  color: #fff;
+}
+
+.trazabilidad__paso--actual .trazabilidad__marca {
+  background: var(--color-link);
+  border-color: var(--color-link);
+  color: #fff;
+  box-shadow: 0 0 0 4px var(--color-accent-green-light);
+}
+
+.trazabilidad__textos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.trazabilidad__titulo {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.trazabilidad__detalle {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.trazabilidad__paso--pendiente .trazabilidad__titulo,
+.trazabilidad__paso--pendiente .trazabilidad__detalle {
+  color: #9E9E9E;
+}
+
+/* Versión compacta para las tarjetas */
+.trazabilidad--compacta { margin: 8px 0 10px; }
+.trazabilidad--compacta .trazabilidad__marca { width: 22px; height: 22px; font-size: 0.65rem; border-width: 1px; }
+.trazabilidad--compacta .trazabilidad__paso + .trazabilidad__paso::before { top: 10px; right: calc(50% + 13px); left: calc(-50% + 13px); height: 2px; }
+.trazabilidad--compacta .trazabilidad__titulo { font-size: 0.72rem; }
+.trazabilidad--compacta .trazabilidad__paso--actual .trazabilidad__marca { box-shadow: 0 0 0 3px var(--color-accent-green-light); }
+
+[data-theme="dark"] .trazabilidad__marca { background: #2A2A2A; border-color: #3A3A3A; color: #777; }
+[data-theme="dark"] .trazabilidad__paso + .trazabilidad__paso::before { background: #3A3A3A; }
+[data-theme="dark"] .trazabilidad__paso--hecha + .trazabilidad__paso::before { background: var(--color-link); }
+[data-theme="dark"] .trazabilidad__paso--hecha .trazabilidad__marca,
+[data-theme="dark"] .trazabilidad__paso--actual .trazabilidad__marca { background: var(--color-link); border-color: var(--color-link); color: #0D0D0D; }
+[data-theme="dark"] .trazabilidad__paso--pendiente .trazabilidad__titulo,
+[data-theme="dark"] .trazabilidad__paso--pendiente .trazabilidad__detalle { color: #6B6B6B; }
+
+/* ---------- Selector con buscador ---------- */
+.selector-buscable { position: relative; }
+
+.selector-buscable__campo { position: relative; }
+
+.selector-buscable__lupa {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+.selector-buscable__input.admin-input {
+  width: 100%;
+  padding-left: 34px;
+  padding-right: 34px;
+  box-sizing: border-box;
+}
+
+.selector-buscable__limpiar {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.selector-buscable__limpiar:hover { background: var(--color-accent-green-light); }
+
+/* La lista va dentro del flujo (no flotante) para que no la recorte el modal */
+.selector-buscable__lista {
+  max-height: 200px;
+  overflow-y: auto;
+  margin: 4px 0 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md, 8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.selector-buscable__opcion {
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.selector-buscable__opcion--resaltada { background: var(--color-accent-green-light); }
+.selector-buscable__opcion--elegida { font-weight: 700; color: var(--color-link); }
+
+.selector-buscable__vacio {
+  padding: 8px 10px;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
