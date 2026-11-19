@@ -37,7 +37,7 @@ function IconoCheck() {
 
 function IconoCandado() {
   return (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="#fff" style={{ display: 'block' }} aria-hidden="true">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" style={{ display: 'block' }} aria-hidden="true">
       <path d="M7 10V7a5 5 0 0 1 10 0v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1zm2 0h6V7a3 3 0 0 0-6 0v3z" />
     </svg>
   )
@@ -73,9 +73,14 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
     const imgWidth = pdfWidth - 20 // Margen de 10mm cada lado
     const imgHeight = (canvas.height * imgWidth) / canvas.width
 
-    // Si cabe en una página
-    if (imgHeight <= pdfHeight - 20) {
-      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight)
+    const altoUtil = pdfHeight - 20 // Margen de 10mm arriba y abajo
+
+    // Si cabe en una página, o se pasa poco (hasta 40 %), se reduce para que
+    // todo, incluidas las firmas, quede en una sola hoja
+    if (imgHeight <= altoUtil * 1.4) {
+      const alto = Math.min(imgHeight, altoUtil)
+      const ancho = (imgWidth * alto) / imgHeight
+      pdf.addImage(imgData, 'PNG', (pdfWidth - ancho) / 2, 10, ancho, alto)
     } else {
       // Multipágina: cortar la imagen en secciones
       const pageContentHeight = pdfHeight - 20 // Altura usable por página
@@ -207,7 +212,7 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
                     height: '100%',
                   }}>
                     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '6px' }}>
                         <span style={{
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
                           width: '28px', height: '28px', borderRadius: '8px', flexShrink: 0,
@@ -246,7 +251,7 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
         </div>
 
         {/* Firmas */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '60px', paddingTop: '8px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '48px', paddingTop: '8px' }}>
           <div style={{ textAlign: 'center', minWidth: '200px' }}>
             <div style={{ borderTop: '1px solid #333', marginBottom: '4px' }}></div>
             <span style={{ fontSize: '0.8rem', color: '#555' }}>Firma del Usuario</span>
