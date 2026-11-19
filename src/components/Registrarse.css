@@ -44,10 +44,12 @@
 }
 
 .registrarse__logo-icon {
+  /* Tailwind deja los SVG como bloque; se centra con margen automático */
+  display: block;
   width: 64px;
   height: 64px;
   color: var(--color-btn-primary);
-  margin-bottom: 12px;
+  margin: 0 auto 12px;
 }
 
 .registrarse__title {

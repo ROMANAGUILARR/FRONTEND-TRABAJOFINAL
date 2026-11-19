@@ -16,6 +16,8 @@ export default function Header({ onMenuClick,onLogout }) {
   const nombreUsuario = user?.nombreUsuario || localStorage.getItem("nombreUsuario")
   const [puntos, setPuntos] = useState(user?.puntos ?? 0)
   const location = useLocation()
+  // Los puntos son solo del ciudadano; al administrador no se le muestran
+  const esAdmin = (user?.rol || localStorage.getItem('rol')) === 'ADMIN'
   useEffect(() => {
     if (user?.puntos !== undefined && user?.puntos !== null) {
       setPuntos(user.puntos)
@@ -34,8 +36,8 @@ export default function Header({ onMenuClick,onLogout }) {
             console.error('Error al obtener puntos:', error)
         }
     }
-    cargarPuntos()
-  }, [location.pathname])
+    if (!esAdmin) cargarPuntos()
+  }, [location.pathname, esAdmin])
   function toggleTema() {
     setTemaOscuro(prev => !prev)
   }
@@ -86,9 +88,11 @@ export default function Header({ onMenuClick,onLogout }) {
         <button type="button" className="flex items-center justify-center p-2 border-none bg-transparent text-white cursor-pointer opacity-90 transition-all duration-200 rounded-sm hover:opacity-100 hover:scale-105 active:scale-95 max-sm:p-1.5" aria-label="Perfil de usuario" title="Mi cuenta" onClick={() => navigate('/cuenta')}>
           <IconUsuario />
           <span className="header__username ml-2.5 max-sm:hidden">Cuenta</span>
-          <span className="header__points ml-2 text-xs font-semibold text-yellow-400 bg-black/20 px-2 py-0.5 rounded-xl max-sm:text-[10px]">
-            {puntos} pts
-          </span>
+          {!esAdmin && (
+            <span className="header__points ml-2 text-xs font-semibold text-yellow-400 bg-black/20 px-2 py-0.5 rounded-xl max-sm:text-[10px]">
+              {puntos} pts
+            </span>
+          )}
         </button>
 
         <button

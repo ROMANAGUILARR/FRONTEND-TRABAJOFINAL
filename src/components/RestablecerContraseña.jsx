@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom"
 import './RestablecerContraseña.css'
 import ThemeToggleButton from './ThemeToggleButton'
 
+const PASOS_RESTABLECER = ['Verificar', 'Pregunta', 'Nueva contraseña'];
+
 function mensajeError(error) {
     return error.message === 'Failed to fetch'
         ? 'No se pudo conectar con el servidor. Si nadie lo usó en un rato, puede tardar hasta 1 minuto en activarse; espera un momento e intenta de nuevo.'
@@ -206,11 +208,25 @@ export default function RestablecerContra() {
                 </div>
 
                 {/* Indicador de pasos */}
-                <div className="restablecer__steps">
-                    <div className={`restablecer__step ${paso >= 1 ? 'active' : ''}`}>1. Verificar</div>
-                    <div className={`restablecer__step ${paso >= 2 ? 'active' : ''}`}>2. Pregunta</div>
-                    <div className={`restablecer__step ${paso >= 3 ? 'active' : ''}`}>3. Nueva contraseña</div>
-                </div>
+                {/* Pasos ya hechos: verde claro con check. Paso actual: verde fuerte. Pasos que faltan: gris. */}
+                <ol className="restablecer__steps" aria-label={`Paso ${paso} de ${PASOS_RESTABLECER.length}`}>
+                    {PASOS_RESTABLECER.map((titulo, i) => {
+                        const numero = i + 1;
+                        const estado = numero < paso ? 'hecho' : numero === paso ? 'actual' : 'pendiente';
+                        return (
+                            <li
+                                key={titulo}
+                                className={`restablecer__step restablecer__step--${estado}`}
+                                aria-current={estado === 'actual' ? 'step' : undefined}
+                            >
+                                <span className="restablecer__step-num" aria-hidden="true">
+                                    {estado === 'hecho' ? <i className="fa-solid fa-check"></i> : numero}
+                                </span>
+                                <span className="restablecer__step-txt">{titulo}</span>
+                            </li>
+                        );
+                    })}
+                </ol>
 
                 {error && (
                     <div className="restablecer__error">
