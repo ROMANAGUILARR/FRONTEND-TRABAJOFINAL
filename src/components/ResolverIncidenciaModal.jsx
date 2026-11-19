@@ -77,7 +77,9 @@ export default function ResolverIncidenciaModal({ incidencia, onClose, onResuelt
               {previas.map((url, i) => (
                 <div key={url} className="cuad-evidencias__item">
                   <img src={url} alt={`Evidencia ${i + 1}`} />
-                  <button type="button" onClick={() => quitar(i)} aria-label={`Quitar foto ${i + 1}`} disabled={enviando}>×</button>
+                  <button type="button" onClick={() => quitar(i)} aria-label={`Eliminar foto ${i + 1}`} title="Eliminar foto" disabled={enviando}>
+                    <i className="fa-solid fa-trash" aria-hidden="true"></i>
+                  </button>
                 </div>
               ))}
               {archivos.length < MAX_FOTOS && (

@@ -6,6 +6,7 @@ import {
 import { DISTRITOS_LIMA, normalizarTexto, compararNombres } from '../utils/zonas'
 import './ManejarIncidencias.css'
 import './Cuadrillas.css'
+import SelectorBuscable from './comun/SelectorBuscable'
 
 const CUADRILLA_VACIA = { nombre: '', zona: '', activa: true }
 const TRABAJADOR_VACIO = { nombreCompleto: '', dni: '', telefono: '', esJefe: false, activo: true }
@@ -181,10 +182,10 @@ export default function GestionCuadrillas() {
 
   function pedirEliminarTrabajador(t) {
     setConfirmacion({
-      titulo: `¿Quitar a ${t.nombreCompleto}?`,
+      titulo: `¿Eliminar a ${t.nombreCompleto}?`,
       mensaje: 'El integrante dejará de figurar en la cuadrilla.',
       accion: () => eliminarTrabajador(t.idTrabajador),
-      exito: 'Integrante quitado',
+      exito: 'Integrante eliminado',
     })
   }
 
@@ -297,11 +298,11 @@ export default function GestionCuadrillas() {
                           </span>
                         </div>
                         <div className="cuad-integrante__acciones">
-                          <button type="button" className="cuad-icono" onClick={() => abrirEditarTrabajador(c, t)} aria-label={`Editar a ${t.nombreCompleto}`} title="Editar">
+                          <button type="button" className="icon-btn icon-btn--azul icon-btn--sm" onClick={() => abrirEditarTrabajador(c, t)} aria-label={`Editar a ${t.nombreCompleto}`} title="Editar integrante">
                             <i className="fa-solid fa-pen" aria-hidden="true"></i>
                           </button>
-                          <button type="button" className="cuad-icono cuad-icono--peligro" onClick={() => pedirEliminarTrabajador(t)} aria-label={`Quitar a ${t.nombreCompleto}`} title="Quitar">
-                            <i className="fa-solid fa-user-minus" aria-hidden="true"></i>
+                          <button type="button" className="icon-btn icon-btn--rojo icon-btn--sm" onClick={() => pedirEliminarTrabajador(t)} aria-label={`Eliminar a ${t.nombreCompleto}`} title="Eliminar integrante">
+                            <i className="fa-solid fa-trash" aria-hidden="true"></i>
                           </button>
                         </div>
                       </li>
@@ -309,7 +310,7 @@ export default function GestionCuadrillas() {
                   </ul>
                 )}
                 <button type="button" className="cuad-agregar" onClick={() => abrirCrearTrabajador(c)}>
-                  <i className="fa-solid fa-user-plus" aria-hidden="true"></i> Agregar integrante
+                  <i className="fa-solid fa-plus" aria-hidden="true"></i> Agregar integrante
                 </button>
               </div>
 
@@ -348,15 +349,14 @@ export default function GestionCuadrillas() {
               onChange={(e) => setFormCuadrilla((f) => ({ ...f, datos: { ...f.datos, nombre: e.target.value } }))}
             />
             <label className="admin-modal__label" htmlFor="cuad-zona">Zona / distrito</label>
-            <input
-              id="cuad-zona" className="admin-input" list="distritos-lima" maxLength={150}
-              placeholder="Ej.: Los Olivos"
-              value={formCuadrilla.datos.zona}
-              onChange={(e) => setFormCuadrilla((f) => ({ ...f, datos: { ...f.datos, zona: e.target.value } }))}
+            <SelectorBuscable
+              id="cuad-zona" maxLength={150}
+              opciones={DISTRITOS_LIMA}
+              placeholder="Escribe el distrito, ej.: Los Olivos"
+              sinResultados="No hay un distrito con ese nombre"
+              valor={formCuadrilla.datos.zona}
+              onCambio={(zona) => setFormCuadrilla((f) => ({ ...f, datos: { ...f.datos, zona } }))}
             />
-            <datalist id="distritos-lima">
-              {DISTRITOS_LIMA.map((d) => <option key={d} value={d} />)}
-            </datalist>
             <span className="cuad-ayuda">Se usa para sugerir esta cuadrilla en las incidencias de su distrito.</span>
             {formCuadrilla.modo === 'editar' && (
               <label className="cuad-check">
