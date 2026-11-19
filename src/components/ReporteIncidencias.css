@@ -124,6 +124,12 @@
   color: #555;
 }
 
+.reporte-estado {
+  font-weight: 700;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
 .reporte-estado-badge {
   display: inline-block;
   height: 26px;

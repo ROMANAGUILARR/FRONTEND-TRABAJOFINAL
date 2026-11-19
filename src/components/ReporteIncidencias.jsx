@@ -6,16 +6,24 @@ import logoEcoSolido from '../assets/LOGO ECOSOLIDO.png'
 import { MOCK_INSIGNIAS } from '../services/mockData'
 import './ReporteIncidencias.css'
 
-const ESTADO_BADGE = {
-  RESUELTO: 'reporte-estado-badge--resuelto',
-  EN_PROCESO: 'reporte-estado-badge--proceso',
-  PENDIENTE: 'reporte-estado-badge--pendiente',
+const ESTADO_COLORES = {
+  RESUELTO: { texto: '#2E7D32' },
+  EN_PROCESO: { texto: '#1565C0' },
+  PENDIENTE: { texto: '#E65100' },
 }
 
 const ESTADO_LABEL = {
   RESUELTO: 'Resuelto',
   EN_PROCESO: 'En Proceso',
   PENDIENTE: 'Pendiente',
+}
+
+// Estado como texto de color (sin fondo): html2canvas desplaza el texto dentro de
+// las etiquetas con fondo y en el PDF se veían chuecas. Sin fondo no hay desfase visible.
+function EstadoBadge({ estado }) {
+  const texto = ESTADO_LABEL[estado] || estado || ''
+  const c = ESTADO_COLORES[estado] || { texto: '#555555' }
+  return <span className="reporte-estado" style={{ color: c.texto }}>{texto}</span>
 }
 
 // Íconos en SVG: html2canvas (PDF) no centra bien los íconos de fuente de Font Awesome
@@ -157,9 +165,7 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
                   <td>{i + 1}</td>
                   <td>{inc.descripcion}</td>
                   <td>
-                    <span className={`reporte-estado-badge ${ESTADO_BADGE[inc.estado] || ''}`}>
-                      {ESTADO_LABEL[inc.estado] || inc.estado}
-                    </span>
+                    <EstadoBadge estado={inc.estado} />
                   </td>
                   <td>{inc.direccionTexto || 'No especificada'}</td>
                   <td>{formatearFecha(inc.fecha)}</td>
