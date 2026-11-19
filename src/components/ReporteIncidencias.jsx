@@ -82,30 +82,51 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
       const ancho = (imgWidth * alto) / imgHeight
       pdf.addImage(imgData, 'PNG', (pdfWidth - ancho) / 2, 10, ancho, alto)
     } else {
-      // Multipágina: cortar la imagen en secciones
-      const pageContentHeight = pdfHeight - 20 // Altura usable por página
-      const totalPages = Math.ceil(imgHeight / pageContentHeight)
+      // Multipágina: se corta solo entre bloques (filas de la tabla, insignias,
+      // firmas) para que ningún bloque quede partido entre dos hojas
+      const escala = canvas.height / elemento.scrollHeight // px del canvas por px del DOM
+      const altoPaginaDom = (altoUtil * canvas.width) / imgWidth / escala
+      const topBase = elemento.getBoundingClientRect().top
+      const bloques = [...elemento.querySelectorAll('[data-pdf-bloque], .reporte-tabla tbody tr')]
+        .map((el) => {
+          const r = el.getBoundingClientRect()
+          return { top: r.top - topBase, bottom: r.bottom - topBase }
+        })
 
-      for (let page = 0; page < totalPages; page++) {
+      const cortes = []
+      let inicio = 0
+      while (inicio < elemento.scrollHeight - 1) {
+        let fin = inicio + altoPaginaDom
+        if (fin < elemento.scrollHeight) {
+          // Si el corte cae dentro de un bloque, se corta justo antes de ese bloque
+          const partido = bloques
+            .filter((bl) => bl.top < fin && bl.bottom > fin && bl.top > inicio)
+            .sort((x, y) => x.top - y.top)[0]
+          if (partido) fin = partido.top
+        } else {
+          fin = elemento.scrollHeight
+        }
+        cortes.push([inicio, fin])
+        inicio = fin
+      }
+
+      cortes.forEach(([desde, hasta], page) => {
         if (page > 0) pdf.addPage()
-
-        // Crear un canvas recortado para esta página
-        const sourceY = (page * pageContentHeight * canvas.width) / imgWidth
-        const sourceHeight = Math.min(
-          (pageContentHeight * canvas.width) / imgWidth,
-          canvas.height - sourceY
-        )
+        const sourceY = Math.round(desde * escala)
+        const sourceHeight = Math.min(Math.round((hasta - desde) * escala), canvas.height - sourceY)
 
         const pageCanvas = document.createElement('canvas')
         pageCanvas.width = canvas.width
         pageCanvas.height = sourceHeight
         const ctx = pageCanvas.getContext('2d')
+        ctx.fillStyle = '#ffffff'
+        ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height)
         ctx.drawImage(canvas, 0, -sourceY)
 
         const pageImgData = pageCanvas.toDataURL('image/png')
         const pageImgHeight = (sourceHeight * imgWidth) / canvas.width
         pdf.addImage(pageImgData, 'PNG', 10, 10, imgWidth, pageImgHeight)
-      }
+      })
     }
 
     pdf.save(`Reporte_${usuario.nombreCompleto}_${usuario.apellidoCompleto}.pdf`)
@@ -130,7 +151,7 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
       {/* Plantilla del reporte */}
       <div ref={reporteRef} className="reporte-container">
         {/* Encabezado */}
-        <div className="reporte-header">
+        <div className="reporte-header" data-pdf-bloque>
           <img src={logoEcoSolido} alt="EcoSólido" className="reporte-logo" />
           <div className="reporte-titulo">
             <h1>Hoja de Recuento de Registro de Incidencias</h1>
@@ -181,7 +202,7 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
         </table>
 
         {/* Resumen de insignias */}
-        <div style={{ marginTop: '24px', marginBottom: '24px' }}>
+        <div data-pdf-bloque style={{ marginTop: '24px', marginBottom: '24px' }}>
           <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#111', margin: '0 0 16px' }}>
             Resumen de {usuario.nombreCompleto} {usuario.apellidoCompleto}: {' '}
             <span style={{ color: '#2E7D32', fontWeight: 800 }}>{incidencias.length * 10}</span> puntos acumulados
@@ -251,7 +272,7 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
         </div>
 
         {/* Firmas */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '48px', paddingTop: '8px' }}>
+        <div data-pdf-bloque style={{ display: 'flex', justifyContent: 'space-between', marginTop: '48px', paddingTop: '8px' }}>
           <div style={{ textAlign: 'center', minWidth: '200px' }}>
             <div style={{ borderTop: '1px solid #333', marginBottom: '4px' }}></div>
             <span style={{ fontSize: '0.8rem', color: '#555' }}>Firma del Usuario</span>
