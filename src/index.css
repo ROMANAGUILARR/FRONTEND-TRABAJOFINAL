@@ -244,3 +244,10 @@ textarea {
 .icon-btn--hueco {
   display: block;
 }
+
+/* Botón de acción pequeño (p. ej. en la lista de integrantes) */
+.icon-btn.icon-btn--sm {
+  width: 32px;
+  height: 32px;
+  font-size: 0.85rem;
+}

@@ -520,13 +520,16 @@
   position: absolute;
   top: 4px;
   right: 4px;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
   border: none;
-  background: rgba(0, 0, 0, 0.65);
+  background: var(--color-btn-danger);
   color: #fff;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 1;
   cursor: pointer;
 }

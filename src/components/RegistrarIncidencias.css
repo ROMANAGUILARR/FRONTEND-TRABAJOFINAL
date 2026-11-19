@@ -254,7 +254,7 @@
   border: none;
   border-radius: 50%;
   background: var(--color-btn-danger);
-  font-size: calc(1rem * var(--font-scale, 1));
+  font-size: calc(0.8rem * var(--font-scale, 1));
   line-height: 1;
   cursor: pointer;
   color: #fff;

@@ -483,9 +483,10 @@ export default function RegistrarIncidencias({ onIncidenciaRegistrada }) {
                       type="button"
                       className="foto-slot__remove"
                       onClick={() => handleEliminarFoto(index)}
-                      aria-label={`Quitar foto ${index + 1}`}
+                      aria-label={`Eliminar foto ${index + 1}`}
+                      title="Eliminar foto"
                     >
-                      ×
+                      <i className="fa-solid fa-trash" aria-hidden="true"></i>
                     </button>
                   </div>
                 ))}
