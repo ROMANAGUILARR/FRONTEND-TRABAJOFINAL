@@ -314,7 +314,11 @@ export default function ManejarIncidencias() {
                       <TextoExpandible texto={incidencia.descripcion} lineas={2} />
                     </td>
                     <td>{obtenerReportadoPor(incidencia)}</td>
-                    <td>{incidencia.direccionTexto || 'No se sabe'}</td>
+                    <td style={{ maxWidth: '260px', whiteSpace: 'normal', wordBreak: 'break-word' }}>
+                      {incidencia.direccionTexto
+                        ? <TextoExpandible texto={incidencia.direccionTexto} lineas={2} />
+                        : 'No se sabe'}
+                    </td>
                     <td>
                       {/* Cada acción ocupa siempre su columna, así los íconos quedan alineados en todas las filas */}
                       <div className="icon-acciones">
