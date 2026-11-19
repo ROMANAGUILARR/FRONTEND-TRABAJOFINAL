@@ -18,6 +18,23 @@ const ESTADO_LABEL = {
   PENDIENTE: 'Pendiente',
 }
 
+// Íconos en SVG: html2canvas (PDF) no centra bien los íconos de fuente de Font Awesome
+function IconoCheck() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }} aria-hidden="true">
+      <polyline points="4 12.5 9.5 18 20 6.5" />
+    </svg>
+  )
+}
+
+function IconoCandado() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="#fff" style={{ display: 'block' }} aria-hidden="true">
+      <path d="M7 10V7a5 5 0 0 1 10 0v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1zm2 0h6V7a3 3 0 0 0-6 0v3z" />
+    </svg>
+  )
+}
+
 export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
   const reporteRef = useRef(null)
 
@@ -186,12 +203,11 @@ export default function ReporteIncidencias({ usuario, incidencias, onVolver }) {
                     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                         <span style={{
-                          display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
                           width: '28px', height: '28px', borderRadius: '8px', flexShrink: 0,
                           background: desbloqueada ? c.icon : '#bdbdbd',
-                          color: '#fff', fontSize: '0.75rem',
                         }}>
-                          <i className={desbloqueada ? 'fa-solid fa-check' : 'fa-solid fa-lock'}></i>
+                          {desbloqueada ? <IconoCheck /> : <IconoCandado />}
                         </span>
                         <div style={{ minWidth: 0, flex: 1 }}>
                           <strong style={{ fontSize: '0.78rem', fontWeight: 700, color: desbloqueada ? '#111' : '#999', display: 'block', lineHeight: 1.2 }}>
